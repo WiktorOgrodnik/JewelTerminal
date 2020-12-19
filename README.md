@@ -17,5 +17,5 @@ make
 ```
 
 ## License
-[MIT](LICENSE.md)
+[MIT](https://github.com/ViktusYT/JewelTerminal/blob/main/LICENSE)
 
