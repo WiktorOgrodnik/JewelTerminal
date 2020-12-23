@@ -1,9 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
+#include "pch.hpp"
+#include "board.hpp"
 
 class Game
 {
@@ -14,7 +13,15 @@ private:
     sf::Event ev;
 
     void initWindow();
+    void settingsInit();
     void pollEvents();
+    void initBoard();
+
+    //Settings
+    sf::Vector2f jewelSize;
+
+    ///Board
+    Board* board;
 
 public:
 

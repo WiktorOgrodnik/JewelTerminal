@@ -5,12 +5,16 @@ void Game::initWindow()
     this->videoMode.height = 600;
     this->videoMode.width = 800;
     this->window =  new sf::RenderWindow(this->videoMode, "Jewel", sf::Style::Titlebar | sf::Style::Close);
+    this->window->setVerticalSyncEnabled(false);
+    this->window->setFramerateLimit(60);
 }
 
 Game::Game()
 {
     this->window = nullptr;
     this->initWindow();
+    this->settingsInit();
+    this->initBoard();
 }
 
 Game::~Game()
@@ -48,5 +52,16 @@ void Game::pollEvents()
 void Game::render()
 {
     this->window->clear(sf::Color::White);
+    this->board->draw(this->window);
     this->window->display();
+}
+
+void Game::settingsInit()
+{
+    this->jewelSize.x = this->jewelSize.y = 20;
+}
+
+void Game::initBoard()
+{
+    board = new Board(13, sf::Color::Blue, this->jewelSize);
 }
