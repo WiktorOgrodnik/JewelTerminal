@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "engine.hpp"
 
 Game::Game()
 {
@@ -13,7 +14,7 @@ Game::Game()
 
     this->initVariables();
     this->initSettings();
-    this->initBoard();
+    this->initObjects();
     this->initWindow();
 
 }
@@ -27,7 +28,11 @@ Game::~Game()
      */
 
     delete this->window;
-    delete this->board;
+    for(auto &k : this->layers)
+    {
+        delete k;
+    }
+    this->layers.clear();
 }
 
 void Game::initVariables()
@@ -39,7 +44,6 @@ void Game::initVariables()
      */
 
     this->window = nullptr;
-    this->board = nullptr;
 }
 
 void Game::initWindow()
@@ -72,7 +76,7 @@ void Game::initSettings()
     this->jewelSize.x = this->jewelSize.y = 20;
 }
 
-void Game::initBoard()
+void Game::initObjects()
 {
     /**
      * @brief -Initialize board
@@ -82,7 +86,8 @@ void Game::initBoard()
      * @return void
      */
 
-    board = new Board(13, sf::Color::Blue, this->jewelSize);
+    Board* board = new Board(13, sf::Color::Blue, this->jewelSize);
+    Engine::addObject(this->layers, 1, board);
 }
 
 const bool Game::running() const
@@ -137,12 +142,8 @@ void Game::render()
     /**
      * @brief -Update game render 
      * 
-     * TO-DO: Redirect to engine static class
-     * 
      * @return void
      */
 
-    this->window->clear(sf::Color::White);
-    this->board->draw(this->window);
-    this->window->display();
+    Engine::draw(this->layers, this->window);
 }

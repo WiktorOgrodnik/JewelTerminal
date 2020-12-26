@@ -3,7 +3,6 @@
 
 #include "pch.hpp"
 #include "jewel.hpp"
-#include <vector>
 
 class Board : public Object
 {

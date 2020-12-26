@@ -44,13 +44,13 @@ Board::~Board()
      * -clear vector
      */
 
-    for(auto &k : theBoard)
+    for(auto &k : this->theBoard)
     {
         for (auto &l : k) delete l;
         k.clear();
     }
 
-    theBoard.clear();
+    this->theBoard.clear();
 }
 
 void Board::draw(sf::RenderWindow* window)
@@ -63,27 +63,27 @@ void Board::draw(sf::RenderWindow* window)
      * @return void
      */
 
-    for (int i = 0; i < theBoard.size(); i++)
+    for (int i = 0; i < this->theBoard.size(); i++)
     {
         this->line.setPosition(sf::Vector2f(95, 95 + i * 30));
         window->draw(this->line);
 
-        line.rotate(90.f);
+        this->line.rotate(90.f);
 
         this->line.setPosition(sf::Vector2f(95 + i * 30, 95));
         window->draw(this->line);
 
-        line.rotate(270.f);
+        this->line.rotate(270.f);
 
-        for (int j = 0; j < theBoard[i].size(); j++)
-            theBoard[i][j]->draw(window);
+        for (int j = 0; j < this->theBoard[i].size(); j++)
+            this->theBoard[i][j]->draw(window);
     }
 
-    this->line.setPosition(sf::Vector2f(95, 95 + theBoard.size() * 30));
+    this->line.setPosition(sf::Vector2f(95, 95 + this->theBoard.size() * 30));
     window->draw(this->line);
-    line.rotate(90.f);
+    this->line.rotate(90.f);
 
-    this->line.setPosition(sf::Vector2f(95 + theBoard.size() * 30, 95));
+    this->line.setPosition(sf::Vector2f(95 + this->theBoard.size() * 30, 95));
     window->draw(this->line);
-    line.rotate(270.f);
+    this->line.rotate(270.f);
 }
