@@ -16,3 +16,14 @@ void Engine::addObject(std::vector<Layer*> &layers, bool topPririty, Object* new
     }
     else layers.at(layers.size() - 1)->addToLayer(newObject);
 }
+
+void Engine::addTopLayer(std::vector<Layer*> &layers)
+{
+    Layer* newLayer = new Layer();
+    layers.push_back(newLayer);
+}
+
+void Engine::moveTo(Object* object, sf::Vector2f position)
+{
+    object->setPosition(position);
+}

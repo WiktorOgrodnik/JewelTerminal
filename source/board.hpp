@@ -9,14 +9,17 @@ class Board : public Object
 private:
 
     sf::RectangleShape line;
-    std::vector <std::vector <Jewel*>> theBoard;
+    unsigned size;
 
 public:
 
-    Board(int size, sf::Color color, sf::Vector2f jewelSize);
+    Board(int size_, sf::Vector2f jewelSize);
     ~Board();
 
     void draw(sf::RenderWindow* window) override;
+    bool contain(sf::Vector2f mousePos) override;
+    void move(sf::Vector2f moveVector) override;
+    void setPosition(sf::Vector2f position) override;
 };
 
 #endif /*BOARD_HPP*/

@@ -12,6 +12,9 @@ private:
 public:
 
     void draw(sf::RenderWindow* window) override;
+    bool contain(sf::Vector2f mousePos) override;
+    void move(sf::Vector2f moveVector) override;
+    void setPosition(sf::Vector2f position) override;
 
     Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize);
     ~Jewel();

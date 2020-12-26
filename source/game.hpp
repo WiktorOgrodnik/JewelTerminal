@@ -20,12 +20,21 @@ private:
     void initObjects();
 
     void pollEvents();
+    void updateMousePositions();
 
     //Objects
     std::vector <Layer*> layers;
+    std::vector <Jewel*> jewels;
+
+    ///Mouse Positions
+    sf::Vector2i mousePositionWindow;
+    sf::Vector2f mousePositionView;
 
     //Settings
     sf::Vector2f jewelSize;
+
+    //Selected
+    Object* selected;
 
 public:
 

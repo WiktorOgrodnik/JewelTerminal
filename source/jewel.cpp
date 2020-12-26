@@ -42,3 +42,19 @@ void Jewel::draw(sf::RenderWindow* window)
 
     window->draw(this->body);
 }
+
+bool Jewel::contain(sf::Vector2f mousePos)
+{
+    return this->body.getGlobalBounds().contains(mousePos);
+}
+
+void Jewel::move(sf::Vector2f moveVector) 
+{
+    this->body.move(moveVector);
+}
+
+void Jewel::setPosition(sf::Vector2f position) 
+{
+    this->body.setPosition(position);
+}
+

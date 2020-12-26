@@ -1,5 +1,5 @@
 #include "game.hpp"
-#include "engine.hpp"
+#include <iostream>
 
 Game::Game()
 {
@@ -28,11 +28,9 @@ Game::~Game()
      */
 
     delete this->window;
-    for(auto &k : this->layers)
-    {
-        delete k;
-    }
+    for(auto &k : this->layers) delete k;
     this->layers.clear();
+    this->jewels.clear();
 }
 
 void Game::initVariables()
@@ -44,6 +42,7 @@ void Game::initVariables()
      */
 
     this->window = nullptr;
+    this->selected = nullptr;
 }
 
 void Game::initWindow()
@@ -86,8 +85,23 @@ void Game::initObjects()
      * @return void
      */
 
-    Board* board = new Board(13, sf::Color::Blue, this->jewelSize);
+    Board* board = new Board(13, this->jewelSize);
     Engine::addObject(this->layers, 1, board);
+
+    Engine::addTopLayer(this->layers);
+
+    float inX = 100;
+    float inY = 100;
+
+    for (int i = 0; i < 13; i++)
+    {
+        for (int j = 0; j < 13; j++)
+        {
+            Jewel* temp = new Jewel(sf::Vector2f(inX + j * 30.f, inY + i * 30.f), sf::Color::Blue, jewelSize);
+            Engine::addObject(this->layers, 0, temp);
+            jewels.push_back(temp);
+        }
+    }
 }
 
 const bool Game::running() const
@@ -111,6 +125,7 @@ void Game::update()
      * @return void
      */
 
+    this->updateMousePositions();
     this->pollEvents();
 }
 
@@ -133,8 +148,33 @@ void Game::pollEvents()
                 if (ev.key.code == sf::Keyboard::Escape) 
                     this->window->close();
                 break;
+            case sf::Event::MouseButtonReleased:
+                this->selected = nullptr;
+                break;
+        }
+    } 
+
+    
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        for (auto &k : this->jewels)
+        {
+            if ((k->contain(this->mousePositionView) && this->selected == nullptr) || this->selected == k)
+            {
+                this->selected = k;
+                Engine::moveTo(k, sf::Vector2f(this->mousePositionView.x + (this->jewelSize.x / 2.f), this->mousePositionView.y + (this->jewelSize.y / 2.f)));
+            }
         }
     }
+
+    //if (this->selected == nullptr) std::cout << "null\n";
+    //else std::cout << "Selected!\n";    
+}
+
+void Game::updateMousePositions()
+{
+    this->mousePositionWindow = sf::Mouse::getPosition(*this->window);
+    this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
 }
 
 void Game::render()

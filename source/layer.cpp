@@ -31,6 +31,11 @@ void Layer::draw(sf::RenderWindow* window)
     for (auto &k : this->objects) k->draw(window);
 }
 
+bool Layer::contain(sf::Vector2f mousePos)
+{
+    return false;
+}
+
 void Layer::addToLayer(Object* newObject)
 {
     this->objects.push_back(newObject);
@@ -48,3 +53,4 @@ void Layer::deleteFromLayer(Object* newObject)
         }
     }
 }
+

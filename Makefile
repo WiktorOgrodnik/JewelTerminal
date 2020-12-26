@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O2 -H -std=c++17
+CXXFLAGS = -O2 -H -std=c++17 -Wall
 OBJ = main.o engine.o game.o object.o jewel.o board.o layer.o
 SFML = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
@@ -8,7 +8,7 @@ PCH_SRC = source/pch.hpp
 PCH_OUT = source/pch.hpp.gch
 
 all: clean $(OBJ)
-	@$(CXX) $(CXXFLAGS) $(OBJ) -o jewel $(SFML) 
+	@$(CXX) $(CXXFLAGS) $(OBJ) -o jewel $(SFML)
 main.o: 
 	@g++ -c source/main.cpp
 game.o:
@@ -24,6 +24,7 @@ layer.o:
 engine.o:
 	@g++ -c source/engine.cpp
 clean:
+	@rm -f $(OBJ) 
 	@rm -f jewel
 pre:
 	@$(CXX) $(CXXFLAGS) $(PCH_SRC);
