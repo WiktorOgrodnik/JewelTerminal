@@ -2,6 +2,20 @@
 
 Board::Board(int size, sf::Color color, sf::Vector2f jewelSize)
 {
+    /**
+     *  Constructor
+     *   
+     *  @param size of board, color of jewels (temporary), size of jewel
+     *  
+     *  @brief -Initialize theBoard
+     *  -Create jewels
+     *  -Create line, which is used to create board borders
+     *  -Set board margin (temporary)
+     * 
+     *  TO-DO:
+     *  -Add more parameters to margins and distance
+    */
+
     this->theBoard.resize(size);
 
     float inX = 100;
@@ -16,12 +30,39 @@ Board::Board(int size, sf::Color color, sf::Vector2f jewelSize)
         }
     }
 
+    // Line
     this->line.setSize(sf::Vector2f(size * (jewelSize.x + 10.f), 3.f));
     this->line.setFillColor(sf::Color::Black);
 }
 
+Board::~Board()
+{
+    /**
+     * Destructor
+     * 
+     * @brief -Delete jewels
+     * -clear vector
+     */
+
+    for(auto &k : theBoard)
+    {
+        for (auto &l : k) delete l;
+        k.clear();
+    }
+
+    theBoard.clear();
+}
+
 void Board::draw(sf::RenderWindow* window)
 {   
+    /**
+     * @param RenderWindow
+     * 
+     * @brief -Draw the board and the jewels
+     * 
+     * @return void
+     */
+
     for (int i = 0; i < theBoard.size(); i++)
     {
         this->line.setPosition(sf::Vector2f(95, 95 + i * 30));
@@ -45,6 +86,4 @@ void Board::draw(sf::RenderWindow* window)
     this->line.setPosition(sf::Vector2f(95 + theBoard.size() * 30, 95));
     window->draw(this->line);
     line.rotate(270.f);
-
-       
 }

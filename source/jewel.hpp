@@ -14,6 +14,7 @@ public:
     void draw(sf::RenderWindow* window) override;
 
     Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize);
+    ~Jewel();
 };
 
 #endif /*JEWEL_HPP*/

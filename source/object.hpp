@@ -5,6 +5,9 @@
 
 class Object
 {
+    //This is virtual class - DON'T USE IT!
+    //Inheritance only!
+    
 public:
     Object();
     virtual ~Object();

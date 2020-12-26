@@ -12,26 +12,29 @@ private:
     sf::RenderWindow* window;
     sf::Event ev;
 
+    //Init functions
+    void initVariables();
     void initWindow();
-    void settingsInit();
-    void pollEvents();
+    void initSettings();
     void initBoard();
+
+    void pollEvents();
 
     //Settings
     sf::Vector2f jewelSize;
 
-    ///Board
+    //Board
     Board* board;
 
 public:
 
     Game();
-    virtual ~Game();
+    ~Game();
 
-    ///Getters
+    //Getters
     const bool running() const;
 
-    ///Functions
+    //Functions
     void update();
     void render();
 };

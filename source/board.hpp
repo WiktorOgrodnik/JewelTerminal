@@ -15,6 +15,7 @@ private:
 public:
 
     Board(int size, sf::Color color, sf::Vector2f jewelSize);
+    ~Board();
 
     void draw(sf::RenderWindow* window) override;
 };
