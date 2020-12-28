@@ -1,32 +1,32 @@
 #include "board.hpp"
 
-Board::Board(int size_, sf::Vector2f jewelSize)
+Board::Board(unsigned size_, sf::Vector2f jewelSize_, float padding_, float lineThickness_, sf::Color lineColor, sf::Vector2f boardMargin_)
 {
     /**
      *  Constructor
      *   
-     *  @param size of board, color of jewels (temporary), size of jewel
+     *  @param size of board, size of jewel, size of padding, line thickness, line color, boardMargin
      *  
-     *  @brief -Initialize theBoard
-     *  -Create jewels
+     *  -Initialize theBoard
      *  -Create line, which is used to create board borders
      *  -Set board margin (temporary)
-     * 
-     *  TO-DO:
-     *  -Add more parameters to margins and distance
     */
+
     this->size = size_;
+    this->lineThickness = lineThickness_;
+    this->padding = padding_;
+    this->jewelSize = jewelSize_;
+    this->boardMargin = boardMargin_;
+
     // Line
-    this->line.setSize(sf::Vector2f(size * (jewelSize.x + 10.f), 3.f));
-    this->line.setFillColor(sf::Color::Black);
+    this->line.setSize(sf::Vector2f(this->size * (this->jewelSize.x + this->padding), this->lineThickness));
+    this->line.setFillColor(lineColor);
 }
 
 Board::~Board()
 {
     /**
      * Destructor
-     * 
-     * @brief 
      * 
      */
 }
@@ -36,31 +36,21 @@ void Board::draw(sf::RenderWindow* window)
     /**
      * @param RenderWindow
      * 
-     * @brief -Draw the board
-     * 
-     * @return void
-     */
+     * -Draw the board
+    */
 
-    for (int i = 0; i <= this->size; i++)
+    for (unsigned i = 0; i <= this->size; i++)
     {
-        this->line.setPosition(sf::Vector2f(95, 95 + i * 30));
+        this->line.setPosition(sf::Vector2f(this->boardMargin.x - (this->padding / 2), this->boardMargin.y - (this->padding / 2) + static_cast<float>(i) * (this->jewelSize.y + this->padding)));
         window->draw(this->line);
 
         this->line.rotate(90.f);
 
-        this->line.setPosition(sf::Vector2f(95 + i * 30, 95));
+        this->line.setPosition(sf::Vector2f(this->boardMargin.x - (this->padding / 2) + static_cast<float>(i) * (this->jewelSize.x + this->padding), this->boardMargin.y - (this->padding / 2)));
         window->draw(this->line);
 
         this->line.rotate(270.f);
     }
-
-    //this->line.setPosition(sf::Vector2f(95, 95 + this->theBoard.size() * 30));
-    //indow->draw(this->line);
-    //this->line.rotate(90.f);
-
-    //this->line.setPosition(sf::Vector2f(95 + this->theBoard.size() * 30, 95));
-    //window->draw(this->line);
-    //this->line.rotate(270.f);
 }
 
 bool Board::contain(sf::Vector2f mousePos)

@@ -10,10 +10,14 @@ private:
 
     sf::RectangleShape line;
     unsigned size;
+    float padding;
+    float lineThickness;
+    sf::Vector2f jewelSize;
+    sf::Vector2f boardMargin;
 
 public:
 
-    Board(int size_, sf::Vector2f jewelSize);
+    Board(unsigned size_, sf::Vector2f jewelSize_, float padding_, float lineThickness_,  sf::Color lineColor, sf::Vector2f boardMargin_);
     ~Board();
 
     void draw(sf::RenderWindow* window) override;

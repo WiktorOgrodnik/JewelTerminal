@@ -16,7 +16,6 @@ Game::Game()
     this->initSettings();
     this->initObjects();
     this->initWindow();
-
 }
 
 Game::~Game()
@@ -55,11 +54,9 @@ void Game::initWindow()
      * @return void
      */
 
-    this->videoMode.height = 600;
-    this->videoMode.width = 800;
-    this->window =  new sf::RenderWindow(this->videoMode, "Jewel", sf::Style::Titlebar | sf::Style::Close);
-    this->window->setVerticalSyncEnabled(false);
-    this->window->setFramerateLimit(60);
+    this->window =  new sf::RenderWindow(this->settings.getVideoMode(), "Jewel", sf::Style::Titlebar | sf::Style::Close);
+    this->window->setVerticalSyncEnabled(this->settings.getVerticalSyncSetting());
+    this->window->setFramerateLimit(this->settings.getMaxFPS());
 }
 
 void Game::initSettings()
@@ -71,8 +68,6 @@ void Game::initSettings()
      * 
      * @return void
      */
-
-    this->jewelSize.x = this->jewelSize.y = 20;
 }
 
 void Game::initObjects()
@@ -85,21 +80,21 @@ void Game::initObjects()
      * @return void
      */
 
-    Board* board = new Board(13, this->jewelSize);
+    Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardLineFillColor(), this->settings.getBoardMargin());
     Engine::addObject(this->layers, 1, board);
 
     Engine::addTopLayer(this->layers);
 
-    float inX = 100;
-    float inY = 100;
+    float inX = this->settings.getBoardMargin().x;
+    float inY = this->settings.getBoardMargin().y;
 
-    for (int i = 0; i < 13; i++)
+    for (unsigned i = 0; i < this->settings.getBoardSize(); i++)
     {
-        for (int j = 0; j < 13; j++)
+        for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
-            Jewel* temp = new Jewel(sf::Vector2f(inX + j * 30.f, inY + i * 30.f), sf::Color::Blue, jewelSize);
+            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), sf::Color::Blue, this->settings.getJewelSize());
             Engine::addObject(this->layers, 0, temp);
-            jewels.push_back(temp);
+            this->jewels.push_back(temp);
         }
     }
 }
@@ -162,7 +157,7 @@ void Game::pollEvents()
             if ((k->contain(this->mousePositionView) && this->selected == nullptr) || this->selected == k)
             {
                 this->selected = k;
-                Engine::moveTo(k, sf::Vector2f(this->mousePositionView.x + (this->jewelSize.x / 2.f), this->mousePositionView.y + (this->jewelSize.y / 2.f)));
+                Engine::moveTo(k, sf::Vector2f(this->mousePositionView.x + (this->settings.getJewelSize().x / 2.f), this->mousePositionView.y + (this->settings.getJewelSize().y / 2.f)));
             }
         }
     }

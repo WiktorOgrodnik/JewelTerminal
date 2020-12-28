@@ -4,12 +4,12 @@
 #include "pch.hpp"
 #include "board.hpp"
 #include "engine.hpp"
+#include "settings.hpp"
 
 class Game
 {
 private: 
 
-    sf::VideoMode videoMode;
     sf::RenderWindow* window;
     sf::Event ev;
 
@@ -31,7 +31,7 @@ private:
     sf::Vector2f mousePositionView;
 
     //Settings
-    sf::Vector2f jewelSize;
+    Settings settings;
 
     //Selected
     Object* selected;
