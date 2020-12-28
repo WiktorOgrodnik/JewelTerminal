@@ -33,6 +33,16 @@ void Layer::draw(sf::RenderWindow* window)
 
 bool Layer::contain(sf::Vector2f mousePos)
 {
+    for (auto &k : objects)
+    {
+        if (k->contain(mousePos)) return true;
+    }
+    
+    return false;
+}
+
+bool Layer::isSelectable()
+{
     return false;
 }
 
@@ -52,5 +62,15 @@ void Layer::deleteFromLayer(Object* newObject)
             delete temp;
         }
     }
+}
+
+Object* Layer::giveObject(sf::Vector2f mousePos)
+{
+    for (auto &k : objects)
+    {
+        if (k->contain(mousePos)) return k;
+    }
+
+    return nullptr;
 }
 

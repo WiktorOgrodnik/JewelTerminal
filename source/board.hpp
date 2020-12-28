@@ -24,6 +24,7 @@ public:
     bool contain(sf::Vector2f mousePos) override;
     void move(sf::Vector2f moveVector) override;
     void setPosition(sf::Vector2f position) override;
+    bool isSelectable() override;
 };
 
 #endif /*BOARD_HPP*/

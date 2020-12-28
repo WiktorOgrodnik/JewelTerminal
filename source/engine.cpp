@@ -27,3 +27,18 @@ void Engine::moveTo(Object* object, sf::Vector2f position)
 {
     object->setPosition(position);
 }
+
+Object* Engine::giveSelectable(std::vector<Layer*> &layers, sf::Vector2f mousePos)
+{
+    for (int i = layers.size() - 1; i >= 0; i--)
+    {
+        Object* t = nullptr;
+        if (layers[i]->contain(mousePos)) 
+        {
+            t = layers[i]->giveObject(mousePos);
+            if (t->isSelectable()) return t;
+        }
+    }
+
+    return nullptr;
+}

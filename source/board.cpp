@@ -55,15 +55,25 @@ void Board::draw(sf::RenderWindow* window)
 
 bool Board::contain(sf::Vector2f mousePos)
 {
-    return false;
+    return mousePos.x >= this->boardMargin.x - (this->padding / 2) 
+    && mousePos.x <= this->boardMargin.x - (this->padding / 2) + this->size * (this->jewelSize.x + this->padding) 
+    && mousePos.y >= this->boardMargin.y - (this->padding / 2) 
+    && mousePos.y <= this->boardMargin.y - (this->padding / 2) + this->size * (this->jewelSize.y + this->padding);
 }
 
 void Board::move(sf::Vector2f moveVector)
 {
-    ;
+    this->boardMargin.x += moveVector.x + (this->padding / 2);
+    this->boardMargin.y += moveVector.x + (this->padding / 2);
 }
 
 void Board::setPosition(sf::Vector2f position)
 {
-    ;
+    this->boardMargin.x = position.x + (this->padding / 2);
+    this->boardMargin.y = position.x + (this->padding / 2);
+}
+
+bool Board::isSelectable()
+{
+    return false;
 }

@@ -20,9 +20,12 @@ public:
     bool contain (sf::Vector2f mousePos) override;
     void move(sf::Vector2f moveVector) override {}
     void setPosition(sf::Vector2f position) override {}
+    bool isSelectable() override;
 
     void addToLayer (Object* newObject);
     void deleteFromLayer (Object* newObject);
+
+    Object* giveObject(sf::Vector2f mousePos);
 };
 
 #endif /*LAYER_HPP*/

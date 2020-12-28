@@ -58,3 +58,8 @@ void Jewel::setPosition(sf::Vector2f position)
     this->body.setPosition(position);
 }
 
+bool Jewel::isSelectable()
+{
+    return true;
+}
+

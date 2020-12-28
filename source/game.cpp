@@ -150,20 +150,16 @@ void Game::pollEvents()
             case sf::Event::MouseButtonReleased:
                 this->selected = nullptr;
                 break;
+            case sf::Event::MouseButtonPressed:
+                this->selected = Engine::giveSelectable(this->layers, this->mousePositionView);
+                break;
         }
     } 
 
     
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        for (auto &k : this->jewels)
-        {
-            if ((k->contain(this->mousePositionView) && this->selected == nullptr) || this->selected == k)
-            {
-                this->selected = k;
-                Engine::moveTo(k, sf::Vector2f(this->mousePositionView.x + (this->settings.getJewelSize().x / 2.f), this->mousePositionView.y + (this->settings.getJewelSize().y / 2.f)));
-            }
-        }
+        if (this->selected != nullptr) Engine::moveTo(this->selected, this->mousePositionView);
     }
 
     //if (this->selected == nullptr) std::cout << "null\n";

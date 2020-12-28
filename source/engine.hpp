@@ -18,6 +18,8 @@ public:
     //static void addToTheSameLayerAs(std::vector<Layer*>* layers, Object* newObject, Object* existingObject); 
 
     static void moveTo(Object* object, sf::Vector2f position);
+
+    static Object* giveSelectable(std::vector<Layer*> &layers, sf::Vector2f mousePos);
 };
 
 #endif /*ENGINE_HPP*/
