@@ -22,6 +22,10 @@ private:
     void pollEvents();
     void updateMousePositions();
 
+    //Delta time
+    sf::Clock deltaTimeClock;
+    float deltatTime;
+
     //Objects
     std::vector <Layer*> layers;
     std::vector <Jewel*> jewels;
@@ -44,7 +48,8 @@ public:
     //Getters
     const bool running() const;
 
-    //Functions
+    //Loop functions
+    void updateDeltaTime();
     void update();
     void render();
 };

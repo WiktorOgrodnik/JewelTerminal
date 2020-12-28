@@ -109,6 +109,11 @@ const bool Game::running() const
     return this->window->isOpen();
 }
 
+void Game::updateDeltaTime()
+{
+    this->deltatTime = this->deltaTimeClock.restart().asSeconds();
+}
+
 void Game::update()
 {
     /**
