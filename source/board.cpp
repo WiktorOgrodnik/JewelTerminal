@@ -77,3 +77,13 @@ bool Board::isSelectable()
 {
     return false;
 }
+
+bool Board::isToMove()
+{
+    return false;
+}
+
+sf::Vector2f Board::getPosition()
+{
+    return sf::Vector2f(this->boardMargin.x - (this->padding / 2), this->boardMargin.y - (this->padding / 2));
+}

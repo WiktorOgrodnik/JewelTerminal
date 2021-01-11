@@ -149,9 +149,11 @@ void Game::pollEvents()
                 break;
             case sf::Event::MouseButtonReleased:
                 this->selected = nullptr;
+                this->mousePositionDelta = sf::Vector2f(0.f, 0.f);
                 break;
             case sf::Event::MouseButtonPressed:
                 this->selected = Engine::giveSelectable(this->layers, this->mousePositionView);
+                if (this->selected != nullptr) this->mousePositionDelta = this->mousePositionView - this->selected->getPosition();
                 break;
         }
     } 
@@ -159,7 +161,7 @@ void Game::pollEvents()
     
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        if (this->selected != nullptr) Engine::moveTo(this->selected, this->mousePositionView);
+        if (this->selected != nullptr && this->selected->isToMove()) Engine::moveTo(this->selected, this->mousePositionView - this->mousePositionDelta);
     }
 
     //if (this->selected == nullptr) std::cout << "null\n";

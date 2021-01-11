@@ -25,6 +25,8 @@ public:
     void move(sf::Vector2f moveVector) override;
     void setPosition(sf::Vector2f position) override;
     bool isSelectable() override;
+    bool isToMove() override;
+    sf::Vector2f getPosition() override;
 };
 
 #endif /*BOARD_HPP*/

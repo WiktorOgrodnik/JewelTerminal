@@ -18,6 +18,8 @@ public:
     virtual void move(sf::Vector2f moveVector) = 0;
     virtual void setPosition(sf::Vector2f position) = 0;
     virtual bool isSelectable() = 0;
+    virtual bool isToMove() = 0;
+    virtual sf::Vector2f getPosition() = 0;
 
 };
 

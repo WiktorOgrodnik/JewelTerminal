@@ -46,6 +46,16 @@ bool Layer::isSelectable()
     return false;
 }
 
+bool Layer::isToMove()
+{
+    return false;
+}
+
+sf::Vector2f Layer::getPosition()
+{
+    return sf::Vector2f(0.f, 0.f);
+}
+
 void Layer::addToLayer(Object* newObject)
 {
     this->objects.push_back(newObject);

@@ -63,3 +63,13 @@ bool Jewel::isSelectable()
     return true;
 }
 
+bool Jewel::isToMove()
+{
+    return true;
+}
+
+sf::Vector2f Jewel::getPosition()
+{
+    return this->body.getPosition();
+}
+

@@ -33,6 +33,7 @@ private:
     ///Mouse Positions
     sf::Vector2i mousePositionWindow;
     sf::Vector2f mousePositionView;
+    sf::Vector2f mousePositionDelta;
 
     //Settings
     Settings settings;
