@@ -31,6 +31,8 @@ public:
     void setOriginalPosition(sf::Vector2f position) override;
     std::string getIdentity() override;
 
+    sf::Color getColor();
+
 };
 
 #endif /*JEWEL_HPP*/

@@ -121,3 +121,9 @@ std::string Jewel::getIdentity()
     return "jewel";
 }
 
+sf::Color Jewel::getColor()
+{
+    return this->body.getFillColor();
+}
+
+
