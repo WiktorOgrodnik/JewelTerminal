@@ -11,5 +11,7 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <stdlib.h>
+#include <time.h>
 
 #endif /*PCH_HPP*/

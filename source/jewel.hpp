@@ -15,6 +15,8 @@ private:
 public:
 
     Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize);
+    Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize);
+
     ~Jewel();
 
     void draw(sf::RenderWindow* window) override;

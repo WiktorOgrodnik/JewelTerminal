@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -O2 -H -std=c++17 -Wall
-OBJ = main.o engine.o game.o object.o jewel.o board.o layer.o settings.o score.o
+OBJ = main.o engine.o game.o object.o jewel.o board.o layer.o settings.o score.o logika.o
 SFML = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
 PCH_SRC = source/pch.hpp
@@ -27,6 +27,8 @@ settings.o:
 	@g++ -c source/settings.cpp
 score.o:
 	@g++ -c source/score.cpp
+logika.o:
+	@g++ -c source/logika.cpp
 clean:
 	@rm -f $(OBJ) 
 	@rm -f jewel

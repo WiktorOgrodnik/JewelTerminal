@@ -2,6 +2,8 @@
 
 int main()
 {
+    srand (time(NULL));
+
     Game game;   
 
     //Game loop

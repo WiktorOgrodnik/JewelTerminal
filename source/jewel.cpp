@@ -19,6 +19,32 @@ Jewel::Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize)
     this->originalPositon = position;
 }
 
+Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
+{
+    /**
+     * Constructor
+     * 
+     * @param position in Window, color of Jewel, size of Jewel
+     * @brief -Set parameters of Jewel
+     * 
+    */
+
+    this->body.setSize(jewelSize);
+    this->body.setOutlineThickness(1.f);
+    this->body.setOutlineColor(sf::Color::Black);
+    switch (color)
+    {
+        case '1': this->body.setFillColor(sf::Color::Blue); break;
+        case '2': this->body.setFillColor(sf::Color::Red); break;
+        case '3': this->body.setFillColor(sf::Color::Yellow); break;
+        case '4': this->body.setFillColor(sf::Color::Green); break;
+        case '5': this->body.setFillColor(sf::Color::Magenta); break;
+        case '6': this->body.setFillColor(sf::Color::Cyan); break;
+    }
+    this->body.setPosition(position);
+    this->originalPositon = position;
+}
+
 
 Jewel::~Jewel()
 {
@@ -87,6 +113,7 @@ sf::Vector2f Jewel::getOriginalPosition()
 void Jewel::setOriginalPosition(sf::Vector2f position)
 {
     this->originalPositon = position;
+    this->setPosition(position);
 }
 
 std::string Jewel::getIdentity()

@@ -5,6 +5,8 @@
 #include "board.hpp"
 #include "engine.hpp"
 #include "settings.hpp"
+#include "logika.hpp"
+#include "score.h"
 
 class Game
 {
@@ -39,9 +41,13 @@ private:
     bool moveDirectionCheck;
     bool moveAxis; // 0 - horizontal, 1 - vertical
     int jewelPos;
+    int jewelPos2;
+
+    char tab[13][13];
 
     //Settings
     Settings settings;
+    Score score;
 
     //Selected
     Object* selected;
