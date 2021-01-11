@@ -15,6 +15,8 @@ void Logika::remove_lines_pion(char tablica[13][13], usuwanie pion, int* score)
     int length = pion.length;
     for(int i = pion.endy; length > 0; length--, i--)
     {
+        
+        // Engine:delte ,, tablica[x][y] = nullptr
         tablica[pion.endx][i] = '0';
         score += 10;
     }
@@ -86,6 +88,7 @@ int Logika::check(char tablica[13][13], int* score)
         linia = 1;
         for(int i=1; i<13; i++)
         {
+            // Zamiast tab[j][i] == tab[x][y] to tab[j][i]->getColor() == tab[j][i]->getColor()
             if(tablica[j][i] == tablica[j][i - 1]) linia++;
             else
             {
@@ -124,6 +127,7 @@ bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int
     std::swap(tab[x_1][y_1], tab[x_2][y_2]);
     if(!check(tab, score))
     {
+        // Oprócz zamiany wskaźników, zamiana original position
         std::swap(tab[x_1][y_1], tab[x_2][y_2]);
         return false;
     }
@@ -145,6 +149,7 @@ void Logika::fill_table(char table[13][13])
             {
                 good = rand() % 6 + '1';
             }while(good == bad1 || good == bad2);
+            //table[i][i] = new Jewel();
             table[i][j] = good;
         }
     }
