@@ -24,7 +24,7 @@ private:
 
     //Delta time
     sf::Clock deltaTimeClock;
-    float deltatTime;
+    float deltaTime;
 
     //Objects
     std::vector <Layer*> layers;
@@ -34,12 +34,18 @@ private:
     sf::Vector2i mousePositionWindow;
     sf::Vector2f mousePositionView;
     sf::Vector2f mousePositionDelta;
+    sf::Vector2f mousePositionDeltaCheckDirecton;
+
+    bool moveDirectionCheck;
+    bool moveAxis; // 0 - horizontal, 1 - vertical
+    int jewelPos;
 
     //Settings
     Settings settings;
 
     //Selected
     Object* selected;
+    Object* selectedExtraJewel;
 
 public:
 

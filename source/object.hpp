@@ -20,7 +20,10 @@ public:
     virtual bool isSelectable() = 0;
     virtual bool isToMove() = 0;
     virtual sf::Vector2f getPosition() = 0;
-
+    virtual bool isReturn() = 0;
+    virtual sf::Vector2f getOriginalPosition() = 0;
+    virtual void setOriginalPosition(sf::Vector2f position) = 0;
+    virtual std::string getIdentity() = 0; 
 };
 
 

@@ -7,6 +7,9 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#include <iostream>
 #include <vector>
+#include <cmath>
+#include <string>
 
 #endif /*PCH_HPP*/

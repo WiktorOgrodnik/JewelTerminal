@@ -9,6 +9,8 @@ class Jewel : public Object
 private:
 
     sf::RectangleShape body;
+    sf::Vector2f originalPositon;
+
 
 public:
 
@@ -22,6 +24,10 @@ public:
     bool isSelectable() override;
     bool isToMove() override;
     sf::Vector2f getPosition() override;
+    bool isReturn() override;
+    sf::Vector2f getOriginalPosition() override;
+    void setOriginalPosition(sf::Vector2f position) override;
+    std::string getIdentity() override;
 
 };
 

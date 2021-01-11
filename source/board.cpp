@@ -87,3 +87,23 @@ sf::Vector2f Board::getPosition()
 {
     return sf::Vector2f(this->boardMargin.x - (this->padding / 2), this->boardMargin.y - (this->padding / 2));
 }
+
+bool Board::isReturn()
+{
+    return false;
+}
+
+sf::Vector2f Board::getOriginalPosition()
+{
+    return this->getPosition();
+}
+
+void Board::setOriginalPosition(sf::Vector2f position)
+{
+    this->setPosition(position);
+}
+
+std::string Board::getIdentity()
+{
+    return "board";
+}

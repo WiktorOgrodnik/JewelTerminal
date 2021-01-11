@@ -16,6 +16,7 @@ Jewel::Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize)
     this->body.setOutlineThickness(1.f);
     this->body.setOutlineColor(sf::Color::Black);
     this->body.setPosition(position);
+    this->originalPositon = position;
 }
 
 
@@ -71,5 +72,25 @@ bool Jewel::isToMove()
 sf::Vector2f Jewel::getPosition()
 {
     return this->body.getPosition();
+}
+
+bool Jewel::isReturn()
+{
+    return true;
+}
+
+sf::Vector2f Jewel::getOriginalPosition()
+{
+    return this->originalPositon;
+}
+
+void Jewel::setOriginalPosition(sf::Vector2f position)
+{
+    this->originalPositon = position;
+}
+
+std::string Jewel::getIdentity()
+{
+    return "jewel";
 }
 

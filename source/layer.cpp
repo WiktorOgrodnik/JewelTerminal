@@ -56,9 +56,24 @@ sf::Vector2f Layer::getPosition()
     return sf::Vector2f(0.f, 0.f);
 }
 
+bool Layer::isReturn()
+{
+    return false;
+}
+
+sf::Vector2f Layer::getOriginalPosition()
+{
+    return this->getPosition();
+}
+
 void Layer::addToLayer(Object* newObject)
 {
     this->objects.push_back(newObject);
+}
+
+std::string Layer::getIdentity()
+{
+    return "layer";
 }
 
 void Layer::deleteFromLayer(Object* newObject)

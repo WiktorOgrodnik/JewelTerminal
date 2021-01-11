@@ -41,6 +41,10 @@ void Game::initVariables()
 
     this->window = nullptr;
     this->selected = nullptr;
+    this->selectedExtraJewel = nullptr;
+    this->moveDirectionCheck = true;
+    this->moveAxis = false;
+    this->jewelPos = 0;
 }
 
 void Game::initWindow()
@@ -111,7 +115,7 @@ const bool Game::running() const
 
 void Game::updateDeltaTime()
 {
-    this->deltatTime = this->deltaTimeClock.restart().asSeconds();
+    this->deltaTime = this->deltaTimeClock.restart().asSeconds();
 }
 
 void Game::update()
@@ -141,31 +145,194 @@ void Game::pollEvents()
         switch (ev.type)
         {
             case sf::Event::Closed:
+
                 this->window->close();
                 break;
+
             case sf::Event::KeyPressed:
+
                 if (ev.key.code == sf::Keyboard::Escape) 
                     this->window->close();
                 break;
+
             case sf::Event::MouseButtonReleased:
+
+                if (this->selected != nullptr && this->selected->isReturn())
+                {
+                    if (this->selectedExtraJewel != nullptr && this->selected->getIdentity() == "jewel")
+                    {
+                        this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+
+                        if (fabs(this->selected->getPosition().x - this->selected->getOriginalPosition().x) > (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())/2 
+                        || fabs(this->selected->getPosition().y - this->selected->getOriginalPosition().y) > (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())/2)
+                        {
+                            ///Skrypt z logiki!
+                            std::cout << "Activate script!\n";
+                        } 
+                    }
+                    this->selected->setPosition(this->selected->getOriginalPosition());
+
+                }
+
                 this->selected = nullptr;
+                this->selectedExtraJewel = nullptr;
                 this->mousePositionDelta = sf::Vector2f(0.f, 0.f);
+                this->moveDirectionCheck = true;
+                this->moveAxis = false;
                 break;
+
             case sf::Event::MouseButtonPressed:
+
                 this->selected = Engine::giveSelectable(this->layers, this->mousePositionView);
-                if (this->selected != nullptr) this->mousePositionDelta = this->mousePositionView - this->selected->getPosition();
+                if (this->selected != nullptr) 
+                {
+                    this->mousePositionDelta = this->mousePositionView - this->selected->getPosition();
+                    this->mousePositionDeltaCheckDirecton = this->mousePositionView;
+
+                    if (this->selected->getIdentity() == "jewel")
+                    {
+                        for (int i = 0; i < this->jewels.size(); i++)
+                        {
+                            if (this->jewels[i] == this->selected) 
+                            {
+                                this->jewelPos = i;
+                                break;
+                            }
+                        }
+                    }
+                }
                 break;
         }
     } 
 
-    
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-        if (this->selected != nullptr && this->selected->isToMove()) Engine::moveTo(this->selected, this->mousePositionView - this->mousePositionDelta);
-    }
+        if (this->selected != nullptr && this->selected->isToMove() && this->selected->getIdentity() == "jewel")
+        {
+            if (this->moveDirectionCheck)
+            {
+                if (fabs(this->mousePositionDeltaCheckDirecton.x - this->mousePositionView.x) > 0.1 
+                || fabs(this->mousePositionDeltaCheckDirecton.y - this->mousePositionView.y) > 0.1)
+                {
+                    this->mousePositionDeltaCheckDirecton -= this->mousePositionView;
+                    this->moveDirectionCheck = false;
 
-    //if (this->selected == nullptr) std::cout << "null\n";
-    //else std::cout << "Selected!\n";    
+                    if (fabs(mousePositionDeltaCheckDirecton.y) > fabs(mousePositionDeltaCheckDirecton.x)) 
+                        this->moveAxis = true;
+
+                    this->mousePositionDeltaCheckDirecton = sf::Vector2f(0.f, 0.f);
+
+                }
+            }
+            else
+            {
+                if (this->moveAxis)
+                {   
+                    if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y)
+                    {
+                        //Góra 
+                        if (this->jewelPos < this->settings.getBoardSize()) ///Maksymalny poziom
+                        {
+                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                        }
+                        else
+                        {
+                            this->selectedExtraJewel = this->jewels[jewelPos - this->settings.getBoardSize()];
+                            if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding())
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding()));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
+                            } 
+                            else
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ///Dół
+                        if (this->jewelPos >= (this->settings.getBoardSize() * this->settings.getBoardSize()) - this->settings.getBoardSize())
+                        {
+                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                        }
+                        else
+                        {
+                            this->selectedExtraJewel = this->jewels[jewelPos + this->settings.getBoardSize()];
+                            if (this->mousePositionView.y - this->mousePositionDelta.y > this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding()));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
+                            }
+                            else
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x)
+                    {
+                        ///Lewo
+                        if (this->jewelPos % this->settings.getBoardSize() == 0) ///Maksymalny poziom
+                        {
+                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                        }
+                        else
+                        {
+                            this->selectedExtraJewel = this->jewels[jewelPos - 1];
+                            if(this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding())
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
+                            }
+                            else
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
+                            }
+                        }
+                        
+                    } 
+                    else
+                    {
+                        ///Prawo
+                        if (this->jewelPos % this->settings.getBoardSize() == this->settings.getBoardSize() - 1)
+                        {
+                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                        }
+                        else
+                        {
+                            this->selectedExtraJewel = this->jewels[jewelPos + 1];
+                            if(this->mousePositionView.x - this->mousePositionDelta.x > this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
+                            }
+                            else
+                            {
+                                Engine::moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
+                                Engine::moveTo(this->selectedExtraJewel, 
+                                sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
+                            }
+                        }
+                    }
+                }
+            }
+            
+        } 
+    }   
 }
 
 void Game::updateMousePositions()
