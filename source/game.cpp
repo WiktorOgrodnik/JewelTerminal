@@ -237,6 +237,11 @@ void Game::pollEvents()
                         }
                         else
                         {
+                            if (this->selectedExtraJewel != nullptr)
+                            {
+                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                this->selectedExtraJewel = nullptr;
+                            }
                             this->selectedExtraJewel = this->jewels[jewelPos - this->settings.getBoardSize()];
                             if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding())
                             {
@@ -261,6 +266,11 @@ void Game::pollEvents()
                         }
                         else
                         {
+                            if (this->selectedExtraJewel != nullptr)
+                            {
+                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                this->selectedExtraJewel = nullptr;
+                            }
                             this->selectedExtraJewel = this->jewels[jewelPos + this->settings.getBoardSize()];
                             if (this->mousePositionView.y - this->mousePositionDelta.y > this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())
                             {
@@ -288,6 +298,11 @@ void Game::pollEvents()
                         }
                         else
                         {
+                            if (this->selectedExtraJewel != nullptr)
+                            {
+                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                this->selectedExtraJewel = nullptr;
+                            }
                             this->selectedExtraJewel = this->jewels[jewelPos - 1];
                             if(this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding())
                             {
@@ -313,6 +328,11 @@ void Game::pollEvents()
                         }
                         else
                         {
+                            if (this->selectedExtraJewel != nullptr)
+                            {
+                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                this->selectedExtraJewel = nullptr;
+                            }
                             this->selectedExtraJewel = this->jewels[jewelPos + 1];
                             if(this->mousePositionView.x - this->mousePositionDelta.x > this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())
                             {
