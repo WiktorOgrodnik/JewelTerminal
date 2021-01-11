@@ -76,11 +76,29 @@ std::string Layer::getIdentity()
     return "layer";
 }
 
+bool Layer::isToDelete()
+{
+    return false;
+}
+
 void Layer::deleteFromLayer(Object* newObject)
 {
     for (size_t i = 0; i < this->objects.size(); i++)
     {
         if (this->objects[i] == newObject)
+        {
+            Object* temp = this->objects[i];
+            this->objects.erase(this->objects.begin() + i);
+            delete temp;
+        }
+    }
+}
+
+void Layer::deleteUnnecessary()
+{
+    for (size_t i = 0; i < this->objects.size(); i++)
+    {
+        if (this->objects[i]->isToDelete())
         {
             Object* temp = this->objects[i];
             this->objects.erase(this->objects.begin() + i);

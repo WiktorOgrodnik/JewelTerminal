@@ -27,9 +27,12 @@ public:
     sf::Vector2f getOriginalPosition() override;
     void setOriginalPosition(sf::Vector2f position) override {}
     std::string getIdentity() override;
+    void setToDelete() override {}
+    bool isToDelete() override;
 
     void addToLayer (Object* newObject);
     void deleteFromLayer (Object* newObject);
+    void deleteUnnecessary();
 
     Object* giveObject(sf::Vector2f mousePos);
 };

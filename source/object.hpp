@@ -24,6 +24,8 @@ public:
     virtual sf::Vector2f getOriginalPosition() = 0;
     virtual void setOriginalPosition(sf::Vector2f position) = 0;
     virtual std::string getIdentity() = 0; 
+    virtual void setToDelete() = 0;
+    virtual bool isToDelete() = 0;
 };
 
 

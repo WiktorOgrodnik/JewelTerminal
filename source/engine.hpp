@@ -20,6 +20,7 @@ public:
     static void moveTo(Object* object, sf::Vector2f position);
 
     static Object* giveSelectable(std::vector<Layer*> &layers, sf::Vector2f mousePos);
+    static void deleteUnnecessary(std::vector<Layer*> &layers);
 };
 
 #endif /*ENGINE_HPP*/

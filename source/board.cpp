@@ -17,6 +17,7 @@ Board::Board(unsigned size_, sf::Vector2f jewelSize_, float padding_, float line
     this->padding = padding_;
     this->jewelSize = jewelSize_;
     this->boardMargin = boardMargin_;
+    this->del = false;
 
     // Line
     this->line.setSize(sf::Vector2f(this->size * (this->jewelSize.x + this->padding), this->lineThickness));
@@ -106,4 +107,14 @@ void Board::setOriginalPosition(sf::Vector2f position)
 std::string Board::getIdentity()
 {
     return "board";
+}
+
+void Board::setToDelete()
+{
+    this->del = true;
+}
+
+bool Board::isToDelete()
+{
+    return del;
 }

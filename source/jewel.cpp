@@ -17,6 +17,7 @@ Jewel::Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize)
     this->body.setOutlineColor(sf::Color::Black);
     this->body.setPosition(position);
     this->originalPositon = position;
+    this->del = false;
 }
 
 Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
@@ -43,6 +44,7 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
     }
     this->body.setPosition(position);
     this->originalPositon = position;
+    this->del = false;
 }
 
 
@@ -125,5 +127,16 @@ sf::Color Jewel::getColor()
 {
     return this->body.getFillColor();
 }
+
+void Jewel::setToDelete()
+{
+    this->del = true;
+}
+
+bool Jewel::isToDelete()
+{
+    return this->del;
+}
+
 
 

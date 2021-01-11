@@ -10,7 +10,7 @@ private:
 
     sf::RectangleShape body;
     sf::Vector2f originalPositon;
-
+    bool del;
 
 public:
 
@@ -30,9 +30,10 @@ public:
     sf::Vector2f getOriginalPosition() override;
     void setOriginalPosition(sf::Vector2f position) override;
     std::string getIdentity() override;
+    void setToDelete() override;
+    bool isToDelete() override;
 
     sf::Color getColor();
-
 };
 
 #endif /*JEWEL_HPP*/

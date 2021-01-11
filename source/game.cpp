@@ -132,6 +132,7 @@ void Game::update()
 
     this->updateMousePositions();
     this->pollEvents();
+    Engine::deleteUnnecessary(this->layers);
 }
 
 void Game::pollEvents()
@@ -180,16 +181,19 @@ void Game::pollEvents()
                                 sf::Vector2f tPos = this->selected->getOriginalPosition();
                                 this->selected->setOriginalPosition(this->selectedExtraJewel->getOriginalPosition());
                                 this->selectedExtraJewel->setOriginalPosition(tPos);*/
+
                                 for(auto &k : this->layers) delete k;
                                 this->layers.clear();
                                 this->jewels.clear();
+
+                                this->selected = nullptr;
                                 this->initObjects();
                             }
 
-                            std::cout << "Activate script!\n";
+                            //std::cout << "Activate script!\n";
                         } 
                     }
-                    this->selected->setPosition(this->selected->getOriginalPosition());
+                    if (this->selected != nullptr) this->selected->setPosition(this->selected->getOriginalPosition());
 
                 }
 

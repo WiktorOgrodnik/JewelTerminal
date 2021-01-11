@@ -44,3 +44,8 @@ Object* Engine::giveSelectable(std::vector<Layer*> &layers, sf::Vector2f mousePo
 
     return nullptr;
 }
+
+void Engine::deleteUnnecessary(std::vector<Layer*> &layers)
+{
+    for (auto &k : layers) k->deleteUnnecessary();
+}

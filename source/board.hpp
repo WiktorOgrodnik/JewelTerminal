@@ -14,6 +14,7 @@ private:
     float lineThickness;
     sf::Vector2f jewelSize;
     sf::Vector2f boardMargin;
+    bool del;
 
 public:
 
@@ -31,6 +32,8 @@ public:
     sf::Vector2f getOriginalPosition() override;
     void setOriginalPosition(sf::Vector2f position) override;
     std::string getIdentity() override;
+    void setToDelete() override;
+    bool isToDelete() override;
 };
 
 #endif /*BOARD_HPP*/
