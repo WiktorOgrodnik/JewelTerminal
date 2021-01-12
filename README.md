@@ -18,7 +18,7 @@ make
 
 ## Instalation - Windows
 
-1. Download and install [MSYS2] (https://www.msys2.org/)
+1. Download and install [MSYS2](https://www.msys2.org/)
 2. Via pacman downlad SFML, mingw64, make
 
 ```bash
