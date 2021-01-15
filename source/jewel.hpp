@@ -10,14 +10,13 @@ private:
 
     sf::RectangleShape body;
     sf::Vector2f originalPositon;
-    sf::Texture jewelTexture;
     bool del;
     char color;
 
 public:
 
     Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize);
-    Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize);
+    Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture);
 
     ~Jewel();
 

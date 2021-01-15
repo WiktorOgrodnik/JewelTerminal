@@ -13,6 +13,7 @@ Game::Game()
 
     this->initVariables();
     this->initSettings();
+    this->initResources();
     this->initObjects();
     this->initWindow();
 }
@@ -64,6 +65,11 @@ void Game::initWindow()
     this->window->setFramerateLimit(this->settings.getMaxFPS());
 }
 
+void Game::initResources()
+{
+    this->jewelTextures.loadFromFile("img/Jewels.png");
+}
+
 void Game::initSettings()
 {
     /**
@@ -97,7 +103,7 @@ void Game::initObjects()
     {
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
-            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize());
+            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize(), &this->jewelTextures);
             Engine::addObject(this->layers, 0, temp);
             this->jewels.push_back(temp);
         }

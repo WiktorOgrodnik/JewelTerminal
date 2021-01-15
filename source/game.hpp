@@ -18,6 +18,7 @@ private:
     //Init functions
     void initVariables();
     void initWindow();
+    void initResources();
     void initSettings();
     void initObjects();
 
@@ -43,7 +44,7 @@ private:
     int jewelPos;
     int jewelPos2;
 
-    char tab[13][13];
+    char tab[13][13]; // do usunięcia
 
     //Settings
     Settings settings;
@@ -52,6 +53,9 @@ private:
     //Selected
     Object* selected;
     Object* selectedExtraJewel;
+
+    //Grafika
+    sf::Texture jewelTextures;
 
 public:
 

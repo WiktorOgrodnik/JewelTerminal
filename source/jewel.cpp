@@ -20,7 +20,7 @@ Jewel::Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize)
     this->del = false;
 }
 
-Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
+Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture)
 {
     /**
      * Constructor
@@ -31,8 +31,7 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
     */
 
     this->body.setSize(jewelSize);
-    this->jewelTexture.loadFromFile("source/Jewels.png");
-    this->body.setTexture(&(this->jewelTexture));
+    this->body.setTexture(jewelTexture);
     this->body.setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f));
     this->color = color;
     this->body.setPosition(position);
