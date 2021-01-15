@@ -31,17 +31,9 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
     */
 
     this->body.setSize(jewelSize);
-    this->body.setOutlineThickness(1.f);
-    this->body.setOutlineColor(sf::Color::Black);
-    switch (color)
-    {
-        case '1': this->body.setFillColor(sf::Color::Blue); break;
-        case '2': this->body.setFillColor(sf::Color::Red); break;
-        case '3': this->body.setFillColor(sf::Color::Yellow); break;
-        case '4': this->body.setFillColor(sf::Color::Green); break;
-        case '5': this->body.setFillColor(sf::Color::Magenta); break;
-        case '6': this->body.setFillColor(sf::Color::Cyan); break;
-    }
+    this->jewelTexture.loadFromFile("source/Jewels.png");
+    this->body.setTexture(&(this->jewelTexture));
+    this->body.setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f));
     this->body.setPosition(position);
     this->originalPositon = position;
     this->del = false;

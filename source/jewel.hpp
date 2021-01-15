@@ -10,6 +10,7 @@ private:
 
     sf::RectangleShape body;
     sf::Vector2f originalPositon;
+    sf::Texture jewelTexture;
     bool del;
 
 public:
