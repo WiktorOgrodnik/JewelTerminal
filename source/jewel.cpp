@@ -34,6 +34,7 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize)
     this->jewelTexture.loadFromFile("source/Jewels.png");
     this->body.setTexture(&(this->jewelTexture));
     this->body.setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f));
+    this->color = color;
     this->body.setPosition(position);
     this->originalPositon = position;
     this->del = false;
@@ -115,9 +116,9 @@ std::string Jewel::getIdentity()
     return "jewel";
 }
 
-sf::Color Jewel::getColor()
+char Jewel::getColor()
 {
-    return this->body.getFillColor();
+    return this->color;
 }
 
 void Jewel::setToDelete()

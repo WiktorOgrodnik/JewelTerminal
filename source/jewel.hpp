@@ -12,6 +12,7 @@ private:
     sf::Vector2f originalPositon;
     sf::Texture jewelTexture;
     bool del;
+    char color;
 
 public:
 
@@ -34,7 +35,7 @@ public:
     void setToDelete() override;
     bool isToDelete() override;
 
-    sf::Color getColor();
+    char getColor();
 };
 
 #endif /*JEWEL_HPP*/
