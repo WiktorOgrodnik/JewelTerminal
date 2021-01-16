@@ -181,6 +181,8 @@ void Game::pollEvents()
                             //if (Logika::call_swap(tab, this->jewelPos % this->settings.getBoardSize(), this->jewelPos / this->settings.getBoardSize(),
                             // this->jewelPos2 % this->settings.getBoardSize(), this->jewelPos2 / this->settings.getBoardSize(), &scoreTEMP))
                             {
+                                Logika::remove(jewels,this->settings.getBoardSize());
+                                std::cout<<"ucieklem  ";
                                 /*Jewel* t = jewels[jewelPos];
                                 jewels[jewelPos] = jewels[jewelPos2];
                                 jewels[jewelPos2] = t;
@@ -189,12 +191,12 @@ void Game::pollEvents()
                                 this->selected->setOriginalPosition(this->selectedExtraJewel->getOriginalPosition());
                                 this->selectedExtraJewel->setOriginalPosition(tPos);*/
 
-                                for(auto &k : this->layers) delete k;
+                                /*for(auto &k : this->layers) delete k;
                                 this->layers.clear();
                                 this->jewels.clear();
 
                                 this->selected = nullptr;
-                                this->initObjects();
+                                this->initObjects();*/
                             }
 
                             //std::cout << "Activate script!\n";

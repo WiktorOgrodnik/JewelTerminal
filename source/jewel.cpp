@@ -115,11 +115,6 @@ std::string Jewel::getIdentity()
     return "jewel";
 }
 
-char Jewel::getColor()
-{
-    return this->color;
-}
-
 void Jewel::setToDelete()
 {
     this->del = true;
@@ -128,6 +123,16 @@ void Jewel::setToDelete()
 bool Jewel::isToDelete()
 {
     return this->del;
+}
+
+char Jewel::getColor()
+{
+    return this->color;
+}
+
+void Jewel::setColor(char a)
+{
+    this->color = a;
 }
 
 

@@ -35,6 +35,7 @@ public:
     void setToDelete() override;
     bool isToDelete() override;
 
+    void setColor(char a);
     char getColor();
 };
 

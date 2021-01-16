@@ -1,5 +1,5 @@
 #include "logika.hpp"
-
+/*
 void Logika::remove_lines_poziom(char tablica[13][13], usuwanie poziom, int* score)
 {
     int length = poziom.length;
@@ -19,6 +19,43 @@ void Logika::remove_lines_pion(char tablica[13][13], usuwanie pion, int* score)
         // Engine:delte ,, tablica[x][y] = nullptr
         tablica[pion.endx][i] = '0';
         score += 10;
+    }
+}
+*/
+Jewel* Logika::tab(std::vector<Jewel*> &jewels, int x, int y, unsigned size)
+{
+    if(x >= size || y >= size) std::cout<< "Wyszlo z tablicy (x: " << x << ", y: " << y << ")\n";
+    return jewels[size*y+x];
+}
+void Logika::color_swap(Jewel* first, Jewel* second)
+{
+    char temp=first->getColor();
+    first->setColor(second->getColor());
+    second->setColor(temp);
+}
+void Logika::position_swap(Jewel* first, Jewel* second)
+{
+    sf::Vector2f temp=first->getOriginalPosition();
+    first->setOriginalPosition(second->getOriginalPosition());
+    second->setOriginalPosition(temp);
+}
+void move_empty_to_top(std::vector<Jewel*> jewels,unsigned size)
+{
+    for(int col = 0; col < size; col++)
+    {
+        int count = 0;
+        for(int i = size-1; i >= 0; i--)
+        {
+            if(jewels[i*size + col] == nullptr) count++;
+        }
+        for(int c = 0; c < count; c++)
+        {
+            
+        }
+        for(int i = size-1; i >= 0; i--)
+        {
+            
+        }
     }
 }
 
@@ -53,22 +90,96 @@ bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
         for(int j=i;j<size*size-size;j+=size)
         {
             if(jewels[j]->getColor()==jewels[j+size]->getColor())vertical++;
-            else if (vertical>=3)return true;
             else vertical=1;
+            if (vertical>=3)return true;
+            
         }
     }
-     for(int j=0;j<size*size-size;j+=size)
+     for(int j=0;j<size*size;j+=size)
      {
          int horizontal=1;
          for(int i=j;i<j+size;i++)
          {
              if(jewels[i]->getColor()==jewels[i+1]->getColor())horizontal++;
-            else if (horizontal>=3)return true;
-            else horizontal=1;
+             else horizontal=1;
+            if (horizontal>=3)return true;
+            
          }
      }
     return false;
 }
+
+void Logika::remove(std::vector<Jewel*> &jewels, unsigned size)
+{
+    for(int i = 0; i < size; i++)
+    {
+        int horizontal = 1;
+
+        for(int j = 0; j < size; j++)
+        {
+            if(j < size - 1 && tab(jewels, j, i, size)->getColor() == tab(jewels, j + 1, i, size)->getColor()) horizontal++;
+            else
+            {
+                if (horizontal>=3)
+                {
+                    for(int it = 0; it < horizontal; it++)
+                    {
+                        std::cout << "usuwam poziom: " << i * size + j - it << ", rozmiar: " << horizontal << ", kolor: " << tab(jewels, j - it, i, size)->getColor() << std::endl;
+                        tab(jewels, j - it, i, size)->setToDelete();
+                        tab(jewels, j - it, i, size)->setColor('0');
+                    }
+                }
+                horizontal = 1;
+            }
+
+            if (horizontal >= 3 && j == size - 1)
+            {
+                for(int it = 0; it < horizontal; it++)
+                {
+                    std::cout << "usuwam poziom: " << i * size + j - it << ", rozmiar: " << horizontal << ", kolor: " << tab(jewels, j - it, i, size)->getColor() << std::endl;
+                    tab(jewels, j - it, i, size)->setToDelete();
+                    tab(jewels, j - it, i, size)->setColor('0');
+                }
+                horizontal = 1;
+            }
+        }
+    }
+
+    for (int j = 0; j < size; j++)
+    {
+        int vertical = 1;
+
+        for (int i = 0; i < size; i++)
+        {
+            if(i < size - 1 && tab(jewels, j, i, size)->getColor() == tab(jewels, j, i + 1, size)->getColor()) vertical++;
+            else 
+            {
+                if (vertical>=3)
+                {
+                    for(int it = 0; it < vertical; it++)
+                    {
+                        std::cout << "usuwam pion: " << (i - it) * size + j << ", rozmiar: " << vertical << ", kolor: " << tab(jewels, j, i - it, size)->getColor() << std::endl;
+                        tab(jewels, j, i - it, size)->setToDelete();
+                        tab(jewels, j, i - it, size)->setColor('0');
+                    }
+                }
+                vertical = 1;
+            }
+
+            if (vertical >= 3 && i == size - 1)
+            {
+                for(int it = 0; it < vertical; it++)
+                {
+                    std::cout << "usuwam pion: " << (i - it) * size + j << ", rozmiar: " << vertical << ", kolor: " << tab(jewels, j, i - it, size)->getColor() << std::endl;
+                    tab(jewels, j, i - it, size)->setToDelete();
+                    tab(jewels, j, i - it, size)->setColor('0');
+                }
+                vertical = 1;
+            }
+        }
+    }
+}
+
 /*int Logika::check(char tablica[13][13], int* score)
 {
     std::vector<usuwanie> usuwanepoz;
@@ -145,7 +256,7 @@ bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
     check(tablica, score);
     return true;
 }*/
-bool Logika::call_swap(std::vector<Jewel*> jewels, int pos1, int pos2, int* score,unsigned size)
+bool Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, int* score,unsigned size)
 {
     std::swap(jewels[pos1], jewels[pos2]);
     if(!check(jewels,size))
@@ -155,6 +266,8 @@ bool Logika::call_swap(std::vector<Jewel*> jewels, int pos1, int pos2, int* scor
         std::swap(jewels[pos1], jewels[pos2]);
         return false;
     }
+    position_swap(jewels[pos1],jewels[pos2]);
+    //color_swap(jewels[pos1],jewels[pos2]);
     std::cout<<"sa 3  ";
     return true;
 }
