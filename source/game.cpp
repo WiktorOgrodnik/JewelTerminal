@@ -177,8 +177,9 @@ void Game::pollEvents()
                         {
                             ///Skrypt z logiki!
                             int scoreTEMP;
-                            if (Logika::call_swap(tab, this->jewelPos % this->settings.getBoardSize(), this->jewelPos / this->settings.getBoardSize(),
-                             this->jewelPos2 % this->settings.getBoardSize(), this->jewelPos2 / this->settings.getBoardSize(), &scoreTEMP))
+                            if(Logika::call_swap(jewels,this->jewelPos,this->jewelPos2,&scoreTEMP,this->settings.getBoardSize()))
+                            //if (Logika::call_swap(tab, this->jewelPos % this->settings.getBoardSize(), this->jewelPos / this->settings.getBoardSize(),
+                            // this->jewelPos2 % this->settings.getBoardSize(), this->jewelPos2 / this->settings.getBoardSize(), &scoreTEMP))
                             {
                                 /*Jewel* t = jewels[jewelPos];
                                 jewels[jewelPos] = jewels[jewelPos2];

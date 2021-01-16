@@ -4,7 +4,7 @@
 #include "pch.hpp"
 #include "board.hpp"
 #include "engine.hpp"
-#include "settings.hpp"
+//#include "settings.hpp"
 #include "logika.hpp"
 #include "score.h"
 

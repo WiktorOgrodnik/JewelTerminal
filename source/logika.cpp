@@ -44,8 +44,32 @@ void Logika::fill_empty(char table[13][13])
         }
     }
 }
-
-int Logika::check(char tablica[13][13], int* score)
+bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
+{
+    
+    for(int i=0;i<size;i++)
+    {
+        int vertical=1;
+        for(int j=i;j<size*size-size;j+=size)
+        {
+            if(jewels[j]->getColor()==jewels[j+size]->getColor())vertical++;
+            else if (vertical>=3)return true;
+            else vertical=1;
+        }
+    }
+     for(int j=0;j<size*size-size;j+=size)
+     {
+         int horizontal=1;
+         for(int i=j;i<j+size;i++)
+         {
+             if(jewels[i]->getColor()==jewels[i+1]->getColor())horizontal++;
+            else if (horizontal>=3)return true;
+            else horizontal=1;
+         }
+     }
+    return false;
+}
+/*int Logika::check(char tablica[13][13], int* score)
 {
     std::vector<usuwanie> usuwanepoz;
     std::vector<usuwanie> usuwanepion;
@@ -120,9 +144,21 @@ int Logika::check(char tablica[13][13], int* score)
     fill_empty(tablica);
     check(tablica, score);
     return true;
+}*/
+bool Logika::call_swap(std::vector<Jewel*> jewels, int pos1, int pos2, int* score,unsigned size)
+{
+    std::swap(jewels[pos1], jewels[pos2]);
+    if(!check(jewels,size))
+    {
+        // Oprócz zamiany wskaźników, zamiana original position
+        std::cout<<"nie ma  ";
+        std::swap(jewels[pos1], jewels[pos2]);
+        return false;
+    }
+    std::cout<<"sa 3  ";
+    return true;
 }
-
-bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int* score)
+/*bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int* score)
 {
     std::swap(tab[x_1][y_1], tab[x_2][y_2]);
     if(!check(tab, score))
@@ -132,7 +168,7 @@ bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int
         return false;
     }
     return true;
-}
+}*/
 
 void Logika::fill_table(char table[13][13])
 {
