@@ -56,7 +56,7 @@ private:
 
     //Grafika
     sf::Texture jewelTextures;
-
+    sf::Texture scoreLogo;
 public:
 
     Game();

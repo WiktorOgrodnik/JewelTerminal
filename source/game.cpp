@@ -68,6 +68,8 @@ void Game::initWindow()
 void Game::initResources()
 {
     this->jewelTextures.loadFromFile("img/Jewels.png");
+    this->scoreLogo.loadFromFile("img/scorewb.png");
+
 }
 
 void Game::initSettings()
@@ -411,4 +413,5 @@ void Game::render()
      */
 
     Engine::draw(this->layers, this->window);
+    
 }
