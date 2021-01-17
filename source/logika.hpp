@@ -30,6 +30,7 @@ public:
     //static int check(char tablica[13][13], int* score);
     static bool call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, int* score,unsigned size);
     static void fill_table(char table[13][13]);
+    static void move_empty_to_top(std::vector<Jewel*> &jewels,unsigned size);
 };
 
 #endif

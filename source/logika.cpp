@@ -39,22 +39,26 @@ void Logika::position_swap(Jewel* first, Jewel* second)
     first->setOriginalPosition(second->getOriginalPosition());
     second->setOriginalPosition(temp);
 }
-void move_empty_to_top(std::vector<Jewel*> jewels,unsigned size)
+void Logika::move_empty_to_top(std::vector<Jewel*> &jewels,unsigned size)
 {
     for(int col = 0; col < size; col++)
     {
         int count = 0;
         for(int i = size-1; i >= 0; i--)
         {
-            if(jewels[i*size + col] == nullptr) count++;
+            if(Logika::tab(jewels, col, i, size)->getColor() == '0') count++;
         }
         for(int c = 0; c < count; c++)
         {
-            
-        }
-        for(int i = size-1; i >= 0; i--)
-        {
-            
+            for(int i = size-1; i > 0; i--)
+            {
+                if(Logika::tab(jewels, col, i, size)->getColor() == '0')
+                {
+                    //printf("Zameniam: %d z %d\n", size*i+col, size*(i-1)+col);
+                    Logika::position_swap(Logika::tab(jewels, col, i, size), Logika::tab(jewels, col, i-1, size));
+                    std::swap(jewels[size*i+col], jewels[size*(i-1)+col]);
+                }
+            }
         }
     }
 }
@@ -81,6 +85,7 @@ void Logika::fill_empty(char table[13][13])
         }
     }
 }
+
 bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
 {
     
@@ -98,10 +103,10 @@ bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
      for(int j=0;j<size*size;j+=size)
      {
          int horizontal=1;
-         for(int i=j;i<j+size;i++)
+         for(int i=j;i<j+size-1;i++)
          {
-             if(jewels[i]->getColor()==jewels[i+1]->getColor())horizontal++;
-             else horizontal=1;
+            if(jewels[i]->getColor()==jewels[i+1]->getColor())horizontal++;
+            else horizontal=1;
             if (horizontal>=3)return true;
             
          }
@@ -178,6 +183,7 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size)
             }
         }
     }
+    Logika::move_empty_to_top(jewels, size);
 }
 
 /*int Logika::check(char tablica[13][13], int* score)
