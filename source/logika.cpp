@@ -97,7 +97,6 @@ bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
             if(jewels[j]->getColor()==jewels[j+size]->getColor())vertical++;
             else vertical=1;
             if (vertical>=3)return true;
-            
         }
     }
      for(int j=0;j<size*size;j+=size)
@@ -108,7 +107,6 @@ bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
             if(jewels[i]->getColor()==jewels[i+1]->getColor())horizontal++;
             else horizontal=1;
             if (horizontal>=3)return true;
-            
          }
      }
     return false;
@@ -131,7 +129,7 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size)
                     {
                         std::cout << "usuwam poziom: " << i * size + j - it << ", rozmiar: " << horizontal << ", kolor: " << tab(jewels, j - it, i, size)->getColor() << std::endl;
                         tab(jewels, j - it, i, size)->setToDelete();
-                        tab(jewels, j - it, i, size)->setColor('0');
+                        //tab(jewels, j - it, i, size)->setColor('0');
                     }
                 }
                 horizontal = 1;
@@ -143,7 +141,7 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size)
                 {
                     std::cout << "usuwam poziom: " << i * size + j - it << ", rozmiar: " << horizontal << ", kolor: " << tab(jewels, j - it, i, size)->getColor() << std::endl;
                     tab(jewels, j - it, i, size)->setToDelete();
-                    tab(jewels, j - it, i, size)->setColor('0');
+                    //tab(jewels, j - it, i, size)->setColor('0');
                 }
                 horizontal = 1;
             }
@@ -165,7 +163,7 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size)
                     {
                         std::cout << "usuwam pion: " << (i - it) * size + j << ", rozmiar: " << vertical << ", kolor: " << tab(jewels, j, i - it, size)->getColor() << std::endl;
                         tab(jewels, j, i - it, size)->setToDelete();
-                        tab(jewels, j, i - it, size)->setColor('0');
+                        //tab(jewels, j, i - it, size)->setColor('0');
                     }
                 }
                 vertical = 1;
@@ -177,12 +175,13 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size)
                 {
                     std::cout << "usuwam pion: " << (i - it) * size + j << ", rozmiar: " << vertical << ", kolor: " << tab(jewels, j, i - it, size)->getColor() << std::endl;
                     tab(jewels, j, i - it, size)->setToDelete();
-                    tab(jewels, j, i - it, size)->setColor('0');
+                    //tab(jewels, j, i - it, size)->setColor('0');
                 }
                 vertical = 1;
             }
         }
     }
+    for(int i = 0; i < size*size; i++) if(jewels[i]->isToDelete()) jewels[i]->setColor('0');
     Logika::move_empty_to_top(jewels, size);
 }
 
