@@ -97,7 +97,11 @@ void Game::initObjects()
     Engine::addObject(this->layers, 1, board);
 
     Engine::addTopLayer(this->layers);
-
+    Label* label_one = new Label(this->scoreLogo, sf::Vector2f(0.4f, 0.4f));
+    Engine::addObject(this->layers, 2, label_one);
+    Engine::addTopLayer(this->layers);
+    
+    
     float inX = this->settings.getBoardMargin().x;
     float inY = this->settings.getBoardMargin().y;
 
@@ -411,7 +415,7 @@ void Game::render()
      * 
      * @return void
      */
-
+    
     Engine::draw(this->layers, this->window);
     
 }
