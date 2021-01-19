@@ -2,15 +2,14 @@
 
 Board::Board(unsigned size_, sf::Vector2f jewelSize_, float padding_, float lineThickness_, sf::Color lineColor, sf::Vector2f boardMargin_)
 {
-    /**
-     *  Constructor
+     /*  Constructor
      *   
      *  @param size of board, size of jewel, size of padding, line thickness, line color, boardMargin
      *  
      *  -Initialize theBoard
      *  -Create line, which is used to create board borders
      *  -Set board margin (temporary)
-    */
+     */
 
     this->size = size_;
     this->lineThickness = lineThickness_;
@@ -18,6 +17,10 @@ Board::Board(unsigned size_, sf::Vector2f jewelSize_, float padding_, float line
     this->jewelSize = jewelSize_;
     this->boardMargin = boardMargin_;
     this->del = false;
+    this->body.setSize(sf::Vector2f(417.0f, 392.0f));
+	this->boardTexture.loadFromFile("img/Board.png");
+	this->body.setTexture(&boardTexture);
+	this->body.setPosition(sf::Vector2f(this->boardMargin.x - 38.0f, this->boardMargin.y - 27.0f));
 
     // Line
     this->line.setSize(sf::Vector2f(this->size * (this->jewelSize.x + this->padding), this->lineThickness));
@@ -33,12 +36,26 @@ Board::~Board()
 }
 
 void Board::draw(sf::RenderWindow* window)
-{   
+{
     /**
+     *
+     * @param RenderWindow
+     *
+     * @brief -draw object on screen
+     *
+     * @return void
+     */
+
+    window->draw(this->body);
+}
+
+/*
+void Board::draw(sf::RenderWindow* window)
+{   
      * @param RenderWindow
      * 
      * -Draw the board
-    */
+    
 
     for (unsigned i = 0; i <= this->size; i++)
     {
@@ -53,6 +70,7 @@ void Board::draw(sf::RenderWindow* window)
         this->line.rotate(270.f);
     }
 }
+*/
 
 bool Board::contain(sf::Vector2f mousePos)
 {

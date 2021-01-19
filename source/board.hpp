@@ -15,6 +15,8 @@ private:
     sf::Vector2f jewelSize;
     sf::Vector2f boardMargin;
     bool del;
+    sf::RectangleShape body;
+    sf::Texture boardTexture;
 
 public:
 

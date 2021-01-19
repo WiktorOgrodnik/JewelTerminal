@@ -8,7 +8,7 @@ Settings::Settings()
 
     //Board
     this->boardSize = 13u;
-    this->boardInnerPadding = 10.f;
+    this->boardInnerPadding = 7.f;
     this->boardLineThickness = 3.f;
     this->boardMargin = sf::Vector2f(100.f, 100.f);
     this->boardLineFillColor = sf::Color::Black;
