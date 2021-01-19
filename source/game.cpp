@@ -48,6 +48,8 @@ void Game::initVariables()
     this->jewelPos = 0;
     this->jewelPos2 = 0;
     Logika::fill_table(this->tab);
+    this->animationPhase = 0;
+    this->animationTime = 0.0f;
 }
 
 void Game::initWindow()
@@ -145,6 +147,22 @@ void Game::update()
     this->updateMousePositions();
     this->pollEvents();
     Engine::deleteUnnecessary(this->layers);
+}
+
+void Game::updateTextures()
+{
+	this->animationTime += this->deltaTime;
+	if(this->animationTime >= this->settings.getSwitchTime())
+	{
+		this->animationTime -= this->settings.getSwitchTime();
+		this->animationPhase++;
+		if(this->animationPhase >= 6)
+			this->animationPhase -= 6;
+		 for (auto &k : this->jewels)
+		 {
+		 	k->UpdateAnimation(animationPhase, &jewelTextures);
+		 }
+	}
 }
 
 void Game::pollEvents()

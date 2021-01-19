@@ -5,10 +5,10 @@ Jewel::Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize)
 {
     /**
      * Constructor
-     * 
+     *
      * @param position in Window, color of Jewel, size of Jewel
      * @brief -Set parameters of Jewel
-     * 
+     *
     */
 
     this->body.setSize(jewelSize);
@@ -24,10 +24,10 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Text
 {
     /**
      * Constructor
-     * 
+     *
      * @param position in Window, color of Jewel, size of Jewel
      * @brief -Set parameters of Jewel
-     * 
+     *
     */
 
     this->body.setSize(jewelSize);
@@ -37,6 +37,7 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Text
     this->body.setPosition(position);
     this->originalPositon = position;
     this->del = false;
+    this->CurrentPhase = 0;
 }
 
 
@@ -44,10 +45,18 @@ Jewel::~Jewel()
 {
     /**
      * Destructor
-     * 
+     *
      * @brief -Does nothing
-     * 
+     *
      */
+}
+
+void Jewel::UpdateAnimation(int currentPhase, sf::Texture* jewelTexture)
+{
+    if(currentPhase >= 6)
+        currentPhase -=6;
+    this->CurrentPhase = currentPhase;
+    this->body.setTextureRect(sf::IntRect(20.0f*currentPhase, 20.0f*((int)(this->color)-'1'), 20.0f, 20.0f));
 }
 
 void Jewel::draw(sf::RenderWindow* window)
@@ -55,9 +64,9 @@ void Jewel::draw(sf::RenderWindow* window)
     /**
      *
      * @param RenderWindow
-     * 
+     *
      * @brief -draw object on screen
-     * 
+     *
      * @return void
      */
 
@@ -69,12 +78,12 @@ bool Jewel::contain(sf::Vector2f mousePos)
     return this->body.getGlobalBounds().contains(mousePos);
 }
 
-void Jewel::move(sf::Vector2f moveVector) 
+void Jewel::move(sf::Vector2f moveVector)
 {
     this->body.move(moveVector);
 }
 
-void Jewel::setPosition(sf::Vector2f position) 
+void Jewel::setPosition(sf::Vector2f position)
 {
     this->body.setPosition(position);
 }

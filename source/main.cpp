@@ -12,6 +12,7 @@ int main()
         game.updateDeltaTime();
         game.update();
         game.render();
+        game.updateTextures();
     }
 
     return 0;

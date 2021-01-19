@@ -54,6 +54,10 @@ private:
     //Selected
     Object* selected;
     Object* selectedExtraJewel;
+    
+    //Animacja
+    int animationPhase;
+    float animationTime;
 
     //Grafika
     sf::Texture jewelTextures;
@@ -70,6 +74,7 @@ public:
     void updateDeltaTime();
     void update();
     void render();
+    void updateTextures();
 };
 
 #endif /*GAME_HPP*/

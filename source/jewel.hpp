@@ -12,6 +12,7 @@ private:
     sf::Vector2f originalPositon;
     bool del;
     char color;
+    int CurrentPhase;
 
 public:
 
@@ -33,6 +34,7 @@ public:
     std::string getIdentity() override;
     void setToDelete() override;
     bool isToDelete() override;
+    void UpdateAnimation(int currentPhase, sf::Texture* jewelTexture);
 
     char getColor();
 };

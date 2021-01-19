@@ -9,6 +9,7 @@ class Settings
 
     //Jewel
     sf::Vector2f jewelSize;
+    float switchTime;
 
     //Board
     unsigned boardSize;
@@ -30,6 +31,7 @@ public:
 
     //Jewel
     sf::Vector2f getJewelSize();
+    float getSwitchTime();
 
     //Board
     unsigned getBoardSize();

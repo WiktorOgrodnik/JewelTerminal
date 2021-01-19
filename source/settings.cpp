@@ -4,6 +4,7 @@ Settings::Settings()
 {
     //Jewel
     this->jewelSize = sf::Vector2f(20.f, 20.f);
+    this->switchTime = 0.3f;
 
     //Board
     this->boardSize = 13u;
@@ -23,6 +24,11 @@ sf::Vector2f Settings::getJewelSize()
 {
     return this->jewelSize;
 } 
+
+float Settings::getSwitchTime()
+{
+	return this->switchTime;
+}
 
 unsigned Settings::getBoardSize()
 {
