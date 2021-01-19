@@ -245,7 +245,7 @@ void Game::pollEvents()
 
                     if (this->selected->getIdentity() == "jewel")
                     {
-                        for (int i = 0; i < this->jewels.size(); i++)
+                        for (size_t i = 0; i < this->jewels.size(); i++)
                         {
                             if (this->jewels[i] == this->selected) 
                             {
@@ -255,6 +255,8 @@ void Game::pollEvents()
                         }
                     }
                 }
+                break;
+            default:
                 break;
         }
     } 
@@ -285,7 +287,7 @@ void Game::pollEvents()
                     if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y)
                     {
                         //Góra 
-                        if (this->jewelPos < this->settings.getBoardSize()) ///Maksymalny poziom
+                        if (this->jewelPos < (int)this->settings.getBoardSize()) ///Maksymalny poziom
                         {
                             Engine::moveTo(this->selected, this->selected->getOriginalPosition());
                         }
@@ -316,7 +318,7 @@ void Game::pollEvents()
                     else
                     {
                         ///Dół
-                        if (this->jewelPos >= (this->settings.getBoardSize() * this->settings.getBoardSize()) - this->settings.getBoardSize())
+                        if (this->jewelPos >= (int)((this->settings.getBoardSize() * this->settings.getBoardSize()) - this->settings.getBoardSize()))
                         {
                             Engine::moveTo(this->selected, this->selected->getOriginalPosition());
                         }
