@@ -4,7 +4,7 @@ Settings::Settings()
 {
     //Jewel
     this->jewelSize = sf::Vector2f(20.f, 20.f);
-    this->switchTime = 0.3f;
+    this->switchTime = 1.5f;
 
     //Board
     this->boardSize = 13u;

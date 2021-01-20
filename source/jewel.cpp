@@ -53,8 +53,8 @@ Jewel::~Jewel()
 
 void Jewel::UpdateAnimation(int currentPhase, sf::Texture* jewelTexture)
 {
-    if(currentPhase >= 6)
-        currentPhase -=6;
+    if(currentPhase >= 3)
+        currentPhase -= 3;
     this->CurrentPhase = currentPhase;
     this->body.setTextureRect(sf::IntRect(20.0f*currentPhase, 20.0f*((int)(this->color)-'1'), 20.0f, 20.0f));
 }

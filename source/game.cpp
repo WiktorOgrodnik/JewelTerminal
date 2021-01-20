@@ -156,8 +156,8 @@ void Game::updateTextures()
 	{
 		this->animationTime -= this->settings.getSwitchTime();
 		this->animationPhase++;
-		if(this->animationPhase >= 6)
-			this->animationPhase -= 6;
+		if(this->animationPhase >= 3)
+			this->animationPhase -= 3;
 		 for (auto &k : this->jewels)
 		 {
 		 	k->UpdateAnimation(animationPhase, &jewelTextures);
