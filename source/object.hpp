@@ -14,18 +14,18 @@ public:
     virtual ~Object();
 
     virtual void draw(sf::RenderWindow* window) = 0;
-    virtual bool contain(sf::Vector2f mousePos) = 0;
+    virtual bool contain(sf::Vector2f mousePos);
     virtual void move(sf::Vector2f moveVector) = 0;
     virtual void setPosition(sf::Vector2f position) = 0;
-    virtual bool isSelectable() = 0;
-    virtual bool isToMove() = 0;
+    virtual bool isSelectable();
+    virtual bool isToMove();
     virtual sf::Vector2f getPosition() = 0;
-    virtual bool isReturn() = 0;
+    virtual bool isReturn();
     virtual sf::Vector2f getOriginalPosition() = 0;
     virtual void setOriginalPosition(sf::Vector2f position) = 0;
-    virtual std::string getIdentity() = 0; 
-    virtual void setToDelete() = 0;
-    virtual bool isToDelete() = 0;
+    virtual std::string getIdentity(); 
+    virtual void setToDelete();
+    virtual bool isToDelete();
 };
 
 

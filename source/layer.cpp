@@ -41,24 +41,9 @@ bool Layer::contain(sf::Vector2f mousePos)
     return false;
 }
 
-bool Layer::isSelectable()
-{
-    return false;
-}
-
-bool Layer::isToMove()
-{
-    return false;
-}
-
 sf::Vector2f Layer::getPosition()
 {
     return sf::Vector2f(0.f, 0.f);
-}
-
-bool Layer::isReturn()
-{
-    return false;
 }
 
 sf::Vector2f Layer::getOriginalPosition()
@@ -74,11 +59,6 @@ void Layer::addToLayer(Object* newObject)
 std::string Layer::getIdentity()
 {
     return "layer";
-}
-
-bool Layer::isToDelete()
-{
-    return false;
 }
 
 void Layer::deleteFromLayer(Object* newObject)

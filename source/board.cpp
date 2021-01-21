@@ -92,24 +92,9 @@ void Board::setPosition(sf::Vector2f position)
     this->boardMargin.y = position.x + (this->padding / 2);
 }
 
-bool Board::isSelectable()
-{
-    return false;
-}
-
-bool Board::isToMove()
-{
-    return false;
-}
-
 sf::Vector2f Board::getPosition()
 {
     return sf::Vector2f(this->boardMargin.x - (this->padding / 2), this->boardMargin.y - (this->padding / 2));
-}
-
-bool Board::isReturn()
-{
-    return false;
 }
 
 sf::Vector2f Board::getOriginalPosition()
@@ -125,14 +110,4 @@ void Board::setOriginalPosition(sf::Vector2f position)
 std::string Board::getIdentity()
 {
     return "board";
-}
-
-void Board::setToDelete()
-{
-    this->del = true;
-}
-
-bool Board::isToDelete()
-{
-    return del;
 }

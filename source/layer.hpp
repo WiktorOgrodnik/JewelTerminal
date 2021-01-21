@@ -20,15 +20,10 @@ public:
     bool contain (sf::Vector2f mousePos) override;
     void move(sf::Vector2f moveVector) override {}
     void setPosition(sf::Vector2f position) override {}
-    bool isSelectable() override;
-    bool isToMove() override;
     sf::Vector2f getPosition() override;
-    bool isReturn() override;
     sf::Vector2f getOriginalPosition() override;
     void setOriginalPosition(sf::Vector2f position) override {}
     std::string getIdentity() override;
-    void setToDelete() override {}
-    bool isToDelete() override;
 
     void addToLayer (Object* newObject);
     void deleteFromLayer (Object* newObject);
