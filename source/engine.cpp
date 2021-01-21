@@ -2,7 +2,7 @@
 
 void Engine::draw(std::vector<Layer*> &layers, sf::RenderWindow* window)
 {
-    window->clear(sf::Color::White);
+    window->clear(sf::Color(84, 82, 75, 255));
     for (auto &k : layers) k->draw(window);
     window->display();
 }
