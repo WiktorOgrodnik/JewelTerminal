@@ -36,6 +36,9 @@ public:
     bool isToDelete() override;
     void UpdateAnimation(int currentPhase, sf::Texture* jewelTexture);
 
+    void setOriginalPosition2(sf::Vector2f position);
+
+    void setColor(char a);
     char getColor();
 };
 

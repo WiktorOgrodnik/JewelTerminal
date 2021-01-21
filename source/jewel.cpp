@@ -139,5 +139,13 @@ bool Jewel::isToDelete()
     return this->del;
 }
 
+void Jewel::setOriginalPosition2(sf::Vector2f position)
+{
+    this->originalPositon = position;
+}
 
+void Jewel::setColor(char a)
+{
+    this->color = a;
+}
 

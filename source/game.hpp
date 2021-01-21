@@ -4,10 +4,9 @@
 #include "pch.hpp"
 #include "board.hpp"
 #include "engine.hpp"
-#include "settings.hpp"
+//#include "settings.hpp"
 #include "logika.hpp"
 #include "score.h"
-#include "label.hpp"
 
 class Game
 {
@@ -25,6 +24,8 @@ private:
 
     void pollEvents();
     void updateMousePositions();
+    void updateAnimations();
+    void updateLogic();
 
     //Delta time
     sf::Clock deltaTimeClock;
@@ -58,10 +59,13 @@ private:
     //Animacja
     int animationPhase;
     float animationTime;
+    bool animationBlocker;
+
 
     //Grafika
     sf::Texture jewelTextures;
     sf::Texture scoreLogo;
+
 public:
 
     Game();

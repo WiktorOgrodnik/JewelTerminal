@@ -17,6 +17,11 @@ void Engine::addObject(std::vector<Layer*> &layers, bool topPririty, Object* new
     else layers.at(layers.size() - 1)->addToLayer(newObject);
 }
 
+void Engine::addObject(std::vector<Layer*> &layers, unsigned layer, Object* newObject)
+{
+    layers.at(layer)->addToLayer(newObject);
+}
+
 //Engine::deleteObject
 
 void Engine::addTopLayer(std::vector<Layer*> &layers)

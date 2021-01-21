@@ -1,5 +1,5 @@
 #include "logika.hpp"
-
+/*
 void Logika::remove_lines_poziom(char tablica[13][13], usuwanie poziom, int* score)
 {
     int length = poziom.length;
@@ -20,6 +20,73 @@ void Logika::remove_lines_pion(char tablica[13][13], usuwanie pion, int* score)
         tablica[pion.endx][i] = '0';
         score += 10;
     }
+}
+*/
+Jewel* Logika::tab(std::vector<Jewel*> &jewels, int x, int y, unsigned size)
+{
+    if(x >= size || y >= size) std::cout<< "Wyszlo z tablicy (x: " << x << ", y: " << y << ")\n";
+    return jewels[size*y+x];
+}
+
+void Logika::color_swap(Jewel* first, Jewel* second)
+{
+    char temp=first->getColor();
+    first->setColor(second->getColor());
+    second->setColor(temp);
+}
+
+void Logika::position_swap(Jewel* first, Jewel* second)
+{
+    sf::Vector2f temp=first->getOriginalPosition();
+    first->setOriginalPosition(second->getOriginalPosition());
+    second->setOriginalPosition(temp);
+}
+
+
+void Logika::position_swap2(Jewel* first, Jewel* second)
+{
+    sf::Vector2f temp=first->getOriginalPosition();
+    first->setOriginalPosition2(second->getOriginalPosition());
+    second->setOriginalPosition2(temp);
+}
+
+void Logika::createJewel()
+{
+    
+}
+void Logika::move_empty_to_top(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewel*> newJewels[])
+{
+    for(int col = 0; col < size; col++)
+    {
+        int count = 0;
+        for(int i = size-1; i >= 0; i--)
+        {
+            if(Logika::tab(jewels, col, i, size)->getColor() == '0') count++;
+        }
+        for(int c = 0; c < count; c++)
+        {
+            for(int i = size-1; i > 0; i--)
+            {
+                if(Logika::tab(jewels, col, i, size)->getColor() == '0')
+                {
+                    //printf("Zameniam: %d z %d\n", size*i+col, size*(i-1)+col);
+                    Logika::position_swap2(Logika::tab(jewels, col, i, size), Logika::tab(jewels, col, i-1, size));
+                    std::swap(jewels[size*i+col], jewels[size*(i-1)+col]);
+                }
+            }
+        }
+    }
+    for(int i=0;i<size;i++)
+    {
+        for(int j=0;j<newJewels[i].size();j++)
+        {
+            position_swap2(tab(jewels, i, newJewels[i].size() - j - 1, size), newJewels[i][j]);
+            jewels[size*(newJewels[i].size() - j - 1)+i] = newJewels[i][j];
+        }
+    }
+
+    //sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())
+    //inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())
 }
 
 void Logika::fill_empty(char table[13][13])
@@ -45,7 +112,122 @@ void Logika::fill_empty(char table[13][13])
     }
 }
 
-int Logika::check(char tablica[13][13], int* score)
+bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
+{
+    
+    for(int i=0;i<size;i++)
+    {
+        int vertical=1;
+        for(int j=i;j<size*size-size;j+=size)
+        {
+            if(jewels[j]->getColor()==jewels[j+size]->getColor())vertical++;
+            else vertical=1;
+            if (vertical>=3)return true;
+        }
+    }
+     for(int j=0;j<size*size;j+=size)
+     {
+         int horizontal=1;
+         for(int i=j;i<j+size-1;i++)
+         {
+            if(jewels[i]->getColor()==jewels[i+1]->getColor())horizontal++;
+            else horizontal=1;
+            if (horizontal>=3)return true;
+         }
+     }
+    return false;
+}
+
+void Logika::remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewel*> newJewels[], sf::Vector2f jewelSize, sf::Vector2f boardMargin, float boardPadding, sf::Texture* jewelsTexture)
+{
+    std::vector <int> newJewelsInColumn;
+    newJewelsInColumn.resize(size, 0);
+
+    for(int i = 0; i < size; i++)
+    {
+        int horizontal = 1;
+
+        for(int j = 0; j < size; j++)
+        {
+            if(j < size - 1 && tab(jewels, j, i, size)->getColor() == tab(jewels, j + 1, i, size)->getColor()) horizontal++;
+            else
+            {
+                if (horizontal>=3)
+                {
+                    for(int it = 0; it < horizontal; it++)
+                    {
+                        sf::Vector2f newPos = sf::Vector2f(boardMargin.x + (float)(j - it) * (jewelSize.x + boardPadding), boardMargin.y - ++newJewelsInColumn[j - it] * (jewelSize.y + boardPadding));
+
+                        Jewel* newJewel = new Jewel(newPos, rand()%6+'1', jewelSize, jewelsTexture);
+                        //newJewel->setOriginalPosition2(tab(jewels, j - it, newJewelsInColumn[j - it] - 1, size)->getOriginalPosition());
+                        newJewels[j - it].push_back(newJewel);
+                        tab(jewels, j - it, i, size)->setToDelete();
+                    }
+                }
+                horizontal = 1;
+            }
+
+            if (horizontal >= 3 && j == size - 1)
+            {
+                for(int it = 0; it < horizontal; it++)
+                {
+                    sf::Vector2f newPos = sf::Vector2f(boardMargin.x + (float)(j - it) * (jewelSize.x + boardPadding), boardMargin.y - ++newJewelsInColumn[j - it] * (jewelSize.y + boardPadding));
+                    Jewel* newJewel = new Jewel(newPos, rand()%6+'1', jewelSize, jewelsTexture);
+                    //newJewel->setOriginalPosition2(tab(jewels, j - it, i, size)->getOriginalPosition());
+                    newJewels[j - it].push_back(newJewel);
+                    
+                    tab(jewels, j - it, i, size)->setToDelete();
+
+
+                }
+                horizontal = 1;
+            }
+        }
+    }
+
+    for (int j = 0; j < size; j++)
+    {
+        int vertical = 1;
+
+        for (int i = 0; i < size; i++)
+        {
+            if(i < size - 1 && tab(jewels, j, i, size)->getColor() == tab(jewels, j, i + 1, size)->getColor()) vertical++;
+            else 
+            {
+                if (vertical>=3)
+                {
+                    for(int it = 0; it < vertical; it++)
+                    {
+                        sf::Vector2f newPos = sf::Vector2f(boardMargin.x + (float)j * (jewelSize.x + boardPadding), boardMargin.y - ++newJewelsInColumn[j] * (jewelSize.y + boardPadding));
+                        //std::cout << "usuwam pion: " << (i - it) * size + j << ", rozmiar: " << vertical << ", kolor: " << tab(jewels, j, i - it, size)->getColor() << std::endl;
+                        tab(jewels, j, i - it, size)->setToDelete();
+                        Jewel* newJewel = new Jewel(newPos, rand()%6+'1', jewelSize, jewelsTexture);
+                        //newJewel->setOriginalPosition2(tab(jewels, j, i-it, size)->getOriginalPosition());
+                        newJewels[j].push_back(newJewel);
+                    }
+                }
+                vertical = 1;
+            }
+
+            if (vertical >= 3 && i == size - 1)
+            {
+                for(int it = 0; it < vertical; it++)
+                {
+                    sf::Vector2f newPos = sf::Vector2f(boardMargin.x + (float)j * (jewelSize.x + boardPadding), boardMargin.y - ++newJewelsInColumn[j] * (jewelSize.y + boardPadding));
+                    //std::cout << "usuwam pion: " << (i - it) * size + j << ", rozmiar: " << vertical << ", kolor: " << tab(jewels, j, i - it, size)->getColor() << std::endl;
+                    tab(jewels, j, i - it, size)->setToDelete();
+                    Jewel* newJewel = new Jewel(newPos, rand()%6+'1', jewelSize, jewelsTexture);
+                    //newJewel->setOriginalPosition2(tab(jewels, j , i-it, size)->getOriginalPosition());
+                    newJewels[j].push_back(newJewel);
+                }
+                vertical = 1;
+            }
+        }
+    }
+    for(int i = 0; i < size*size; i++) if(jewels[i]->isToDelete()) jewels[i]->setColor('0');
+}
+
+/*int Logika::check(char tablica[13][13], int* score)
 {
     std::vector<usuwanie> usuwanepoz;
     std::vector<usuwanie> usuwanepion;
@@ -120,9 +302,23 @@ int Logika::check(char tablica[13][13], int* score)
     fill_empty(tablica);
     check(tablica, score);
     return true;
+}*/
+bool Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, int* score,unsigned size)
+{
+    std::swap(jewels[pos1], jewels[pos2]);
+    if(!check(jewels,size))
+    {
+        // Oprócz zamiany wskaźników, zamiana original position
+        //std::cout<<"nie ma  ";
+        std::swap(jewels[pos1], jewels[pos2]);
+        return false;
+    }
+    position_swap(jewels[pos1],jewels[pos2]);
+    //color_swap(jewels[pos1],jewels[pos2]);
+    //std::cout<<"sa 3  ";
+    return true;
 }
-
-bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int* score)
+/*bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int* score)
 {
     std::swap(tab[x_1][y_1], tab[x_2][y_2]);
     if(!check(tab, score))
@@ -132,7 +328,7 @@ bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int
         return false;
     }
     return true;
-}
+}*/
 
 void Logika::fill_table(char table[13][13])
 {
