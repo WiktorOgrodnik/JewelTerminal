@@ -309,13 +309,13 @@ bool Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, int* sco
     if(!check(jewels,size))
     {
         // Oprócz zamiany wskaźników, zamiana original position
-        std::cout<<"nie ma  ";
+        //std::cout<<"nie ma  ";
         std::swap(jewels[pos1], jewels[pos2]);
         return false;
     }
     position_swap(jewels[pos1],jewels[pos2]);
     //color_swap(jewels[pos1],jewels[pos2]);
-    std::cout<<"sa 3  ";
+    //std::cout<<"sa 3  ";
     return true;
 }
 /*bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int* score)

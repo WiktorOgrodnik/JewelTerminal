@@ -404,7 +404,7 @@ void Game::updateLogic()
         {
             for (int i = 0; i < newJewels[j].size(); i++)
             {
-                std::cout << "Nowy\n";
+                //std::cout << "Nowy\n";
                 Engine::addObject(this->layers, 1u, newJewels[j][i]);
             }
             newJewels[j].clear();
