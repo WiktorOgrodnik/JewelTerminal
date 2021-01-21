@@ -24,6 +24,8 @@ private:
 
     void pollEvents();
     void updateMousePositions();
+    void updateAnimations();
+    void updateLogic();
 
     //Delta time
     sf::Clock deltaTimeClock;
@@ -56,6 +58,9 @@ private:
 
     //Grafika
     sf::Texture jewelTextures;
+
+    //Animacje
+    bool animationBlocker;
 
 public:
 

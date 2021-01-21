@@ -35,6 +35,8 @@ public:
     void setToDelete() override;
     bool isToDelete() override;
 
+    void setOriginalPosition2(sf::Vector2f position);
+
     void setColor(char a);
     char getColor();
 };

@@ -110,6 +110,11 @@ void Jewel::setOriginalPosition(sf::Vector2f position)
     this->setPosition(position);
 }
 
+void Jewel::setOriginalPosition2(sf::Vector2f position)
+{
+    this->originalPositon = position;
+}
+
 std::string Jewel::getIdentity()
 {
     return "jewel";
