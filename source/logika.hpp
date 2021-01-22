@@ -1,8 +1,9 @@
-#ifndef LOGIKA_HPP
-#define LOGIKA_HPP
+/*
+This file contains all the functions reposnsible for the logic of the game.
+*/
 
-#include "pch.hpp"
-#include "settings.hpp"
+#pragma once
+
 #include "jewel.hpp"
 
 struct usuwanie
@@ -35,8 +36,3 @@ public:
     static void fill_table(char table[13][13]);
     static void move_empty_to_top(std::vector<Jewel*> &jewels, unsigned size,std::vector<Jewel*> newJewels[]);
 };
-
-#endif
-
-
-

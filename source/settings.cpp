@@ -11,7 +11,6 @@ Settings::Settings()
     this->boardInnerPadding = 7.f;
     this->boardLineThickness = 3.f;
     this->boardMargin = sf::Vector2f(199.f, 130.f);
-    this->boardLineFillColor = sf::Color::Black;
 
     //Engine
     this->FPSLimit = 60;
@@ -48,11 +47,6 @@ float Settings::getBoardInnerPadding()
 float Settings::getBoardLineThickness()
 {
     return this->boardLineThickness;
-}
-
-sf::Color Settings::getBoardLineFillColor()
-{
-    return this->boardLineFillColor;
 }
 
 sf::VideoMode Settings::getVideoMode()

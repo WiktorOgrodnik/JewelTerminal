@@ -1,5 +1,4 @@
-#ifndef PCH_HPP
-#define PCH_HPP
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Config.hpp>
@@ -13,5 +12,3 @@
 #include <string>
 #include <stdlib.h>
 #include <time.h>
-
-#endif /*PCH_HPP*/

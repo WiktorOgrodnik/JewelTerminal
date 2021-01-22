@@ -1,7 +1,9 @@
-#ifndef JEWEL_HPP
-#define JEWEL_HPP
+/*
+This object is used to draw jewel on screen.
+*/
 
-#include "pch.hpp"
+#pragma once
+
 #include "object.hpp"
 
 class Jewel : public Object
@@ -10,17 +12,19 @@ private:
 
     sf::RectangleShape body;
     sf::Vector2f originalPositon;
-    bool del;
-    char color;
-    int CurrentPhase;
+    bool del; //is object to delete
+    char color; //jewel color
+    int currentPhase; //current animation phase
 
 public:
 
-    Jewel(sf::Vector2f position, sf::Color color, sf::Vector2f jewelSize);
+    //Constructor
     Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture);
 
+    //Destructor
     ~Jewel();
 
+    //Object specyfic functions
     void draw(sf::RenderWindow* window) override;
     bool contain(sf::Vector2f mousePos) override;
     void move(sf::Vector2f moveVector) override;
@@ -34,12 +38,12 @@ public:
     std::string getIdentity() override;
     void setToDelete() override;
     bool isToDelete() override;
-    void UpdateAnimation(int currentPhase, sf::Texture* jewelTexture);
 
+    //Jewel idle animation functions
+    void updateAnimation(int currentPhase, sf::Texture* jewelTexture);
+
+    //Jewel logic functions
     void setOriginalPosition2(sf::Vector2f position);
-
-    void setColor(char a);
     char getColor();
+    void setColor(char a);
 };
-
-#endif /*JEWEL_HPP*/

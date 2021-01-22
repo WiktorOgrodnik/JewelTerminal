@@ -6,13 +6,12 @@ Game::Game()
      * Constructor
      * 
      * @brief -initialize variables
-     * -initialize settings
-     * -initialize board
+     * -initialize resources
+     * -initialize objects
      * -initialize window
      */
 
     this->initVariables();
-    this->initSettings();
     this->initResources();
     this->initObjects();
     this->initWindow();
@@ -36,19 +35,32 @@ void Game::initVariables()
 {
     /**
      * @brief -initialize variables
+     * -fill board with random jewels 
      * 
      * @return void
      */
 
+    //Basic variables
     this->window = nullptr;
     this->selected = nullptr;
+
+    //Mouse control
     this->selectedExtraJewel = nullptr;
     this->moveDirectionCheck = true;
     this->moveAxis = false;
     this->jewelPos = 0;
     this->jewelPos2 = 0;
+
+    //Fall animation
     this->animationBlocker = false;
-    Logika::fill_table(this->tab);
+
+    //Score
+    this->score = 0u;
+
+    //The board
+    Logika::fill_table(this->tab); // Temoprary solution
+
+    //Idle animations
     this->animationPhase = 0;
     this->animationTime = 0.0f;
 }
@@ -57,8 +69,7 @@ void Game::initWindow()
 {
     /**
      * @brief -Initialize renderWindow
-     * 
-     * TO-DO: Connect with Settings class
+     * -Set basic options
      * 
      * @return void
      */
@@ -70,40 +81,35 @@ void Game::initWindow()
 
 void Game::initResources()
 {
-    this->jewelTextures.loadFromFile("img/Jewels.png");
-    this->scoreLogo.loadFromFile("img/scorewb.png");
-
-}
-
-void Game::initSettings()
-{
     /**
-     * @brief -Initialize settings variables (temporary)
-     * 
-     * TO-DO: Connect with Settings class
+     * @brief -Initialize resources
+     *  -Initialize textures
      * 
      * @return void
      */
+
+    this->jewelTextures.loadFromFile("img/Jewels.png");
+    this->scoreLogo.loadFromFile("img/scorewb.png");
 }
 
 void Game::initObjects()
 {
     /**
-     * @brief -Initialize board
-     * 
-     * TO-DO: Add more parameters and connect with Settings class
+     * @brief -Initialize layers
+     * -Initialize board and jewels
+     * -Initialize interface
+     * TO-DO: -Init jewels in logic class 
      * 
      * @return void
      */
 
-    Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardLineFillColor(), this->settings.getBoardMargin());
+    Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin());
     Engine::addObject(this->layers, true, board);
 
-   // Engine::addTopLayer(this->layers);
-   // Label* label_one = new Label(this->scoreLogo, sf::Vector2f(0.4f, 0.4f));
-   // Engine::addObject(this->layers, 2, label_one);
+    //Engine::addTopLayer(this->layers);
+    //Label* label_one = new Label(this->scoreLogo, sf::Vector2f(0.4f, 0.4f));
+    //Engine::addObject(this->layers, 2, label_one);
     Engine::addTopLayer(this->layers);
-    
     
     float inX = this->settings.getBoardMargin().x;
     float inY = this->settings.getBoardMargin().y;
@@ -112,6 +118,7 @@ void Game::initObjects()
     {
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
+            //New jewel
             Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize(), &this->jewelTextures);
             Engine::addObject(this->layers, false, temp);
             this->jewels.push_back(temp);
@@ -132,15 +139,18 @@ const bool Game::running() const
 
 void Game::updateDeltaTime()
 {
+    /**
+     * @brief -Update delta time
+     * 
+     * @return void
+     */
     this->deltaTime = this->deltaTimeClock.restart().asSeconds();
 }
 
 void Game::update()
 {
     /**
-     * @brief -Update game logic
-     * 
-     * TO-DO: Almost everything
+     * @brief -Update game logic, poll events, animations and engine state
      * 
      * @return void
      */
@@ -152,26 +162,11 @@ void Game::update()
     Engine::deleteUnnecessary(this->layers);
 }
 
-void Game::updateTextures()
-{
-	this->animationTime += this->deltaTime;
-	if(this->animationTime >= this->settings.getSwitchTime())
-	{
-		this->animationTime -= this->settings.getSwitchTime();
-		this->animationPhase++;
-		if(this->animationPhase >= 3)
-			this->animationPhase -= 3;
-		 for (auto &k : this->jewels)
-		 {
-		 	k->UpdateAnimation(animationPhase, &jewelTextures);
-		 }
-	}
-}
-
 void Game::pollEvents()
 {
     /**
      * @brief -Manage input form keyboard and mouse
+     * TO-DO: -More time for axis choice
      * 
      * @return void
      */
@@ -182,7 +177,7 @@ void Game::pollEvents()
     {
         switch (ev.type)
         {
-            case sf::Event::Closed:
+            case sf::Event::Closed: //Colose program
 
                 this->window->close();
                 break;
@@ -190,17 +185,19 @@ void Game::pollEvents()
             case sf::Event::KeyPressed:
 
                 if (ev.key.code == sf::Keyboard::Escape) 
-                    this->window->close();
+                    this->window->close(); //Close if escape
                 break;
 
             case sf::Event::MouseButtonReleased:
 
-                if (this->selected != nullptr && this->selected->isReturn())
+                if (this->selected != nullptr && this->selected->isReturn()) //If selected object must return to original position
                 {
                     if (this->selectedExtraJewel != nullptr && this->selected->getIdentity() == "jewel")
                     {
+                        //Jewel
                         this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
 
+                        //If there was position swap
                         if (fabs(this->selected->getPosition().x - this->selected->getOriginalPosition().x) > (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())/2 
                         || fabs(this->selected->getPosition().y - this->selected->getOriginalPosition().y) > (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())/2)
                         {
@@ -226,9 +223,10 @@ void Game::pollEvents()
 
             case sf::Event::MouseButtonPressed:
 
-                this->selected = Engine::giveSelectable(this->layers, this->mousePositionView);
+                this->selected = Engine::giveSelectable(this->layers, this->mousePositionView); //Return object on top!
                 if (this->selected != nullptr) 
                 {
+                    //To object not "run away" from cursor
                     this->mousePositionDelta = this->mousePositionView - this->selected->getPosition();
                     this->mousePositionDeltaCheckDirecton = this->mousePositionView;
 
@@ -413,36 +411,59 @@ void Game::pollEvents()
 
 void Game::updateMousePositions()
 {
+    /**
+     * @brief -Update mouse position
+     * 
+     * @return void
+     */
     this->mousePositionWindow = sf::Mouse::getPosition(*this->window);
     this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
 }
 
 void Game::updateLogic()
 {
-    if(!this->animationBlocker && Logika::check(this->jewels, this->settings.getBoardSize()))
+    /**
+     * @brief -Update object behavior logic
+     * -Update jewels behavior
+     * 
+     * @return void
+     */
+
+    //If there are objects to rearrange and the falling animation is not playing
+    if(!this->animationBlocker && Logika::check(this->jewels, this->settings.getBoardSize())) 
     {
+        //Remove specyfic jewels and adding new in replacement
         std::vector <Jewel*> newJewels [this->settings.getBoardSize()];
         Logika::remove(jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures);
 
+        //Set every jewel in right place
         Logika::move_empty_to_top(jewels, this->settings.getBoardSize(), newJewels);
 
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
             for (unsigned i = 0; i < newJewels[j].size(); i++)
             {
-                //std::cout << "Nowy\n";
+                //Add new jewel to engine layer
                 Engine::addObject(this->layers, 1u, newJewels[j][i]);
             }
             newJewels[j].clear();
         }
 
+        //Start falling down animation
         this->animationBlocker = true;
     }
 }
 
 void Game::updateAnimations()
 {
-    if (this->animationBlocker)
+    /**
+     * @brief -Update falling down animation
+     * -Update idle animation
+     * 
+     * @return void
+     */
+
+    if (this->animationBlocker) //If is animation to play
     {
         bool wasAnimated = false;
 
@@ -450,6 +471,7 @@ void Game::updateAnimations()
         {
             if (k->getOriginalPosition().y > k->getPosition().y)
             {
+                //Move object down (temporary teleport)
                 Engine::moveTo(k, k->getOriginalPosition());
                 wasAnimated = true;
             } 
@@ -457,6 +479,21 @@ void Game::updateAnimations()
 
         if (!wasAnimated) this->animationBlocker = false;
     }
+
+    //Idle animation:
+
+    this->animationTime += this->deltaTime;
+	if(this->animationTime >= this->settings.getSwitchTime())
+	{
+		this->animationTime -= this->settings.getSwitchTime();
+		this->animationPhase++;
+		if(this->animationPhase >= 3)
+			this->animationPhase -= 3;
+		 for (auto &k : this->jewels)
+		 {
+		 	k->updateAnimation(animationPhase, &jewelTextures);
+		 }
+	}
 }
 
 void Game::render()
@@ -468,5 +505,4 @@ void Game::render()
      */
     
     Engine::draw(this->layers, this->window);
-    
 }

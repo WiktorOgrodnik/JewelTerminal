@@ -2,7 +2,7 @@
 
 int main()
 {
-    srand (time(NULL));
+    srand(time(NULL));
 
     Game game;   
 
@@ -12,7 +12,6 @@ int main()
         game.updateDeltaTime();
         game.update();
         game.render();
-        game.updateTextures();
     }
 
     return 0;

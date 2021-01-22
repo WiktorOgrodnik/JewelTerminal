@@ -1,30 +1,26 @@
 #include "board.hpp"
 
-Board::Board(unsigned size_, sf::Vector2f jewelSize_, float padding_, float lineThickness_, sf::Color lineColor, sf::Vector2f boardMargin_)
+Board::Board(unsigned size, sf::Vector2f jewelSize, float padding, float lineThickness, sf::Vector2f boardMargin)
 {
-     /*  Constructor
+    /**  
+     * Constructor
      *   
      *  @param size of board, size of jewel, size of padding, line thickness, line color, boardMargin
      *  
      *  -Initialize theBoard
-     *  -Create line, which is used to create board borders
-     *  -Set board margin (temporary)
+     *  -Set board margins and dimensions
      */
 
-    this->size = size_;
-    this->lineThickness = lineThickness_;
-    this->padding = padding_;
-    this->jewelSize = jewelSize_;
-    this->boardMargin = boardMargin_;
-    this->del = false;
+    this->size = size;
+    this->lineThickness = lineThickness;
+    this->padding = padding;
+    this->jewelSize = jewelSize;
+    this->boardMargin = boardMargin;
     this->body.setSize(sf::Vector2f(417.0f, 392.0f));
 	this->boardTexture.loadFromFile("img/Board.png");
 	this->body.setTexture(&boardTexture);
 	this->body.setPosition(sf::Vector2f(this->boardMargin.x - 38.0f, this->boardMargin.y - 27.0f));
 
-    // Line
-    this->line.setSize(sf::Vector2f(this->size * (this->jewelSize.x + this->padding), this->lineThickness));
-    this->line.setFillColor(lineColor);
 }
 
 Board::~Board()
@@ -49,31 +45,14 @@ void Board::draw(sf::RenderWindow* window)
     window->draw(this->body);
 }
 
-/*
-void Board::draw(sf::RenderWindow* window)
-{   
-     * @param RenderWindow
-     * 
-     * -Draw the board
-    
-
-    for (unsigned i = 0; i <= this->size; i++)
-    {
-        this->line.setPosition(sf::Vector2f(this->boardMargin.x - (this->padding / 2), this->boardMargin.y - (this->padding / 2) + static_cast<float>(i) * (this->jewelSize.y + this->padding)));
-        window->draw(this->line);
-
-        this->line.rotate(90.f);
-
-        this->line.setPosition(sf::Vector2f(this->boardMargin.x - (this->padding / 2) + static_cast<float>(i) * (this->jewelSize.x + this->padding), this->boardMargin.y - (this->padding / 2)));
-        window->draw(this->line);
-
-        this->line.rotate(270.f);
-    }
-}
-*/
-
 bool Board::contain(sf::Vector2f mousePos)
 {
+    /**
+     * @brief -Checks if the mouse postitin is witihn the object
+     * 
+     * @return void
+     */
+
     return mousePos.x >= this->boardMargin.x - (this->padding / 2) 
     && mousePos.x <= this->boardMargin.x - (this->padding / 2) + this->size * (this->jewelSize.x + this->padding) 
     && mousePos.y >= this->boardMargin.y - (this->padding / 2) 
@@ -82,32 +61,42 @@ bool Board::contain(sf::Vector2f mousePos)
 
 void Board::move(sf::Vector2f moveVector)
 {
+    /**
+     * @brief -Move the object by the vector
+     * 
+     * @return void
+     */
+
     this->boardMargin.x += moveVector.x + (this->padding / 2);
     this->boardMargin.y += moveVector.x + (this->padding / 2);
 }
 
 void Board::setPosition(sf::Vector2f position)
 {
+    /**
+     * @brief -Move the object to another position
+     * 
+     * @return void
+     */
+
     this->boardMargin.x = position.x + (this->padding / 2);
     this->boardMargin.y = position.x + (this->padding / 2);
 }
 
 sf::Vector2f Board::getPosition()
 {
+    /**
+     * @return the object position
+     */
+
     return sf::Vector2f(this->boardMargin.x - (this->padding / 2), this->boardMargin.y - (this->padding / 2));
-}
-
-sf::Vector2f Board::getOriginalPosition()
-{
-    return this->getPosition();
-}
-
-void Board::setOriginalPosition(sf::Vector2f position)
-{
-    this->setPosition(position);
 }
 
 std::string Board::getIdentity()
 {
+    /**
+     * @return name of the object
+     */
+
     return "board";
 }

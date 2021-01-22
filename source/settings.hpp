@@ -1,5 +1,8 @@
-#ifndef SETTINGS_HPP
-#define SETTINGS_CPP
+/*
+This class store important game constants.
+*/
+
+#pragma once
 
 #include "pch.hpp"
 
@@ -16,7 +19,6 @@ class Settings
     sf::Vector2f boardMargin;
     float boardInnerPadding;
     float boardLineThickness;
-    sf::Color boardLineFillColor;
 
     //Engine Settings
     sf::VideoMode videoMode;
@@ -38,7 +40,6 @@ public:
     sf::Vector2f getBoardMargin();
     float getBoardInnerPadding();
     float getBoardLineThickness();
-    sf::Color getBoardLineFillColor();
 
     //Engine settings getters
     sf::VideoMode getVideoMode();
@@ -46,5 +47,3 @@ public:
     int getMaxFPS();
     
 };
-
-#endif /*SETTINGS_HPP*/

@@ -1,5 +1,9 @@
-#ifndef OBJECT_HPP
-#define OBJECT_HPP
+/*
+This object is to inheritance only. It contains all functions which drawable object should implement.
+It also has some default implementations of optional methods.
+*/
+
+#pragma once
 
 #include "pch.hpp"
 
@@ -21,12 +25,9 @@ public:
     virtual bool isToMove();
     virtual sf::Vector2f getPosition() = 0;
     virtual bool isReturn();
-    virtual sf::Vector2f getOriginalPosition() = 0;
-    virtual void setOriginalPosition(sf::Vector2f position) = 0;
+    virtual sf::Vector2f getOriginalPosition();
+    virtual void setOriginalPosition(sf::Vector2f position);
     virtual std::string getIdentity(); 
     virtual void setToDelete();
     virtual bool isToDelete();
 };
-
-
-#endif /*OBJECT_HPP*/

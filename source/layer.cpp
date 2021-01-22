@@ -14,6 +14,7 @@ Layer::Layer(Object* newObject)
      * Extra Constructor with init first object 
      * 
      */
+
     this->addToLayer(newObject);
 }
 
@@ -28,41 +29,71 @@ Layer::~Layer()
 
 void Layer::draw(sf::RenderWindow* window)
 {
+    /**
+     * @brief -draw all objects in layer
+     * 
+     * @return void
+     */
+
     for (auto &k : this->objects) k->draw(window);
 }
 
 bool Layer::contain(sf::Vector2f mousePos)
 {
-    for (auto &k : objects)
+    /**
+     * @brief -Checks if the mouse postitin is witihn pne of the objects in layer
+     * 
+     * @return void
+     */
+
+    if (this->objects.size())
     {
-        if (k->contain(mousePos)) return true;
+        for(size_t it = this->objects.size(); it > 0; --it)
+        {
+            if(this->objects[it - 1]->contain(mousePos)) return true;
+        } 
     }
-    
+
     return false;
 }
 
 sf::Vector2f Layer::getPosition()
 {
+    /**
+     * @return the object position
+     */
+
     return sf::Vector2f(0.f, 0.f);
-}
-
-sf::Vector2f Layer::getOriginalPosition()
-{
-    return this->getPosition();
-}
-
-void Layer::addToLayer(Object* newObject)
-{
-    this->objects.push_back(newObject);
 }
 
 std::string Layer::getIdentity()
 {
+    /**
+     * @return name of the object
+     */
+
     return "layer";
+}
+
+void Layer::addToLayer(Object* newObject)
+{
+    /**
+     * @brief -Add object to layer
+     * 
+     * @return void
+     */
+
+    this->objects.push_back(newObject);
 }
 
 void Layer::deleteFromLayer(Object* newObject)
 {
+    /**
+     * @brief -Delete object form layer
+     * 
+     * @return void
+     */
+
     for (size_t i = 0; i < this->objects.size(); i++)
     {
         if (this->objects[i] == newObject)
@@ -76,6 +107,12 @@ void Layer::deleteFromLayer(Object* newObject)
 
 void Layer::deleteUnnecessary()
 {
+    /**
+     * @brief -delete objects with parameter "to delete"
+     * 
+     * @return void
+     */
+
     for (size_t i = 0; i < this->objects.size(); i++)
     {
         if (this->objects[i]->isToDelete())
@@ -89,9 +126,18 @@ void Layer::deleteUnnecessary()
 
 Object* Layer::giveObject(sf::Vector2f mousePos)
 {
-    for (auto &k : objects)
+    /**
+     * @brief -return object selected by mouse
+     * 
+     * @return -Object
+     */
+
+    if (this->objects.size())
     {
-        if (k->contain(mousePos)) return k;
+        for(size_t it = this->objects.size(); it > 0; --it)
+        {
+            if(this->objects[it - 1]->contain(mousePos)) return this->objects[it - 1];
+        } 
     }
 
     return nullptr;
