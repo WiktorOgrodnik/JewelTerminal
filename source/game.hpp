@@ -7,7 +7,7 @@
 //#include "settings.hpp"
 #include "logika.hpp"
 #include "score.h"
-
+#include "label.hpp"
 class Game
 {
 private: 
