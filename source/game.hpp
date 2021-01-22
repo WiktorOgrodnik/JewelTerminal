@@ -10,7 +10,7 @@ it also ordes to render objects and updates the game state.
 #include "settings.hpp"
 #include "logika.hpp"
 #include "score.h"
-
+#include "label.hpp"
 class Game
 {
 private: 

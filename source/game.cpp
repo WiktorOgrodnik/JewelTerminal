@@ -105,10 +105,10 @@ void Game::initObjects()
 
     Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin());
     Engine::addObject(this->layers, true, board);
-
-    //Engine::addTopLayer(this->layers);
-    //Label* label_one = new Label(this->scoreLogo, sf::Vector2f(0.4f, 0.4f));
-    //Engine::addObject(this->layers, 2, label_one);
+    
+    Label* label_one = new Label(this->settings.getBoardMargin());
+   // Engine::addTopLayer(this->layers);
+    Engine::addObject(this->layers, true, label_one);
     Engine::addTopLayer(this->layers);
     
     float inX = this->settings.getBoardMargin().x;

@@ -5,12 +5,13 @@
 class Label : public Object
 {
 private:
-    sf::Vector2f labelPositon;
-    sf::Sprite sprite;
+    sf::RectangleShape body;
+    sf::Texture boardTexture;
+    sf::Vector2f boardMargin;
     bool del;
 public:
 
-    Label(sf::Texture image, sf::Vector2f position);  
+    Label(sf::Vector2f boardMargin_);  
 
     ~Label();
 
