@@ -10,10 +10,10 @@ Label::Label(sf::Vector2f boardMargin_)
     */
    this->del = false;
     this->boardMargin = boardMargin_;
-    this->body.setSize(sf::Vector2f(100.0f, 100.0f));
+    this->body.setSize(sf::Vector2f(135.0f, 54.0f));
 	this->boardTexture.loadFromFile("img/scorewb.png");
 	this->body.setTexture(&boardTexture);
-	this->body.setPosition(sf::Vector2f(this->boardMargin.x - 100.0f, this->boardMargin.y - 100.0f));
+	this->body.setPosition(sf::Vector2f(this->boardMargin.x + 450.0f, this->boardMargin.y + 200.0f));
 }
 Label::~Label()
 {
