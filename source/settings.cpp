@@ -17,6 +17,10 @@ Settings::Settings()
     this->verticalSync = true;
     this->videoMode.height = 600;
     this->videoMode.width = 800;
+
+    //Mouse control
+    this->moveAxisCheckTime = 1;
+    this->moveAxisCheckMargin = sf::Vector2f(6.f, 6.f);
 }
 
 sf::Vector2f Settings::getJewelSize()
@@ -62,4 +66,14 @@ int Settings::getMaxFPS()
 bool Settings::getVerticalSyncSetting()
 {
     return this->verticalSync;
+}
+
+int Settings::getMoveAxisCheckTime()
+{
+    return this->moveAxisCheckTime;
+}
+
+sf::Vector2f Settings::getMoveAxisCheckMargin()
+{
+    return this->moveAxisCheckMargin;
 }

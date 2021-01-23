@@ -46,10 +46,11 @@ void Game::initVariables()
 
     //Mouse control
     this->selectedExtraJewel = nullptr;
-    this->moveDirectionCheck = true;
+    this->moveDirectionCheck = 0;
     this->moveAxis = false;
     this->jewelPos = 0;
     this->jewelPos2 = 0;
+    this->hover = nullptr;
 
     //Fall animation
     this->animationBlocker = false;
@@ -217,13 +218,13 @@ void Game::pollEvents()
                 this->selectedExtraJewel = nullptr;
                 this->jewelPos2 = 0;
                 this->mousePositionDelta = sf::Vector2f(0.f, 0.f);
-                this->moveDirectionCheck = true;
+                this->moveDirectionCheck = 0;
                 this->moveAxis = false;
                 break;
 
             case sf::Event::MouseButtonPressed:
 
-                this->selected = this->giveSelectable(); //Return object on top!
+                this->selected = this->hover; //Return object on top!
                 if (this->selected != nullptr) 
                 {
                     //To object not "run away" from cursor
@@ -252,19 +253,18 @@ void Game::pollEvents()
     {
         if (this->selected != nullptr && this->selected->isToMove() && this->selected->getIdentity() == "jewel")
         {
-            if (this->moveDirectionCheck)
+            if (this->moveDirectionCheck < this->settings.getMoveAxisCheckTime())
             {
-                if (fabs(this->mousePositionDeltaCheckDirecton.x - this->mousePositionView.x) > 0.1 
-                || fabs(this->mousePositionDeltaCheckDirecton.y - this->mousePositionView.y) > 0.1)
+                if (fabs(this->mousePositionDeltaCheckDirecton.x - this->mousePositionView.x) > this->settings.getMoveAxisCheckMargin().x 
+                || fabs(this->mousePositionDeltaCheckDirecton.y - this->mousePositionView.y) > this->settings.getMoveAxisCheckMargin().y)
                 {
                     this->mousePositionDeltaCheckDirecton -= this->mousePositionView;
-                    this->moveDirectionCheck = false;
+                    this->moveDirectionCheck++;
 
                     if (fabs(mousePositionDeltaCheckDirecton.y) > fabs(mousePositionDeltaCheckDirecton.x)) 
                         this->moveAxis = true;
 
                     this->mousePositionDeltaCheckDirecton = sf::Vector2f(0.f, 0.f);
-
                 }
             }
             else
@@ -418,6 +418,8 @@ void Game::updateMousePositions()
      */
     this->mousePositionWindow = sf::Mouse::getPosition(*this->window);
     this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
+
+    this->hover = this->giveSelectable();
 }
 
 void Game::updateLogic()
@@ -494,6 +496,10 @@ void Game::updateAnimations()
 		 	k->updateAnimation(animationPhase, &jewelTextures);
 		 }
 	}
+
+    //Mouse hover animation
+
+    if (this->hover != nullptr) this->hover->hover();
 }
 
 void Game::addObject(bool topPririty, Object* newObject)

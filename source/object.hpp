@@ -30,4 +30,5 @@ public:
     virtual std::string getIdentity(); 
     virtual void setToDelete();
     virtual bool isToDelete();
+    virtual void hover();
 };

@@ -23,7 +23,7 @@ public:
     //Destructors
     ~Layer();
 
-    //Object specyfic functions
+    //Opetation on layer
     void draw (sf::RenderWindow* window, float boardMarginy);
     bool contain (sf::Vector2f mousePos);
     void addToLayer (Object* newObject);

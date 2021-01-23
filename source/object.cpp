@@ -80,3 +80,5 @@ bool Object::isToDelete()
 
     return false;
 }
+
+void Object::hover() {}

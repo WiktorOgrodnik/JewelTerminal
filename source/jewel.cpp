@@ -167,6 +167,15 @@ bool Jewel::isToDelete()
     return this->del;
 }
 
+void Jewel::hover()
+{
+    /**
+     * @brief -What jewel has to done when it is indicated by mouse cursor
+     * 
+     */
+
+}
+
 void Jewel::updateAnimation(int currentPhase, sf::Texture* jewelTexture)
 {
     /**

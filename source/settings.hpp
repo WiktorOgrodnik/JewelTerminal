@@ -25,6 +25,10 @@ class Settings
     bool verticalSync;
     int FPSLimit;
 
+    //Mouse control
+    int moveAxisCheckTime;
+    sf::Vector2f moveAxisCheckMargin;
+
 public:
 
     Settings();
@@ -45,5 +49,9 @@ public:
     sf::VideoMode getVideoMode();
     bool getVerticalSyncSetting();
     int getMaxFPS();
+
+    //Mouse control getters
+    int getMoveAxisCheckTime();
+    sf::Vector2f getMoveAxisCheckMargin();
     
 };

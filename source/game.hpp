@@ -16,7 +16,10 @@ class Game
 {
 private: 
 
+    //Game window
     sf::RenderWindow* window;
+
+    //Input event
     sf::Event ev;
 
     //Init functions
@@ -63,7 +66,7 @@ private:
     sf::Vector2f mousePositionDeltaCheckDirecton;
 
     //Mouse control
-    bool moveDirectionCheck; //TO-DO switch to int
+    int moveDirectionCheck; //TO-DO switch to int
     bool moveAxis; // 0 - horizontal, 1 - vertical
     int jewelPos;
     int jewelPos2;
@@ -79,6 +82,7 @@ private:
     //Score score;
 
     //Selected
+    Object* hover;
     Object* selected;
     Object* selectedExtraJewel;
     

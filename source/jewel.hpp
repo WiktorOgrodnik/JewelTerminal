@@ -38,6 +38,7 @@ public:
     std::string getIdentity() override;
     void setToDelete() override;
     bool isToDelete() override;
+    void hover() override;
 
     //Jewel idle animation functions
     void updateAnimation(int currentPhase, sf::Texture* jewelTexture);
