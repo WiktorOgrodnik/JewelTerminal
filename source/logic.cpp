@@ -57,11 +57,15 @@ void Logic::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, unsigned 
      * 
      * @return void
      */
-    std::swap(jewels[pos1], jewels[pos2]);
-    if(!check(jewels, size))
+    if ((unsigned)pos1 < size * size && (unsigned)pos2 < size * size)
+    {
         std::swap(jewels[pos1], jewels[pos2]);
-    else 
-        position_swap(jewels[pos1], jewels[pos2]);
+        if(!check(jewels, size))
+            std::swap(jewels[pos1], jewels[pos2]);
+        else 
+            position_swap(jewels[pos1], jewels[pos2]);
+    }
+    else throw "Positions of tiles is incorrect!";
 }
 
 bool Logic::check(std::vector<Jewel*> &jewels, unsigned size)
