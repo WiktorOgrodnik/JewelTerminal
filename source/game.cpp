@@ -202,8 +202,16 @@ void Game::pollEvents()
                         if (fabs(this->selected->getPosition().x - this->selected->getOriginalPosition().x) > (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())/2 
                         || fabs(this->selected->getPosition().y - this->selected->getOriginalPosition().y) > (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())/2)
                         {
-                            //Check if there are jewels to swap
-                            Logika::call_swap(jewels,this->jewelPos,this->jewelPos2, this->settings.getBoardSize());
+                            try
+                            {
+                                //Check if there are jewels to swap
+                                Logika::call_swap(jewels,this->jewelPos,this->jewelPos2, this->settings.getBoardSize());
+                            }
+                            catch(std::string exception)
+                            {
+                                std::cerr << "Critical error in Logika::call_swap: " << exception << '\n';
+                                exit(EXIT_FAILURE);
+                            }
                         } 
                     }
                     if (this->selected != nullptr) this->selected->setPosition(this->selected->getOriginalPosition());
@@ -238,7 +246,7 @@ void Game::pollEvents()
                                 break;
                             }
                         }
-                        if (jewelPos == -1) std::cout << "Critical error! Can not find Jewel to get logical position!\n";
+                        if (jewelPos == -1) std::cerr << "Critical error! Can not find Jewel to get logical position!\n";
                     }
                 }
                 break;
@@ -414,6 +422,7 @@ void Game::updateMousePositions()
      * 
      * @return void
      */
+
     this->mousePositionWindow = sf::Mouse::getPosition(*this->window);
     this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
 
@@ -438,13 +447,30 @@ void Game::updateLogic()
     //If there are objects to rearrange and the falling animation is not playing
     if(!this->animationBlocker && Logika::check(this->jewels, this->settings.getBoardSize())) 
     {
-        //Remove specyfic jewels and adding new in replacement
         std::vector <Jewel*> newJewels [this->settings.getBoardSize()];
-        Logika::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
+        try 
+        {
+            //Remove specyfic jewels and adding new in replacement
+            Logika::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
+        } 
+        catch (std::string exception) 
+        {
+            std::cerr << "Critical error in Logika::remove: " << exception << '\n';
+            exit(EXIT_FAILURE);
+        }
 
-        //Set every jewel in right place
-        Logika::move_empty_to_top(this->jewels, this->settings.getBoardSize(), newJewels);
+        try 
+        {
+            //Set every jewel in right place
+            Logika::move_empty_to_top(this->jewels, this->settings.getBoardSize(), newJewels);
+        } 
+        catch (std::string exception) 
+        {
+            std::cerr << "Critical error in Logika::move_empty_to_top: " << exception << '\n';
+            exit(EXIT_FAILURE);
+        }
 
+        
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
             for (unsigned i = 0; i < newJewels[j].size(); i++)

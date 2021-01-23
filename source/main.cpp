@@ -4,7 +4,7 @@ int main()
 {
     srand(time(NULL));
 
-    Game game;   
+    Game game; 
 
     //Game loop
     while (game.running())
