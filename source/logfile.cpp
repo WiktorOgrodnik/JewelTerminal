@@ -23,7 +23,8 @@ std::string Log::getSystemDate()
     tm ltm;
     char buffer[80];
 
-    localtime_s(&ltm, &now);
+    localtime_r(&now, &ltm);//UWAGA zmieniłem kolejnosc zmiennych
+    //TUTAJ
 
     strftime(buffer, 80, "%d-%m-%Y %H-%M-%S", &ltm);
 	return "jewel.exe " + std::string(buffer);
