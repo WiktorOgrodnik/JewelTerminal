@@ -9,6 +9,7 @@ private:
     sf::Texture boardTexture;
     sf::Vector2f boardMargin;
     bool del;
+    
 public:
 
     Label(sf::Vector2f boardMargin_);  

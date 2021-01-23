@@ -27,8 +27,6 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Text
         this->del = false;
         this->currentPhase = 0;
     }
-    
-    
 }
 
 

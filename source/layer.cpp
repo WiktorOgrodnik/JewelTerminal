@@ -74,7 +74,9 @@ void Layer::addToLayer(Object* newObject)
      * @return void
      */
 
-    this->objects.push_back(newObject);
+    if(newObject != nullptr)
+        this->objects.push_back(newObject);
+    else std::cerr << "Critical error! Nullptr object in layer!\n"; 
 }
 
 void Layer::deleteFromLayer(Object* newObject)

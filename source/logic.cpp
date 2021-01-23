@@ -27,7 +27,7 @@ void Logic::position_swap2(Jewel* first, Jewel* second)
 
     if (first != nullptr && second != nullptr)
     {
-        sf::Vector2f temp=first->getOriginalPosition();
+        sf::Vector2f temp = first->getOriginalPosition();
         first->setOriginalPosition2(second->getOriginalPosition());
         second->setOriginalPosition2(temp);
     }
@@ -58,10 +58,10 @@ void Logic::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, unsigned 
      * @return void
      */
     std::swap(jewels[pos1], jewels[pos2]);
-    if(!check(jewels,size))
+    if(!check(jewels, size))
         std::swap(jewels[pos1], jewels[pos2]);
     else 
-        position_swap(jewels[pos1],jewels[pos2]);
+        position_swap(jewels[pos1], jewels[pos2]);
 }
 
 bool Logic::check(std::vector<Jewel*> &jewels, unsigned size)
@@ -286,6 +286,8 @@ void Logic::move_empty_to_top(std::vector<Jewel*> &jewels, unsigned size, std::v
         {
             //Place new jewels in the appropriate cells
             position_swap2 (array(jewels, i, newJewels[i].size() - j - 1, size), newJewels[i][j]);
+
+            array(jewels, i, newJewels[i].size() - j - 1, size);
             jewels[size*(newJewels[i].size() - j - 1)+i] = newJewels[i][j];
         }
     }
