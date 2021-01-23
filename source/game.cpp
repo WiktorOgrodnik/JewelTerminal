@@ -479,7 +479,7 @@ void Game::updateAnimations()
         {
             if (k->getOriginalPosition().y > k->getPosition().y)
             {
-                //Move object down (temporary teleport)
+                //Move object down
                 this->moveTo(k, sf::Vector2f(k->getOriginalPosition().x, k->getPosition().y + 4.f));
                 wasAnimated = true;
             }
@@ -501,8 +501,7 @@ void Game::updateAnimations()
 			this->animationPhase -= 3;
 		    for (auto &k : this->jewels)
 		    {
-                if (k != hover)
-		 	        k->updateAnimation(animationPhase, &jewelTextures);
+		 	    k->updateAnimation(animationPhase, &jewelTextures);
 		    }
 	}
 
