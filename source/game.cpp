@@ -104,11 +104,13 @@ void Game::initObjects()
      * @return void
      */
 
+    Log::New("Initialize Board");
     Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin());
     this->addObject(true, board);
 
     this->addTopLayer();
     
+    Log::New("Initialize jewels");
     float inX = this->settings.getBoardMargin().x;
     float inY = this->settings.getBoardMargin().y;
 
@@ -123,6 +125,7 @@ void Game::initObjects()
         }
     }
 
+    Log::New("Initialize interface");
     Label* label_one = new Label(this->settings.getBoardMargin());
     //Engine::addTopLayer(this->layers);
     this->addObject(true, label_one);
@@ -157,7 +160,9 @@ void Game::update()
      * @return void
      */
 
+    Log::New("Mouse pos");
     this->updateMousePositions();
+    Log::New("End Mouse pos");
     this->pollEvents();
     this->updateLogic();
     this->updateAnimations();
@@ -173,247 +178,247 @@ void Game::pollEvents()
      * @return void
      */
 
-    if (this->animationBlocker) return;
-
-    while(this->window->pollEvent(ev))
+    if (!this->animationBlocker)
     {
-        switch (ev.type)
+        while(this->window->pollEvent(ev))
         {
-            case sf::Event::Closed: //Colose program
-
-                this->window->close();
-                break;
-
-            case sf::Event::KeyPressed:
-
-                if (ev.key.code == sf::Keyboard::Escape) 
-                    this->window->close(); //Close if escape
-                break;
-
-            case sf::Event::MouseButtonReleased:
-
-                if (this->selected != nullptr && this->selected->isReturn()) //If selected object must return to original position
-                {
-                    if (this->selectedExtraJewel != nullptr && this->selected->getIdentity() == "jewel")
-                    {
-                        //Jewel
-                        this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
-
-                        //If there was position swap
-                        if (fabs(this->selected->getPosition().x - this->selected->getOriginalPosition().x) > (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())/2 
-                        || fabs(this->selected->getPosition().y - this->selected->getOriginalPosition().y) > (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())/2)
-                        {
-                            try
-                            {
-                                //Check if there are jewels to swap
-                                Logic::call_swap(jewels,this->jewelPos,this->jewelPos2, this->settings.getBoardSize());
-                            }
-                            catch(std::string exception)
-                            {
-                                std::cerr << "Critical error in Logika::call_swap: " << exception << '\n';
-                                exit(EXIT_FAILURE);
-                            }
-                        } 
-                    }
-                    if (this->selected != nullptr) this->selected->setPosition(this->selected->getOriginalPosition());
-
-                }
-
-                this->selected = nullptr;
-                this->selectedExtraJewel = nullptr;
-                this->jewelPos2 = 0;
-                this->mousePositionDelta = sf::Vector2f(0.f, 0.f);
-                this->moveDirectionCheck = 0;
-                this->moveAxis = false;
-                break;
-
-            case sf::Event::MouseButtonPressed:
-
-                this->selected = this->hover; //Return object on top!
-                if (this->selected != nullptr) 
-                {
-                    //To object not "run away" from cursor
-                    this->mousePositionDelta = this->mousePositionView - this->selected->getPosition();
-                    this->mousePositionDeltaCheckDirecton = this->mousePositionView;
-
-                    if (this->selected->getIdentity() == "jewel")
-                    {
-                        jewelPos = -1;
-                        for (size_t i = 0; i < this->jewels.size(); i++)
-                        {
-                            if (this->jewels[i] == this->selected) 
-                            {
-                                this->jewelPos = i;
-                                break;
-                            }
-                        }
-                        if (jewelPos == -1) std::cerr << "Critical error! Can not find Jewel to get logical position!\n";
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    } 
-
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if (this->selected != nullptr && this->selected->isToMove() && this->selected->getIdentity() == "jewel")
-        {
-            if (this->moveDirectionCheck < this->settings.getMoveAxisCheckTime())
+            switch (ev.type)
             {
-                if (fabs(this->mousePositionDeltaCheckDirecton.x - this->mousePositionView.x) > this->settings.getMoveAxisCheckMargin().x 
-                || fabs(this->mousePositionDeltaCheckDirecton.y - this->mousePositionView.y) > this->settings.getMoveAxisCheckMargin().y)
-                {
-                    this->mousePositionDeltaCheckDirecton -= this->mousePositionView;
-                    this->moveDirectionCheck++;
+                case sf::Event::Closed: //Colose program
 
-                    if (fabs(mousePositionDeltaCheckDirecton.y) > fabs(mousePositionDeltaCheckDirecton.x)) 
-                        this->moveAxis = true;
+                    this->window->close();
+                    break;
 
-                    this->mousePositionDeltaCheckDirecton = sf::Vector2f(0.f, 0.f);
-                }
-            }
-            else
-            {
-                if (this->moveAxis)
-                {   
-                    if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y)
+                case sf::Event::KeyPressed:
+
+                    if (ev.key.code == sf::Keyboard::Escape) 
+                        this->window->close(); //Close if escape
+                    break;
+
+                case sf::Event::MouseButtonReleased:
+
+                    if (this->selected != nullptr && this->selected->isReturn()) //If selected object must return to original position
                     {
-                        //Góra 
-                        if (this->jewelPos < (int)this->settings.getBoardSize()) ///Maksymalny poziom
+                        if (this->selectedExtraJewel != nullptr && this->selected->getIdentity() == "jewel")
                         {
-                            this->moveTo(this->selected, this->selected->getOriginalPosition());
-                        }
-                        else
-                        {
-                            if (this->selectedExtraJewel != nullptr)
+                            //Jewel
+                            this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+
+                            //If there was position swap
+                            if (fabs(this->selected->getPosition().x - this->selected->getOriginalPosition().x) > (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())/2 
+                            || fabs(this->selected->getPosition().y - this->selected->getOriginalPosition().y) > (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())/2)
                             {
-                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
-                                this->selectedExtraJewel = nullptr;
-                                this->jewelPos2 = 0;
-                            }
-                            this->selectedExtraJewel = this->jewels[jewelPos - this->settings.getBoardSize()];
-                            this->jewelPos2 = jewelPos - this->settings.getBoardSize();
-                            if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding())
-                            {
-                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding()));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
+                                try
+                                {
+                                    //Check if there are jewels to swap
+                                    Logic::call_swap(jewels, this->jewelPos, this->jewelPos2, this->settings.getBoardSize());
+                                }
+                                catch(std::string exception)
+                                {
+                                    Log::New("Critical error in Logika::call_swap: " + exception);
+                                    exit(EXIT_FAILURE);
+                                }
                             } 
-                            else
+                        }
+                        if (this->selected != nullptr) this->selected->setPosition(this->selected->getOriginalPosition());
+
+                    }
+
+                    this->selected = nullptr;
+                    this->selectedExtraJewel = nullptr;
+                    this->jewelPos2 = 0;
+                    this->mousePositionDelta = sf::Vector2f(0.f, 0.f);
+                    this->moveDirectionCheck = 0;
+                    this->moveAxis = false;
+                    break;
+
+                case sf::Event::MouseButtonPressed:
+
+                    this->selected = this->hover; //Return object on top!
+                    if (this->selected != nullptr) 
+                    {
+                        //To object not "run away" from cursor
+                        this->mousePositionDelta = this->mousePositionView - this->selected->getPosition();
+                        this->mousePositionDeltaCheckDirecton = this->mousePositionView;
+
+                        if (this->selected->getIdentity() == "jewel")
+                        {
+                            jewelPos = -1;
+                            for (size_t i = 0; i < this->jewels.size(); i++)
                             {
-                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
+                                if (this->jewels[i] == this->selected) 
+                                {
+                                    this->jewelPos = i;
+                                    break;
+                                }
                             }
+                            if (jewelPos == -1) Log::New("Critical error! Can not find Jewel to get logical position!");
                         }
                     }
-                    else
-                    {
-                        ///Dół
-                        if (this->jewelPos >= (int)((this->settings.getBoardSize() * this->settings.getBoardSize()) - this->settings.getBoardSize()))
-                        {
-                            this->moveTo(this->selected, this->selected->getOriginalPosition());
-                        }
-                        else
-                        {
-                            if (this->selectedExtraJewel != nullptr)
-                            {
-                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
-                                this->selectedExtraJewel = nullptr;
-                                this->jewelPos2 = 0;
+                    break;
+                default:
+                    break;
+            }
+        } 
 
-                            }
-                            this->selectedExtraJewel = this->jewels[jewelPos + this->settings.getBoardSize()];
-                            this->jewelPos2 = jewelPos + this->settings.getBoardSize();
-                            if (this->mousePositionView.y - this->mousePositionDelta.y > this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())
-                            {
-                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding()));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
-                            }
-                            else
-                            {
-                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
-                            }
-                        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            if (this->selected != nullptr && this->selected->isToMove() && this->selected->getIdentity() == "jewel")
+            {
+                if (this->moveDirectionCheck < this->settings.getMoveAxisCheckTime())
+                {
+                    if (fabs(this->mousePositionDeltaCheckDirecton.x - this->mousePositionView.x) > this->settings.getMoveAxisCheckMargin().x 
+                    || fabs(this->mousePositionDeltaCheckDirecton.y - this->mousePositionView.y) > this->settings.getMoveAxisCheckMargin().y)
+                    {
+                        this->mousePositionDeltaCheckDirecton -= this->mousePositionView;
+                        this->moveDirectionCheck++;
+
+                        if (fabs(mousePositionDeltaCheckDirecton.y) > fabs(mousePositionDeltaCheckDirecton.x)) 
+                            this->moveAxis = true;
+
+                        this->mousePositionDeltaCheckDirecton = sf::Vector2f(0.f, 0.f);
                     }
                 }
                 else
                 {
-                    if (this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x)
-                    {
-                        ///Lewo
-                        if (this->jewelPos % this->settings.getBoardSize() == 0) ///Maksymalny poziom
+                    if (this->moveAxis)
+                    {   
+                        if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y)
                         {
-                            this->moveTo(this->selected, this->selected->getOriginalPosition());
-                        }
-                        else
-                        {
-                            if (this->selectedExtraJewel != nullptr)
+                            //Góra 
+                            if (this->jewelPos < (int)this->settings.getBoardSize()) ///Maksymalny poziom
                             {
-                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
-                                this->selectedExtraJewel = nullptr;
-                                this->jewelPos2 = 0;
-
-                            }
-                            this->selectedExtraJewel = this->jewels[jewelPos - 1];
-                            this->jewelPos2 = jewelPos - 1;
-                            if(this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding())
-                            {
-                                this->moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
+                                this->moveTo(this->selected, this->selected->getOriginalPosition());
                             }
                             else
                             {
-                                this->moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
+                                if (this->selectedExtraJewel != nullptr)
+                                {
+                                    this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                    this->selectedExtraJewel = nullptr;
+                                    this->jewelPos2 = 0;
+                                }
+                                this->selectedExtraJewel = this->jewels[jewelPos - this->settings.getBoardSize()];
+                                this->jewelPos2 = jewelPos - this->settings.getBoardSize();
+                                if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding())
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding()));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
+                                } 
+                                else
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
+                                }
                             }
                         }
-                        
-                    } 
+                        else
+                        {
+                            ///Dół
+                            if (this->jewelPos >= (int)((this->settings.getBoardSize() * this->settings.getBoardSize()) - this->settings.getBoardSize()))
+                            {
+                                this->moveTo(this->selected, this->selected->getOriginalPosition());
+                            }
+                            else
+                            {
+                                if (this->selectedExtraJewel != nullptr)
+                                {
+                                    this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                    this->selectedExtraJewel = nullptr;
+                                    this->jewelPos2 = 0;
+
+                                }
+                                this->selectedExtraJewel = this->jewels[jewelPos + this->settings.getBoardSize()];
+                                this->jewelPos2 = jewelPos + this->settings.getBoardSize();
+                                if (this->mousePositionView.y - this->mousePositionDelta.y > this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding()));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
+                                }
+                                else
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
+                                }
+                            }
+                        }
+                    }
                     else
                     {
-                        ///Prawo
-                        if (this->jewelPos % this->settings.getBoardSize() == this->settings.getBoardSize() - 1)
+                        if (this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x)
                         {
-                            this->moveTo(this->selected, this->selected->getOriginalPosition());
-                        }
-                        else
-                        {
-                            if (this->selectedExtraJewel != nullptr)
+                            ///Lewo
+                            if (this->jewelPos % this->settings.getBoardSize() == 0) ///Maksymalny poziom
                             {
-                                this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
-                                this->selectedExtraJewel = nullptr;
-                                this->jewelPos2 = 0;
-
-                            }
-                            this->selectedExtraJewel = this->jewels[jewelPos + 1];
-                            this->jewelPos2 = jewelPos + 1;
-                            if(this->mousePositionView.x - this->mousePositionDelta.x > this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())
-                            {
-                                this->moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
+                                this->moveTo(this->selected, this->selected->getOriginalPosition());
                             }
                             else
                             {
-                                this->moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
-                                this->moveTo(this->selectedExtraJewel, 
-                                sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
+                                if (this->selectedExtraJewel != nullptr)
+                                {
+                                    this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                    this->selectedExtraJewel = nullptr;
+                                    this->jewelPos2 = 0;
+
+                                }
+                                this->selectedExtraJewel = this->jewels[jewelPos - 1];
+                                this->jewelPos2 = jewelPos - 1;
+                                if(this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding())
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
+                                }
+                                else
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
+                                }
+                            }
+                            
+                        } 
+                        else
+                        {
+                            ///Prawo
+                            if (this->jewelPos % this->settings.getBoardSize() == this->settings.getBoardSize() - 1)
+                            {
+                                this->moveTo(this->selected, this->selected->getOriginalPosition());
+                            }
+                            else
+                            {
+                                if (this->selectedExtraJewel != nullptr)
+                                {
+                                    this->selectedExtraJewel->setPosition(this->selectedExtraJewel->getOriginalPosition());
+                                    this->selectedExtraJewel = nullptr;
+                                    this->jewelPos2 = 0;
+
+                                }
+                                this->selectedExtraJewel = this->jewels[jewelPos + 1];
+                                this->jewelPos2 = jewelPos + 1;
+                                if(this->mousePositionView.x - this->mousePositionDelta.x > this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
+                                }
+                                else
+                                {
+                                    this->moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
+                                    this->moveTo(this->selectedExtraJewel, 
+                                    sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
+                                }
                             }
                         }
                     }
                 }
-            }
-            
-        } 
-    }   
+            } 
+        }
+    }
 }
 
 void Game::updateMousePositions()
@@ -428,11 +433,15 @@ void Game::updateMousePositions()
     this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
 
     Object* t = this->giveSelectable();
-    if(t != this->hover)
+    if(t != nullptr && t != this->hover)
     {   
         if (this->hover != nullptr)
             this->hover->unHover();
         this->hover = t;
+    }
+    else if(t == nullptr)
+    {   
+        this->hover = nullptr;
     }
 }
 
@@ -456,7 +465,7 @@ void Game::updateLogic()
         } 
         catch (std::string exception) 
         {
-            std::cerr << "Critical error in Logika::remove: " << exception << '\n';
+            Log::New("Critical error in Logika::remove: " + exception);
             exit(EXIT_FAILURE);
         }
 
@@ -467,7 +476,7 @@ void Game::updateLogic()
         } 
         catch (std::string exception) 
         {
-            std::cerr << "Critical error in Logika::move_empty_to_top: " << exception << '\n';
+            Log::New("Critical error in Logika::move_empty_to_top: " + exception);
             exit(EXIT_FAILURE);
         }
 
@@ -482,7 +491,7 @@ void Game::updateLogic()
                     newJewels[j][i]->updateAnimation(this->animationPhase, &this->jewelTextures);
                     this->addObject(1u, newJewels[j][i]);
                 }
-                else std::cerr << "Nullptr or toDelte objects tried be added to layer!\n";
+                else Log::New("Nullptr or toDelte objects tried be added to layer!");
             }
             newJewels[j].clear();
         }
@@ -519,7 +528,7 @@ void Game::updateAnimations()
                 else if (k->getOriginalPosition().y < k->getPosition().y) 
                     this->moveTo(k, k->getOriginalPosition());
             }
-            else std::cout << "Critical error, there is no jewel to select!\n";
+            else Log::New("Critical error, there is no jewel to select!");
             
         }
 
@@ -539,7 +548,7 @@ void Game::updateAnimations()
 		{   
             if (k != nullptr)
 		 	    k->updateAnimation(animationPhase, &jewelTextures);
-            else std::cout << "Critical error, there is no jewel to select!\n";
+            else Log::New("Critical error, there is no jewel to select!");
 		}
 	}
 
@@ -555,6 +564,7 @@ void Game::addObject(bool topPririty, Object* newObject)
      * 
      * @return void
      */
+
     if (newObject != nullptr)
     {
         if (topPririty || this->layers.empty()) 
@@ -564,8 +574,7 @@ void Game::addObject(bool topPririty, Object* newObject)
         }
         else layers.at(layers.size() - 1)->addToLayer(newObject);
     }
-    else std::cout << "Critical error! Engine can not store pointers on nullptr\n";
-    
+    else Log::New("Critical error! Engine can not store pointers on nullptr");
 }
 
 void Game::addObject(unsigned layer, Object* newObject)
@@ -579,8 +588,7 @@ void Game::addObject(unsigned layer, Object* newObject)
     {
         this->layers.at(layer)->addToLayer(newObject);
     }
-    else std::cout << "Critical error! Engine can not store pointers on nullptr\n";
-
+    else Log::New("Critical error! Engine can not store pointers on nullptr");
 }
 
 //void Game::deleteObject
@@ -608,7 +616,7 @@ void Game::moveTo(Object* object, sf::Vector2f position)
     {
         object->setPosition(position);
     }
-    else std::cout << "Critical error! Engine tried to move no object!\n";
+    else Log::New("Critical error! Engine tried to move no object!");
 }
 
 Object* Game::giveSelectable()
@@ -619,13 +627,16 @@ Object* Game::giveSelectable()
      * @return selected object
      */
 
-    for (size_t i = this->layers.size(); i > 0; i--)
+    if (this->layers.size())
     {
-        Object* t = nullptr;
-        if (this->layers[i - 1]->contain(this->mousePositionView)) 
+        for (size_t i = this->layers.size(); i > 0; --i)
         {
-            t = this->layers[i - 1]->giveObject(this->mousePositionView);
-            if (t->isSelectable()) return t;
+            Object* t = nullptr;
+            if (this->layers[i - 1] != nullptr && this->layers[i - 1]->contain(this->mousePositionView)) 
+            {
+                t = this->layers[i - 1]->giveObject(this->mousePositionView);
+                if (t != nullptr && t->isSelectable()) return t;
+            }
         }
     }
 

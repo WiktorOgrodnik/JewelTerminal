@@ -13,7 +13,7 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Text
 
     if (color < '1' || color > '6') 
     {
-        std::cerr << "Critical error! Jewel must not be color '0'.\n";
+        Log::New("Critical error! Jewel must not be color '0'");
         exit(0);
     }
     else
@@ -53,7 +53,7 @@ void Jewel::draw(sf::RenderWindow* window)
 
     if (this->color != '0')
         window->draw(this->body);
-    //else std::cerr << "Critical error! Engine tried to display jewel without color!\n";
+    else Log::New("Error! Engine tried to display jewel without color!");
 }
 
 bool Jewel::contain(sf::Vector2f mousePos)

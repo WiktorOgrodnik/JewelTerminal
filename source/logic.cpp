@@ -114,7 +114,7 @@ bool Logic::check(std::vector<Jewel*> &jewels, unsigned size)
     }
     catch(std::string exception)
     {
-        std::cerr << "Critical error int Logika::check: " << exception << '\n';
+        Log::New("Critical error int Logika::check: " + exception);
         exit(EXIT_FAILURE);
     }
 
@@ -352,5 +352,4 @@ void Logic::fill_table(char table[13][13])
             table[i][j] = good;
         }
     }
-
 }

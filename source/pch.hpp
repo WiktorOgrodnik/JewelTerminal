@@ -12,3 +12,6 @@
 #include <string>
 #include <stdlib.h>
 #include <time.h>
+#include <fstream>
+
+#include "logfile.hpp"
