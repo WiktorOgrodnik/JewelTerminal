@@ -234,4 +234,3 @@ void Jewel::setColor(char a)
 
     this->color = a;
 }
-

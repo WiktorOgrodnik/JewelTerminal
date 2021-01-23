@@ -73,6 +73,7 @@ private:
 
     //Score
     unsigned score;
+    Score score_class;
 
     //The board
     char tab[13][13]; // to delete
