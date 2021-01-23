@@ -28,7 +28,7 @@ public:
     static Jewel* tab(std::vector<Jewel*> &jewels, int x, int y,unsigned size);
     static void fill_empty(char table[13][13]);
     static bool check(std::vector<Jewel*> jewels,unsigned size);
-    static void remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewel*> newJewels[], sf::Vector2f jewelSize, sf::Vector2f boardMargin, float boardPadding, sf::Texture* jewelsTexture);
+    static void remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewel*> newJewels[], sf::Vector2f jewelSize, sf::Vector2f boardMargin, float boardPadding, sf::Texture* jewelsTexturem,unsigned int* score);
     static void color_swap(Jewel* first, Jewel* second);
     //static int check(char tablica[13][13], int* score);
     static void createJewel();

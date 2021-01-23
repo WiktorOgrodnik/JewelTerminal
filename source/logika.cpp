@@ -138,7 +138,7 @@ bool Logika::check(std::vector<Jewel*> jewels,unsigned size)
     return false;
 }
 
-void Logika::remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewel*> newJewels[], sf::Vector2f jewelSize, sf::Vector2f boardMargin, float boardPadding, sf::Texture* jewelsTexture)
+void Logika::remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewel*> newJewels[], sf::Vector2f jewelSize, sf::Vector2f boardMargin, float boardPadding, sf::Texture* jewelsTexture,unsigned int* score)
 {
     std::vector <int> newJewelsInColumn;
     newJewelsInColumn.resize(size, 0);
@@ -224,7 +224,16 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewe
             }
         }
     }
-    for(int i = 0; i < size*size; i++) if(jewels[i]->isToDelete()) jewels[i]->setColor('0');
+    unsigned int curr_score = 0;
+    for(int i = 0; i < size*size; i++) 
+    {
+        if(jewels[i]->isToDelete()) 
+        {
+            jewels[i]->setColor('0');
+            curr_score += 10;
+        }
+    }
+    *score += curr_score;
 }
 
 /*int Logika::check(char tablica[13][13], int* score)
