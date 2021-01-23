@@ -328,7 +328,7 @@ void Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, unsigned
         //std::cout<<"nie ma  ";
         std::swap(jewels[pos1], jewels[pos2]);
     }
-    position_swap(jewels[pos1],jewels[pos2]);
+    else position_swap(jewels[pos1],jewels[pos2]);
     //color_swap(jewels[pos1],jewels[pos2]);
     //std::cout<<"sa 3  ";
 }
