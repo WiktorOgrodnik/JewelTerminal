@@ -174,6 +174,21 @@ void Jewel::hover()
      * 
      */
 
+    this->body.setTextureRect(sf::IntRect(20.0f*5, 20.0f*((int)(this->color)-'1'), 20.0f, 20.0f));
+    this->body.setScale(sf::Vector2f(1.05f, 1.05f));
+
+}
+
+void Jewel::unHover()
+{
+    /**
+     * @brief -What jewel has to done when it is not indicated by mouse cursor any more
+     * 
+     */
+
+    this->body.setTextureRect(sf::IntRect(20.0f*5, 20.0f*((int)(this->color)-'1'), 20.0f, 20.0f));
+    this->body.setScale(sf::Vector2f(1.f, 1.f));
+
 }
 
 void Jewel::updateAnimation(int currentPhase, sf::Texture* jewelTexture)

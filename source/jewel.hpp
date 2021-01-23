@@ -39,6 +39,7 @@ public:
     void setToDelete() override;
     bool isToDelete() override;
     void hover() override;
+    void unHover() override;
 
     //Jewel idle animation functions
     void updateAnimation(int currentPhase, sf::Texture* jewelTexture);

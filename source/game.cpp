@@ -419,7 +419,13 @@ void Game::updateMousePositions()
     this->mousePositionWindow = sf::Mouse::getPosition(*this->window);
     this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
 
-    this->hover = this->giveSelectable();
+    Object* t = this->giveSelectable();
+    if(t != this->hover)
+    {   
+        if (this->hover != nullptr)
+            this->hover->unHover();
+        this->hover = t;
+    }
 }
 
 void Game::updateLogic()
@@ -474,9 +480,11 @@ void Game::updateAnimations()
             if (k->getOriginalPosition().y > k->getPosition().y)
             {
                 //Move object down (temporary teleport)
-                this->moveTo(k, k->getOriginalPosition());
+                this->moveTo(k, sf::Vector2f(k->getOriginalPosition().x, k->getPosition().y + 4.f));
                 wasAnimated = true;
-            } 
+            }
+            else if (k->getOriginalPosition().y < k->getPosition().y) 
+                this->moveTo(k, k->getOriginalPosition());
         }
 
         if (!wasAnimated) this->animationBlocker = false;
@@ -491,10 +499,11 @@ void Game::updateAnimations()
 		this->animationPhase++;
 		if(this->animationPhase >= 3)
 			this->animationPhase -= 3;
-		 for (auto &k : this->jewels)
-		 {
-		 	k->updateAnimation(animationPhase, &jewelTextures);
-		 }
+		    for (auto &k : this->jewels)
+		    {
+                if (k != hover)
+		 	        k->updateAnimation(animationPhase, &jewelTextures);
+		    }
 	}
 
     //Mouse hover animation

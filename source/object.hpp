@@ -31,4 +31,5 @@ public:
     virtual void setToDelete();
     virtual bool isToDelete();
     virtual void hover();
+    virtual void unHover();
 };

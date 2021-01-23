@@ -82,3 +82,5 @@ bool Object::isToDelete()
 }
 
 void Object::hover() {}
+
+void Object::unHover() {}
