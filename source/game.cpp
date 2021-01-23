@@ -104,12 +104,12 @@ void Game::initObjects()
      */
 
     Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin());
-    Engine::addObject(this->layers, true, board);
+    this->addObject(true, board);
     
     Label* label_one = new Label(this->settings.getBoardMargin());
-   // Engine::addTopLayer(this->layers);
-    Engine::addObject(this->layers, true, label_one);
-    Engine::addTopLayer(this->layers);
+    //Engine::addTopLayer(this->layers);
+    this->addObject(true, label_one);
+    this->addTopLayer();
     
     float inX = this->settings.getBoardMargin().x;
     float inY = this->settings.getBoardMargin().y;
@@ -120,7 +120,7 @@ void Game::initObjects()
         {
             //New jewel
             Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize(), &this->jewelTextures);
-            Engine::addObject(this->layers, false, temp);
+            this->addObject(false, temp);
             this->jewels.push_back(temp);
         }
     }
@@ -159,7 +159,7 @@ void Game::update()
     this->pollEvents();
     this->updateLogic();
     this->updateAnimations();
-    Engine::deleteUnnecessary(this->layers);
+    this->deleteUnnecessary();
 }
 
 void Game::pollEvents()
@@ -223,7 +223,7 @@ void Game::pollEvents()
 
             case sf::Event::MouseButtonPressed:
 
-                this->selected = Engine::giveSelectable(this->layers, this->mousePositionView); //Return object on top!
+                this->selected = this->giveSelectable(); //Return object on top!
                 if (this->selected != nullptr) 
                 {
                     //To object not "run away" from cursor
@@ -276,7 +276,7 @@ void Game::pollEvents()
                         //Góra 
                         if (this->jewelPos < (int)this->settings.getBoardSize()) ///Maksymalny poziom
                         {
-                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                            this->moveTo(this->selected, this->selected->getOriginalPosition());
                         }
                         else
                         {
@@ -290,14 +290,14 @@ void Game::pollEvents()
                             this->jewelPos2 = jewelPos - this->settings.getBoardSize();
                             if (this->mousePositionView.y - this->mousePositionDelta.y < this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding())
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding()));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y - this->settings.getJewelSize().y - this->settings.getBoardInnerPadding()));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
                             } 
                             else
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
                             }
                         }
@@ -307,7 +307,7 @@ void Game::pollEvents()
                         ///Dół
                         if (this->jewelPos >= (int)((this->settings.getBoardSize() * this->settings.getBoardSize()) - this->settings.getBoardSize()))
                         {
-                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                            this->moveTo(this->selected, this->selected->getOriginalPosition());
                         }
                         else
                         {
@@ -322,14 +322,14 @@ void Game::pollEvents()
                             this->jewelPos2 = jewelPos + this->settings.getBoardSize();
                             if (this->mousePositionView.y - this->mousePositionDelta.y > this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding()));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y + this->settings.getJewelSize().y + this->settings.getBoardInnerPadding()));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selected->getPosition().x, this->selected->getOriginalPosition().y));
                             }
                             else
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->selected->getPosition().x, this->mousePositionView.y - this->mousePositionDelta.y));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selected->getPosition().x, this->selectedExtraJewel->getOriginalPosition().y + (this->selected->getOriginalPosition().y - this->selected->getPosition().y)));
                             }
                         }
@@ -342,7 +342,7 @@ void Game::pollEvents()
                         ///Lewo
                         if (this->jewelPos % this->settings.getBoardSize() == 0) ///Maksymalny poziom
                         {
-                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                            this->moveTo(this->selected, this->selected->getOriginalPosition());
                         }
                         else
                         {
@@ -357,14 +357,14 @@ void Game::pollEvents()
                             this->jewelPos2 = jewelPos - 1;
                             if(this->mousePositionView.x - this->mousePositionDelta.x < this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding())
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x - this->settings.getJewelSize().x - this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
                             }
                             else
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
                             }
                         }
@@ -375,7 +375,7 @@ void Game::pollEvents()
                         ///Prawo
                         if (this->jewelPos % this->settings.getBoardSize() == this->settings.getBoardSize() - 1)
                         {
-                            Engine::moveTo(this->selected, this->selected->getOriginalPosition());
+                            this->moveTo(this->selected, this->selected->getOriginalPosition());
                         }
                         else
                         {
@@ -390,14 +390,14 @@ void Game::pollEvents()
                             this->jewelPos2 = jewelPos + 1;
                             if(this->mousePositionView.x - this->mousePositionDelta.x > this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->selected->getOriginalPosition().x + this->settings.getJewelSize().x + this->settings.getBoardInnerPadding(), this->selected->getPosition().y));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selected->getOriginalPosition().x, this->selected->getPosition().y));
                             }
                             else
                             {
-                                Engine::moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
-                                Engine::moveTo(this->selectedExtraJewel, 
+                                this->moveTo(this->selected, sf::Vector2f(this->mousePositionView.x - this->mousePositionDelta.x, this->selected->getPosition().y));
+                                this->moveTo(this->selectedExtraJewel, 
                                 sf::Vector2f(this->selectedExtraJewel->getOriginalPosition().x + (this->selected->getOriginalPosition().x - this->selected->getPosition().x), this->selected->getPosition().y));
                             }
                         }
@@ -444,7 +444,7 @@ void Game::updateLogic()
             for (unsigned i = 0; i < newJewels[j].size(); i++)
             {
                 //Add new jewel to engine layer
-                Engine::addObject(this->layers, 1u, newJewels[j][i]);
+                this->addObject(1u, newJewels[j][i]);
             }
             newJewels[j].clear();
         }
@@ -472,7 +472,7 @@ void Game::updateAnimations()
             if (k->getOriginalPosition().y > k->getPosition().y)
             {
                 //Move object down (temporary teleport)
-                Engine::moveTo(k, k->getOriginalPosition());
+                this->moveTo(k, k->getOriginalPosition());
                 wasAnimated = true;
             } 
         }
@@ -496,13 +496,102 @@ void Game::updateAnimations()
 	}
 }
 
-void Game::render()
+void Game::addObject(bool topPririty, Object* newObject)
 {
     /**
-     * @brief -Update game render 
+     * @brief -Add object to top layer, possibly make new layer
+     * 
+     * @return void
+     */
+
+    if (topPririty || this->layers.empty()) 
+    {
+        Layer* newLayer = new Layer(newObject);
+        this->layers.push_back(newLayer);
+    }
+    else layers.at(layers.size() - 1)->addToLayer(newObject);
+}
+
+void Game::addObject(unsigned layer, Object* newObject)
+{
+    /**
+     * @brief -Add object to specyfic layer
+     * 
+     * @return void
+     */
+
+    this->layers.at(layer)->addToLayer(newObject);
+}
+
+//void Game::deleteObject
+
+void Game::addTopLayer()
+{
+    /**
+     * @brief -Make new layer and push it on top
+     * 
+     * @return void
+     */
+
+    Layer* newLayer = new Layer();
+    this->layers.push_back(newLayer);
+}
+
+void Game::moveTo(Object* object, sf::Vector2f position)
+{
+    /**
+     * @brief -Move object to
+     * 
+     * @return void
+     */
+
+    object->setPosition(position);
+}
+
+Object* Game::giveSelectable()
+{
+    /**
+     * @brief -return object selected by mouse
+     * 
+     * @return selected object
+     */
+
+    for (size_t i = this->layers.size(); i > 0; i--)
+    {
+        Object* t = nullptr;
+        if (this->layers[i - 1]->contain(this->mousePositionView)) 
+        {
+            t = this->layers[i - 1]->giveObject(this->mousePositionView);
+            if (t->isSelectable()) return t;
+        }
+    }
+
+    return nullptr;
+}
+
+void Game::deleteUnnecessary()
+{
+    /**
+     * @brief -Delete all object with parameter "to delete"
      * 
      * @return void
      */
     
-    Engine::draw(this->layers, this->window);
+    for (auto &k : this->layers) k->deleteUnnecessary();
+}
+
+
+void Game::render()
+{
+    /**
+     * @brief -Update game render
+     *  -Draw all objects 
+     * 
+     * @return void
+     */
+    
+    this->window->clear(sf::Color(84, 82, 75, 255));
+    for (auto &k : this->layers) 
+        k->draw(this->window, this->settings.getBoardMargin().y);
+    this->window->display();
 }

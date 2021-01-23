@@ -1,16 +1,17 @@
 /*
 This is the most important class in the all game. It contains init functions to initialize all important variables and resources,
-it also ordes to render objects and updates the game state.
+it also ordes to render objects and updates the game state. This class also contains functions which is used to draw and manage drawable objects.
 */
 
 #pragma once
 
 #include "board.hpp"
-#include "engine.hpp"
+#include "layer.hpp"
 #include "settings.hpp"
 #include "logika.hpp"
 #include "score.h"
 #include "label.hpp"
+
 class Game
 {
 private: 
@@ -29,6 +30,23 @@ private:
     void updateMousePositions();
     void updateAnimations();
     void updateLogic();
+
+    //Engine functions
+    //Add objects
+    void addObject(bool topPririty, Object* newObject);
+    void addObject(unsigned layer, Object* newObject);
+    void addTopLayer();
+    //void addToTheSameLayerAs(std::vector<Layer*>* layers, Object* newObject, Object* existingObject); 
+
+    //Move objects
+    void moveTo(Object* object, sf::Vector2f position);
+
+    //Give selectable
+    Object* giveSelectable();
+
+    //Delete objects
+    //void delteObject(Object* object);
+    void deleteUnnecessary();
 
     //Delta time
     sf::Clock deltaTimeClock;

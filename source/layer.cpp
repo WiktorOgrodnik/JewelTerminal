@@ -27,7 +27,7 @@ Layer::~Layer()
     this->objects.clear();
 }
 
-void Layer::draw(sf::RenderWindow* window)
+void Layer::draw(sf::RenderWindow* window, float boardMarginy)
 {
     /**
      * @brief -draw all objects in layer
@@ -35,7 +35,11 @@ void Layer::draw(sf::RenderWindow* window)
      * @return void
      */
 
-    for (auto &k : this->objects) k->draw(window);
+    for (auto &k : this->objects) 
+    {
+        if ((k->getIdentity() == "jewel" && k->getPosition().y > boardMarginy - 10) || k->getIdentity() != "jewel")
+            k->draw(window);
+    }
 }
 
 bool Layer::contain(sf::Vector2f mousePos)
@@ -55,24 +59,6 @@ bool Layer::contain(sf::Vector2f mousePos)
     }
 
     return false;
-}
-
-sf::Vector2f Layer::getPosition()
-{
-    /**
-     * @return the object position
-     */
-
-    return sf::Vector2f(0.f, 0.f);
-}
-
-std::string Layer::getIdentity()
-{
-    /**
-     * @return name of the object
-     */
-
-    return "layer";
 }
 
 void Layer::addToLayer(Object* newObject)
