@@ -12,9 +12,9 @@ Game::Game()
      */
 
     this->initVariables();
+    this->initWindow();
     this->initResources();
     this->initObjects();
-    this->initWindow();
 }
 
 Game::~Game()
@@ -59,7 +59,7 @@ void Game::initVariables()
     this->score = 0u;
 
     //The board
-    Logika::fill_table(this->tab); // Temoprary solution
+    Logic::fill_table(this->tab); // Temoprary solution
 
     //Idle animations
     this->animationPhase = 0;
@@ -75,7 +75,7 @@ void Game::initWindow()
      * @return void
      */
 
-    this->window =  new sf::RenderWindow(this->settings.getVideoMode(), "Jewel", sf::Style::Titlebar | sf::Style::Close);
+    this->window = new sf::RenderWindow(this->settings.getVideoMode(), "Jewel", sf::Style::Titlebar | sf::Style::Close);
     this->window->setVerticalSyncEnabled(this->settings.getVerticalSyncSetting());
     this->window->setFramerateLimit(this->settings.getMaxFPS());
 }
@@ -106,10 +106,7 @@ void Game::initObjects()
 
     Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin());
     this->addObject(true, board);
-    
-    Label* label_one = new Label(this->settings.getBoardMargin());
-    //Engine::addTopLayer(this->layers);
-    this->addObject(true, label_one);
+
     this->addTopLayer();
     
     float inX = this->settings.getBoardMargin().x;
@@ -125,6 +122,10 @@ void Game::initObjects()
             this->jewels.push_back(temp);
         }
     }
+
+    Label* label_one = new Label(this->settings.getBoardMargin());
+    //Engine::addTopLayer(this->layers);
+    this->addObject(true, label_one);
 }
 
 const bool Game::running() const
@@ -205,7 +206,7 @@ void Game::pollEvents()
                             try
                             {
                                 //Check if there are jewels to swap
-                                Logika::call_swap(jewels,this->jewelPos,this->jewelPos2, this->settings.getBoardSize());
+                                Logic::call_swap(jewels,this->jewelPos,this->jewelPos2, this->settings.getBoardSize());
                             }
                             catch(std::string exception)
                             {
@@ -445,13 +446,13 @@ void Game::updateLogic()
      */
 
     //If there are objects to rearrange and the falling animation is not playing
-    if(!this->animationBlocker && Logika::check(this->jewels, this->settings.getBoardSize())) 
+    if(!this->animationBlocker && Logic::check(this->jewels, this->settings.getBoardSize())) 
     {
         std::vector <Jewel*> newJewels [this->settings.getBoardSize()];
         try 
         {
             //Remove specyfic jewels and adding new in replacement
-            Logika::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
+            Logic::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
         } 
         catch (std::string exception) 
         {
@@ -462,7 +463,7 @@ void Game::updateLogic()
         try 
         {
             //Set every jewel in right place
-            Logika::move_empty_to_top(this->jewels, this->settings.getBoardSize(), newJewels);
+            Logic::move_empty_to_top(this->jewels, this->settings.getBoardSize(), newJewels);
         } 
         catch (std::string exception) 
         {
@@ -476,7 +477,11 @@ void Game::updateLogic()
             for (unsigned i = 0; i < newJewels[j].size(); i++)
             {
                 //Add new jewel to engine layer
-                this->addObject(1u, newJewels[j][i]);
+                if (newJewels[j][i] != nullptr && newJewels[j][i]->getColor() != '0')
+                {
+                    this->addObject(1u, newJewels[j][i]);
+                }
+                else std::cerr << "Nullptr or toDelte objects tried be added to layer!\n";
             }
             newJewels[j].clear();
         }
@@ -529,12 +534,12 @@ void Game::updateAnimations()
 		this->animationPhase++;
 		if(this->animationPhase >= 3)
 			this->animationPhase -= 3;
-		    for (auto &k : this->jewels)
-		    {   
-                if (k != nullptr)
-		 	        k->updateAnimation(animationPhase, &jewelTextures);
-                else std::cout << "Critical error, there is no jewel to select!\n";
-		    }
+		for (auto &k : this->jewels)
+		{   
+            if (k != nullptr)
+		 	    k->updateAnimation(animationPhase, &jewelTextures);
+            else std::cout << "Critical error, there is no jewel to select!\n";
+		}
 	}
 
     //Mouse hover animation

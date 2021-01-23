@@ -11,14 +11,24 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Text
      *
     */
 
-    this->body.setSize(jewelSize);
-    this->body.setTexture(jewelTexture);
-    this->body.setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f)); //All textures are in the same file
-    this->color = color;
-    this->body.setPosition(position);
-    this->originalPositon = position;
-    this->del = false;
-    this->currentPhase = 0;
+    if (color < '1' || color > '6') 
+    {
+        std::cerr << "Critical error! Jewel must not be color '0'.\n";
+        exit(0);
+    }
+    else
+    {
+        this->body.setSize(jewelSize);
+        this->body.setTexture(jewelTexture);
+        this->body.setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f)); //All textures are in the same file
+        this->color = color;
+        this->body.setPosition(position);
+        this->originalPositon = position;
+        this->del = false;
+        this->currentPhase = 0;
+    }
+    
+    
 }
 
 
@@ -43,7 +53,9 @@ void Jewel::draw(sf::RenderWindow* window)
      * @return void
      */
 
-    window->draw(this->body);
+    if (this->color != '0')
+        window->draw(this->body);
+    //else std::cerr << "Critical error! Engine tried to display jewel without color!\n";
 }
 
 bool Jewel::contain(sf::Vector2f mousePos)

@@ -8,7 +8,7 @@ it also ordes to render objects and updates the game state. This class also cont
 #include "board.hpp"
 #include "layer.hpp"
 #include "settings.hpp"
-#include "logika.hpp"
+#include "logic.hpp"
 #include "label.hpp"
 
 class Game

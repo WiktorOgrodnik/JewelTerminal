@@ -34,11 +34,15 @@ void Layer::draw(sf::RenderWindow* window, float boardMarginy)
      * 
      * @return void
      */
-
+    
     for (auto &k : this->objects) 
     {
-        if ((k->getIdentity() == "jewel" && k->getPosition().y > boardMarginy - 10) || k->getIdentity() != "jewel")
-            k->draw(window);
+        if (k != nullptr)
+        {  
+            if ((k->getIdentity() == "jewel" && k->getPosition().y > boardMarginy - 10) || k->getIdentity() != "jewel")
+                k->draw(window);
+        }
+        else std::cerr << "Critical error, nullptr object in layer!\n";
     }
 }
 
@@ -54,7 +58,8 @@ bool Layer::contain(sf::Vector2f mousePos)
     {
         for(size_t it = this->objects.size(); it > 0; --it)
         {
-            if(this->objects[it - 1]->contain(mousePos)) return true;
+            if(this->objects[it - 1] != nullptr && this->objects[it - 1]->contain(mousePos)) 
+                return true;
         } 
     }
 
@@ -82,9 +87,10 @@ void Layer::deleteFromLayer(Object* newObject)
 
     for (size_t i = 0; i < this->objects.size(); i++)
     {
-        if (this->objects[i] == newObject)
+        if (this->objects[i] != nullptr && this->objects[i] == newObject)
         {
             Object* temp = this->objects[i];
+            this->objects[i] = nullptr;
             this->objects.erase(this->objects.begin() + i);
             delete temp;
         }
@@ -101,9 +107,10 @@ void Layer::deleteUnnecessary()
 
     for (size_t i = 0; i < this->objects.size(); i++)
     {
-        if (this->objects[i]->isToDelete())
+        if (this->objects[i] != nullptr && this->objects[i]->isToDelete())
         {
             Object* temp = this->objects[i];
+            this->objects[i] = nullptr;
             this->objects.erase(this->objects.begin() + i);
             delete temp;
         }
@@ -122,7 +129,8 @@ Object* Layer::giveObject(sf::Vector2f mousePos)
     {
         for(size_t it = this->objects.size(); it > 0; --it)
         {
-            if(this->objects[it - 1]->contain(mousePos)) return this->objects[it - 1];
+            if(this->objects[it-1] != nullptr && this->objects[it - 1]->contain(mousePos)) 
+                return this->objects[it - 1];
         } 
     }
 
