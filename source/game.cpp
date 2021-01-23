@@ -479,6 +479,7 @@ void Game::updateLogic()
                 //Add new jewel to engine layer
                 if (newJewels[j][i] != nullptr && newJewels[j][i]->getColor() != '0')
                 {
+                    newJewels[j][i]->updateAnimation(this->animationPhase, &this->jewelTextures);
                     this->addObject(1u, newJewels[j][i]);
                 }
                 else std::cerr << "Nullptr or toDelte objects tried be added to layer!\n";
