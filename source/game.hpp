@@ -9,7 +9,6 @@ it also ordes to render objects and updates the game state. This class also cont
 #include "layer.hpp"
 #include "settings.hpp"
 #include "logika.hpp"
-#include "score.h"
 #include "label.hpp"
 
 class Game
@@ -66,21 +65,19 @@ private:
     sf::Vector2f mousePositionDeltaCheckDirecton;
 
     //Mouse control
-    int moveDirectionCheck; //TO-DO switch to int
+    int moveDirectionCheck;
     bool moveAxis; // 0 - horizontal, 1 - vertical
     int jewelPos;
     int jewelPos2;
 
     //Score
     unsigned score;
-    Score score_class;
 
     //The board
     char tab[13][13]; // to delete
 
     //Settings
     Settings settings;
-    //Score score;
 
     //Selected
     Object* hover;

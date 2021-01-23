@@ -442,8 +442,7 @@ void Game::updateLogic()
     {
         //Remove specyfic jewels and adding new in replacement
         std::vector <Jewel*> newJewels [this->settings.getBoardSize()];
-        unsigned int temp_score = 0;
-        Logika::remove(jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &temp_score);
+        Logika::remove(jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
 
         //Set every jewel in right place
         Logika::move_empty_to_top(jewels, this->settings.getBoardSize(), newJewels);
@@ -460,8 +459,6 @@ void Game::updateLogic()
 
         //Start falling down animation
         this->animationBlocker = true;
-        score_class.Add_Points(temp_score);
-        std::cout << score_class.Player_Score() << "\n";
     }
 }
 
