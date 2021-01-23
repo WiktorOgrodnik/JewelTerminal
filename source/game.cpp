@@ -202,12 +202,8 @@ void Game::pollEvents()
                         if (fabs(this->selected->getPosition().x - this->selected->getOriginalPosition().x) > (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding())/2 
                         || fabs(this->selected->getPosition().y - this->selected->getOriginalPosition().y) > (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())/2)
                         {
-                            ///Skrypt z logiki!
-                            int scoreTEMP;
-                            if(Logika::call_swap(jewels,this->jewelPos,this->jewelPos2,&scoreTEMP,this->settings.getBoardSize()))
-                            {
-                                
-                            }
+                            //Check if there are jewels to swap
+                            Logika::call_swap(jewels,this->jewelPos,this->jewelPos2, this->settings.getBoardSize());
                         } 
                     }
                     if (this->selected != nullptr) this->selected->setPosition(this->selected->getOriginalPosition());
@@ -233,6 +229,7 @@ void Game::pollEvents()
 
                     if (this->selected->getIdentity() == "jewel")
                     {
+                        jewelPos = -1;
                         for (size_t i = 0; i < this->jewels.size(); i++)
                         {
                             if (this->jewels[i] == this->selected) 
@@ -241,6 +238,7 @@ void Game::pollEvents()
                                 break;
                             }
                         }
+                        if (jewelPos == -1) std::cout << "Critical error! Can not find Jewel to get logical position!\n";
                     }
                 }
                 break;
@@ -442,10 +440,10 @@ void Game::updateLogic()
     {
         //Remove specyfic jewels and adding new in replacement
         std::vector <Jewel*> newJewels [this->settings.getBoardSize()];
-        Logika::remove(jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
+        Logika::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
 
         //Set every jewel in right place
-        Logika::move_empty_to_top(jewels, this->settings.getBoardSize(), newJewels);
+        Logika::move_empty_to_top(this->jewels, this->settings.getBoardSize(), newJewels);
 
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
@@ -467,6 +465,7 @@ void Game::updateAnimations()
     /**
      * @brief -Update falling down animation
      * -Update idle animation
+     * -Update hover animation
      * 
      * @return void
      */
@@ -477,14 +476,19 @@ void Game::updateAnimations()
 
         for (auto &k : this->jewels)
         {
-            if (k->getOriginalPosition().y > k->getPosition().y)
+            if (k != nullptr)
             {
-                //Move object down
-                this->moveTo(k, sf::Vector2f(k->getOriginalPosition().x, k->getPosition().y + 4.f));
-                wasAnimated = true;
+                if (k->getOriginalPosition().y > k->getPosition().y)
+                {
+                    //Move object down
+                    this->moveTo(k, sf::Vector2f(k->getOriginalPosition().x, k->getPosition().y + 4.f));
+                    wasAnimated = true;
+                }
+                else if (k->getOriginalPosition().y < k->getPosition().y) 
+                    this->moveTo(k, k->getOriginalPosition());
             }
-            else if (k->getOriginalPosition().y < k->getPosition().y) 
-                this->moveTo(k, k->getOriginalPosition());
+            else std::cout << "Critical error, there is no jewel to select!\n";
+            
         }
 
         if (!wasAnimated) this->animationBlocker = false;
@@ -500,8 +504,10 @@ void Game::updateAnimations()
 		if(this->animationPhase >= 3)
 			this->animationPhase -= 3;
 		    for (auto &k : this->jewels)
-		    {
-		 	    k->updateAnimation(animationPhase, &jewelTextures);
+		    {   
+                if (k != nullptr)
+		 	        k->updateAnimation(animationPhase, &jewelTextures);
+                else std::cout << "Critical error, there is no jewel to select!\n";
 		    }
 	}
 
@@ -517,13 +523,17 @@ void Game::addObject(bool topPririty, Object* newObject)
      * 
      * @return void
      */
-
-    if (topPririty || this->layers.empty()) 
+    if (newObject != nullptr)
     {
-        Layer* newLayer = new Layer(newObject);
-        this->layers.push_back(newLayer);
+        if (topPririty || this->layers.empty()) 
+        {
+            Layer* newLayer = new Layer(newObject);
+            this->layers.push_back(newLayer);
+        }
+        else layers.at(layers.size() - 1)->addToLayer(newObject);
     }
-    else layers.at(layers.size() - 1)->addToLayer(newObject);
+    else std::cout << "Critical error! Engine can not store pointers on nullptr\n";
+    
 }
 
 void Game::addObject(unsigned layer, Object* newObject)
@@ -533,8 +543,12 @@ void Game::addObject(unsigned layer, Object* newObject)
      * 
      * @return void
      */
+    if (newObject != nullptr)
+    {
+        this->layers.at(layer)->addToLayer(newObject);
+    }
+    else std::cout << "Critical error! Engine can not store pointers on nullptr\n";
 
-    this->layers.at(layer)->addToLayer(newObject);
 }
 
 //void Game::deleteObject
@@ -558,8 +572,11 @@ void Game::moveTo(Object* object, sf::Vector2f position)
      * 
      * @return void
      */
-
-    object->setPosition(position);
+    if (object != nullptr)
+    {
+        object->setPosition(position);
+    }
+    else std::cout << "Critical error! Engine tried to move no object!\n";
 }
 
 Object* Game::giveSelectable()

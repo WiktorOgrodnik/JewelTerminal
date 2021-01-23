@@ -319,7 +319,7 @@ void Logika::remove(std::vector<Jewel*> &jewels, unsigned size, std::vector<Jewe
     check(tablica, score);
     return true;
 }*/
-bool Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, int* score,unsigned size)
+void Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, unsigned size)
 {
     std::swap(jewels[pos1], jewels[pos2]);
     if(!check(jewels,size))
@@ -327,12 +327,10 @@ bool Logika::call_swap(std::vector<Jewel*> &jewels, int pos1, int pos2, int* sco
         // Oprócz zamiany wskaźników, zamiana original position
         //std::cout<<"nie ma  ";
         std::swap(jewels[pos1], jewels[pos2]);
-        return false;
     }
     position_swap(jewels[pos1],jewels[pos2]);
     //color_swap(jewels[pos1],jewels[pos2]);
     //std::cout<<"sa 3  ";
-    return true;
 }
 /*bool Logika::call_swap(char tab[13][13], int x_1, int y_1, int x_2, int y_2, int* score)
 {
