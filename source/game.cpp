@@ -160,9 +160,7 @@ void Game::update()
      * @return void
      */
 
-    Log::New("Mouse pos");
     this->updateMousePositions();
-    Log::New("End Mouse pos");
     this->pollEvents();
     this->updateLogic();
     this->updateAnimations();
