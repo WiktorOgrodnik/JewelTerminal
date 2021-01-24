@@ -508,6 +508,7 @@ void Game::updateAnimations()
      * 
      * @return void
      */
+    
     if (this->animationBlocker) //If is animation to play
     {
         bool wasAnimated = false;

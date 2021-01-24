@@ -1,3 +1,7 @@
+/*
+This class is used to display score
+*/
+
 #pragma once
 
 #include "object.hpp"
@@ -5,17 +9,15 @@
 class Label : public Object
 {
 private:
+
     sf::RectangleShape body;
     sf::Texture boardTexture;
     sf::Vector2f boardMargin;
-    bool del;
-
 
     sf::Font font;
     sf::Text sc;
     std::string str_score;
 
-    
 public:
 
     Label(sf::Vector2f boardMargin_, unsigned int cur_score);  
@@ -27,6 +29,4 @@ public:
     void setPosition(sf::Vector2f position) override;
     sf::Vector2f getPosition() override;
     std::string getIdentity() override;
-    void setToDelete() override;
-    bool isToDelete() override;
 };

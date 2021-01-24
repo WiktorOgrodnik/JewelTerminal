@@ -8,7 +8,7 @@ Label::Label(sf::Vector2f boardMargin_, unsigned int cur_score)
      * 
      * 
     */
-    this->del = false;
+   
     this->boardMargin = boardMargin_;
     this->body.setSize(sf::Vector2f(135.0f, 54.0f));
 	this->boardTexture.loadFromFile("img/scorewb.png");
@@ -63,14 +63,4 @@ void Label::setPosition(sf::Vector2f position)
 std::string Label::getIdentity()
 {
     return "label";
-}
-
-void Label::setToDelete()
-{
-    this->del = true;
-}
-
-bool Label::isToDelete()
-{
-   return del;
 }
