@@ -90,7 +90,6 @@ void Game::initResources()
      */
 
     this->jewelTextures.loadFromFile("img/Jewels.png");
-    this->scoreLogo.loadFromFile("img/scorewb.png");
 }
 
 void Game::initObjects()
@@ -126,9 +125,9 @@ void Game::initObjects()
     }
 
     Log::New("Initialize interface");
-    Label* label_one = new Label(this->settings.getBoardMargin());
+    this->label_one = new Label(this->settings.getBoardMargin(), this->score);
     //Engine::addTopLayer(this->layers);
-    this->addObject(true, label_one);
+    this->addObject(true, this->label_one);
 }
 
 const bool Game::running() const
@@ -175,7 +174,7 @@ void Game::pollEvents()
      * 
      * @return void
      */
-
+    
     if (!this->animationBlocker)
     {
         while(this->window->pollEvent(ev))
@@ -460,6 +459,7 @@ void Game::updateLogic()
         {
             //Remove specyfic jewels and adding new in replacement
             Logic::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
+            this->label_one->newScore(this->score); //display new score
         } 
         catch (std::string exception) 
         {
@@ -508,7 +508,6 @@ void Game::updateAnimations()
      * 
      * @return void
      */
-
     if (this->animationBlocker) //If is animation to play
     {
         bool wasAnimated = false;
@@ -661,7 +660,6 @@ void Game::render()
      * 
      * @return void
      */
-    
     this->window->clear(sf::Color(84, 82, 75, 255));
     for (auto &k : this->layers) 
         k->draw(this->window, this->settings.getBoardMargin().y);

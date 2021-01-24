@@ -72,6 +72,7 @@ private:
 
     //Score
     unsigned score;
+    Label* label_one;
 
     //The board
     char tab[13][13]; // to delete
@@ -91,7 +92,7 @@ private:
 
     //Textures
     sf::Texture jewelTextures;
-    sf::Texture scoreLogo;
+    
 
 public:
 
