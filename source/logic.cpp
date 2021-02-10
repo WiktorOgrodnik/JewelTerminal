@@ -20,7 +20,7 @@ void Logic::position_swap(Jewel* first, Jewel* second)
 void Logic::position_swap2(Jewel* first, Jewel* second)
 {
     /**
-     * @brief -Swap positions of Jewels. It uses Jewel::setOriginalPosition2 and does not swap curren position
+     * @brief -Swap positions of Jewels. It uses Jewel::setOriginalPosition2 and does not swap current position
      * 
      * @return void
      */
