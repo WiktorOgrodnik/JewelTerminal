@@ -5,11 +5,11 @@ OBJ = main.o game.o object.o jewel.o board.o layer.o label.o settings.o logic.o 
 SFML = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
 INC_DIR=.
-SRC_DIR=./source
+SRC_DIR=./src
 
-PCH_SRC = source/pch.hpp
+PCH_SRC = src/pch.hpp
 #PCH_HEADERS = 
-PCH_OUT = source/pch.hpp.gch
+PCH_OUT = src/pch.hpp.gch
 
 NAME = jewel
 

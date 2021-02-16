@@ -11,6 +11,12 @@ Open source puzzle game written in C++ with SFML library.
 sudo apt-get install libsfml-dev
 ```
 
+or
+
+```bash
+sudo pacman -S sfml
+```
+
 2. Clone repository
 
 ```bash
