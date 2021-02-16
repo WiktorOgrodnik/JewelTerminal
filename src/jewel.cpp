@@ -10,21 +10,15 @@ Jewel::Jewel(const sf::Vector2f position, char color, sf::Vector2f jewelSize, sf
      *
     */
 
-    if (color < '1' || color > '6') 
-    {
-        Log::New("Critical error! Jewel must not be color '0'");
-        exit(0);
-    }
-    else
-    {
-        this->setTexture(jewelTexture);
+    this->setTexture(jewelTexture);
+    this->color = color;
+    this->setPosition(position);
+    this->originalPositon = position;
+    this->del = false;
+    this->currentPhase = 0;
+
+    if (this->color >= '1' && this->color <= '6')  
         this->setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f)); //All textures are in the same file
-        this->color = color;
-        this->setPosition(position);
-        this->originalPositon = position;
-        this->del = false;
-        this->currentPhase = 0;
-    }
 }
 
 
@@ -176,4 +170,7 @@ void Jewel::setColor(char a)
      */
 
     this->color = a;
+
+    if (this->color >= '1' && this->color <= '6')  
+        this->setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f)); //All textures are in the same file
 }

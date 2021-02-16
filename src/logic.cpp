@@ -1,6 +1,11 @@
 #include "logic.hpp"
 
-void Logic::position_swap(Jewel* first, Jewel* second)
+//Auxilary functions - declarations
+static void position_swap(Jewel* first, Jewel* second);
+static void position_swap2(Jewel* first, Jewel* second);
+static Jewel* array(std::vector<Jewel*> &jewels, unsigned x, unsigned y, unsigned size);
+
+static void position_swap(Jewel* first, Jewel* second)
 {
     /**
      * @brief -Swap positions of Jewels
@@ -17,7 +22,7 @@ void Logic::position_swap(Jewel* first, Jewel* second)
     else throw "Nullptr in Logika::position_swap";
 }
 
-void Logic::position_swap2(Jewel* first, Jewel* second)
+static void position_swap2(Jewel* first, Jewel* second)
 {
     /**
      * @brief -Swap positions of Jewels. It uses Jewel::setOriginalPosition2 and does not swap current position
@@ -34,7 +39,7 @@ void Logic::position_swap2(Jewel* first, Jewel* second)
     else throw "Nullptr in Logika::position_swap2";
 }
 
-Jewel* Logic::array(std::vector<Jewel*> &jewels, unsigned x, unsigned y, unsigned size)
+static Jewel* array(std::vector<Jewel*> &jewels, unsigned x, unsigned y, unsigned size)
 {
     /**
      * @brief -Two dimentional array implementation
@@ -297,59 +302,32 @@ void Logic::move_empty_to_top(std::vector<Jewel*> &jewels, unsigned size, std::v
     }
 }
 
-void Logic::fill_empty(char table[13][13])
+void Logic::fill_array(std::vector<Jewel*>& jewels, unsigned boardSize)
 {
     /**
-     * @brief -Fill board with values
-     * -TO-DO: use SFML and jewels array
-     * 
-     * @return void 
-     */
-
-    for(int i = 12; i >= 0; i--)
-    {
-        for(int j = 0; j < 13; j++)
-        {
-            if(table[j][i] == '0')
-            {
-                int x = j;
-                int y = i;
-                while(y != 0)
-                {
-                    std::swap(table[x][y], table[x][y-1]);
-                    y--;
-                }
-                table[x][y] = rand() % 6 + '1';
-                j--;
-            }
-        }
-    }
-}
-
-void Logic::fill_table(char table[13][13])
-{
-    /**
-     * @brief -Create new board
-     * -draws random jewels
-     * -TO-DO: use SFML and jewels array
+     * @brief fill jewels table with random numbers (from 1 to 6)
      * 
      * @return void
      */
 
-    for(int j = 0; j < 13; j++)
+    for(unsigned j = 0; j < boardSize; j++)
     {
-        for(int i = 0; i < 13; i++)
+        for(unsigned i = 0; i < boardSize; i++)
         {
             char bad1 = -1;
             char bad2 = -1;
-            if(i >= 2 && table[i-1][j] == table[i - 2][j]) bad1 = table[i-1][j];
-            if(j >= 2 && table[i][j-1] == table[i][j - 2]) bad2 = table[i][j-1];
-            char good;
+
+            if(i >= 2 && jewels[j * boardSize + (i - 1)]->getColor() == jewels[j * boardSize + (i - 2)]->getColor()) bad1 = jewels[j * boardSize + (i - 1)]->getColor();
+            if(j >= 2 && jewels[(j - 1) * boardSize + i]->getColor() == jewels[(j - 2) * boardSize + i]->getColor()) bad2 = jewels[(j - 1) * boardSize + i]->getColor();
+
+            char good = 0;
+
             do
             {
                 good = rand() % 6 + '1';
-            }while(good == bad1 || good == bad2);
-            table[i][j] = good;
+            } while(good == bad1 || good == bad2);
+
+            jewels[j * boardSize + i]->setColor(good);
         }
     }
 }

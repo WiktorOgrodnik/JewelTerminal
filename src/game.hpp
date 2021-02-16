@@ -69,9 +69,6 @@ private:
     unsigned score;
     sf::Text* scoreLabel;
 
-    //The board
-    char tab[13][13]; // to delete
-
     //Settings
     Settings settings;
 

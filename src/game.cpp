@@ -57,9 +57,6 @@ void Game::initVariables()
     //Score
     this->score = 0u;
 
-    //The board
-    Logic::fill_table(this->tab); // Temoprary solution
-
     //Idle animations
     this->animationPhase = 0;
     this->animationTime = 0.0f;
@@ -103,16 +100,20 @@ void Game::initObjects()
     float inX = this->settings.getBoardMargin().x;
     float inY = this->settings.getBoardMargin().y;
 
+    this->jewels.resize(this->settings.getBoardSize() * this->settings.getBoardSize(), nullptr);
+
     for (unsigned i = 0; i < this->settings.getBoardSize(); i++)
     {
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
             //New jewel
-            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize(), this->resources.getTexture("jewels"));
+            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), '0', this->settings.getJewelSize(), this->resources.getTexture("jewels"));
             this->addObject(false, temp);
-            this->jewels.push_back(temp);
+            this->jewels[i * this->settings.getBoardSize() + j] = temp;
         }
     }
+
+    Logic::fill_array(this->jewels, this->settings.getBoardSize());
 
     Log::New("Initialize interface");
     this->scoreLabel = new sf::Text(std::to_string(this->score), *this->resources.getFont("mainfont"), this->settings.getScoreTextFontSize());
@@ -609,7 +610,6 @@ Selectable* Game::giveSelectable()
             Selectable* t = nullptr;
             if (this->layers[i - 1] != nullptr && this->layers[i - 1]->contain(this->mousePositionView)) 
             {
-
                 t = this->layers[i - 1]->giveObject(this->mousePositionView);
                 if (t != nullptr) 
                     return t;
