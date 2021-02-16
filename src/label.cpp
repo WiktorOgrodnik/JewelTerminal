@@ -1,6 +1,6 @@
 #include "label.hpp"
 
-Label::Label(sf::Vector2f boardMargin_, unsigned int cur_score)
+Label::Label(sf::Vector2f boardMargin_, unsigned int cur_score, sf::Font* labelFont, sf::Texture* labelTexture)
 {
     /**
      * Constructor
@@ -11,13 +11,10 @@ Label::Label(sf::Vector2f boardMargin_, unsigned int cur_score)
    
     this->boardMargin = boardMargin_;
     this->body.setSize(sf::Vector2f(135.0f, 54.0f));
-	this->boardTexture.loadFromFile("img/scorewb.png");
-	this->body.setTexture(&boardTexture);
+	this->body.setTexture(labelTexture);
 	this->body.setPosition(sf::Vector2f(this->boardMargin.x + 450.0f, this->boardMargin.y + 200.0f));
 
-
-    this->font.loadFromFile("font/CodaCaption-ExtraBold.ttf");
-    this->sc.setFont(this->font);
+    this->sc.setFont(*labelFont);
     this->sc.setPosition(sf::Vector2f(this->boardMargin.x + 500.0f, this->boardMargin.y + 260.0f));//510
     this->sc.setCharacterSize(26);
     this->str_score=std::to_string(cur_score);

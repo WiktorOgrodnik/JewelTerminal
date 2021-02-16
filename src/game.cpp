@@ -13,7 +13,6 @@ Game::Game()
 
     this->initVariables();
     this->initWindow();
-    this->initResources();
     this->initObjects();
 }
 
@@ -80,18 +79,6 @@ void Game::initWindow()
     this->window->setFramerateLimit(this->settings.getMaxFPS());
 }
 
-void Game::initResources()
-{
-    /**
-     * @brief -Initialize resources
-     *  -Initialize textures
-     * 
-     * @return void
-     */
-
-    this->jewelTextures.loadFromFile("img/Jewels.png");
-}
-
 void Game::initObjects()
 {
     /**
@@ -104,7 +91,7 @@ void Game::initObjects()
      */
 
     Log::New("Initialize Board");
-    Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin());
+    Board* board = new Board(this->settings.getBoardSize(), this->settings.getJewelSize(), this->settings.getBoardInnerPadding(), this->settings.getBoardLineThickness(), this->settings.getBoardMargin(), this->resources.getTexture("board"));
     this->addObject(true, board);
 
     this->addTopLayer();
@@ -118,14 +105,14 @@ void Game::initObjects()
         for (unsigned j = 0; j < this->settings.getBoardSize(); j++)
         {
             //New jewel
-            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize(), &this->jewelTextures);
+            Jewel* temp = new Jewel(sf::Vector2f(inX + static_cast<float>(j) * (this->settings.getJewelSize().x + this->settings.getBoardInnerPadding()), inY + static_cast<float>(i) * (this->settings.getJewelSize().y + this->settings.getBoardInnerPadding())), this->tab[j][i], this->settings.getJewelSize(), this->resources.getTexture("jewels"));
             this->addObject(false, temp);
             this->jewels.push_back(temp);
         }
     }
 
     Log::New("Initialize interface");
-    this->label_one = new Label(this->settings.getBoardMargin(), this->score);
+    this->label_one = new Label(this->settings.getBoardMargin(), this->score, this->resources.getFont("mainfont"), this->resources.getTexture("score"));
     //Engine::addTopLayer(this->layers);
     this->addObject(true, this->label_one);
 }
@@ -458,7 +445,7 @@ void Game::updateLogic()
         try 
         {
             //Remove specyfic jewels and adding new in replacement
-            Logic::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), &this->jewelTextures, &this->score);
+            Logic::remove(this->jewels, this->settings.getBoardSize(), newJewels, this->settings.getJewelSize(), this->settings.getBoardMargin(), this->settings.getBoardInnerPadding(), this->resources.getTexture("jewels"), &this->score);
             this->label_one->newScore(this->score); //display new score
         } 
         catch (std::string exception) 
@@ -486,7 +473,7 @@ void Game::updateLogic()
                 //Add new jewel to engine layer
                 if (newJewels[j][i] != nullptr && newJewels[j][i]->getColor() != '0')
                 {
-                    newJewels[j][i]->updateAnimation(this->animationPhase, &this->jewelTextures);
+                    newJewels[j][i]->updateAnimation(this->animationPhase, this->resources.getTexture("jewels"));
                     this->addObject(1u, newJewels[j][i]);
                 }
                 else Log::New("Nullptr or toDelte objects tried be added to layer!");
@@ -545,7 +532,7 @@ void Game::updateAnimations()
 		for (auto &k : this->jewels)
 		{   
             if (k != nullptr)
-		 	    k->updateAnimation(animationPhase, &jewelTextures);
+		 	    k->updateAnimation(animationPhase, this->resources.getTexture("jewels"));
             else Log::New("Critical error, there is no jewel to select!");
 		}
 	}

@@ -42,7 +42,7 @@ void Layer::draw(sf::RenderWindow* window, float boardMarginy)
             if ((k->getIdentity() == "jewel" && k->getPosition().y > boardMarginy - 10) || k->getIdentity() != "jewel")
                 k->draw(window);
         }
-        else std::cerr << "Critical error, nullptr object in layer!\n";
+        else Log::New ("Critical error, nullptr object in layer!");
     }
 }
 
@@ -76,7 +76,7 @@ void Layer::addToLayer(Object* newObject)
 
     if(newObject != nullptr)
         this->objects.push_back(newObject);
-    else std::cerr << "Critical error! Nullptr object in layer!\n"; 
+    else Log::New ("Critical error! Nullptr object in layer!"); 
 }
 
 void Layer::deleteFromLayer(Object* newObject)

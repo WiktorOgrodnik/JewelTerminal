@@ -1,6 +1,6 @@
 #include "board.hpp"
 
-Board::Board(unsigned size, sf::Vector2f jewelSize, float padding, float lineThickness, sf::Vector2f boardMargin)
+Board::Board(unsigned size, sf::Vector2f jewelSize, float padding, float lineThickness, sf::Vector2f boardMargin, sf::Texture* boardTexture)
 {
     /**  
      * Constructor
@@ -17,8 +17,7 @@ Board::Board(unsigned size, sf::Vector2f jewelSize, float padding, float lineThi
     this->jewelSize = jewelSize;
     this->boardMargin = boardMargin;
     this->body.setSize(sf::Vector2f(417.0f, 392.0f));
-	this->boardTexture.loadFromFile("img/Board.png");
-	this->body.setTexture(&boardTexture);
+	this->body.setTexture(boardTexture);
 	this->body.setPosition(sf::Vector2f(this->boardMargin.x - 38.0f, this->boardMargin.y - 27.0f));
 }
 

@@ -10,6 +10,7 @@ it also ordes to render objects and updates the game state. This class also cont
 #include "settings.hpp"
 #include "logic.hpp"
 #include "label.hpp"
+#include "resources.hpp"
 
 class Game
 {
@@ -24,7 +25,6 @@ private:
     //Init functions
     void initVariables();
     void initWindow();
-    void initResources();
     void initObjects();
 
     //Update functions
@@ -80,6 +80,9 @@ private:
     //Settings
     Settings settings;
 
+    //Resources
+    Resources resources;
+
     //Selected
     Object* hover;
     Object* selected;
@@ -89,11 +92,7 @@ private:
     int animationPhase;
     float animationTime;
     bool animationBlocker;
-
-    //Textures
-    sf::Texture jewelTextures;
     
-
 public:
 
     Game();

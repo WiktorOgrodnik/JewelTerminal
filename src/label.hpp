@@ -11,16 +11,14 @@ class Label : public Object
 private:
 
     sf::RectangleShape body;
-    sf::Texture boardTexture;
     sf::Vector2f boardMargin;
 
-    sf::Font font;
     sf::Text sc;
     std::string str_score;
 
 public:
 
-    Label(sf::Vector2f boardMargin_, unsigned int cur_score);  
+    Label(sf::Vector2f boardMargin_, unsigned int cur_score, sf::Font* labelFont, sf::Texture* labelTexture);  
 
     ~Label();
     void newScore(unsigned int cur_score);

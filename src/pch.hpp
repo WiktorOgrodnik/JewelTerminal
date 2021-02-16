@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <fstream>
+#include <map>
 
 //If you are using linux, change WINDOWS to LINUX
 #define LINUX

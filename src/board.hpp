@@ -18,12 +18,11 @@ private:
     sf::Vector2f boardMargin;
 
     sf::RectangleShape body;
-    sf::Texture boardTexture;
 
 public:
 
     //Constructor
-    Board(unsigned size_, sf::Vector2f jewelSize, float padding, float lineThickness, sf::Vector2f boardMargin);
+    Board(unsigned size_, sf::Vector2f jewelSize, float padding, float lineThickness, sf::Vector2f boardMargin, sf::Texture* boardTexture);
 
     //Descructor
     ~Board();
