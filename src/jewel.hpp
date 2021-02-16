@@ -4,13 +4,12 @@ This object is used to draw jewel on screen.
 
 #pragma once
 
-#include "object.hpp"
+#include "selectable.hpp"
 
-class Jewel : public Object
+class Jewel : public Selectable, public sf::RectangleShape
 {
 private:
 
-    sf::RectangleShape body;
     sf::Vector2f originalPositon;
     bool del; //is object to delete
     char color; //jewel color
@@ -24,18 +23,12 @@ public:
     //Destructor
     ~Jewel();
 
-    //Object specyfic functions
-    void draw(sf::RenderWindow* window) override;
+    //Selected specyfic functions
     bool contain(sf::Vector2f mousePos) override;
-    void move(sf::Vector2f moveVector) override;
-    void setPosition(sf::Vector2f position) override;
-    bool isSelectable() override;
     bool isToMove() override;
-    sf::Vector2f getPosition() override;
     bool isReturn() override;
     sf::Vector2f getOriginalPosition() override;
     void setOriginalPosition(sf::Vector2f position) override;
-    std::string getIdentity() override;
     void setToDelete() override;
     bool isToDelete() override;
     void hover() override;

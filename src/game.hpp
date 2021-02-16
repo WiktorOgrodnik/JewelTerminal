@@ -5,11 +5,9 @@ it also ordes to render objects and updates the game state. This class also cont
 
 #pragma once
 
-#include "board.hpp"
 #include "layer.hpp"
 #include "settings.hpp"
 #include "logic.hpp"
-#include "label.hpp"
 #include "resources.hpp"
 
 class Game
@@ -35,16 +33,13 @@ private:
 
     //Engine functions
     //Add objects
-    void addObject(bool topPririty, Object* newObject);
-    void addObject(unsigned layer, Object* newObject);
+    void addObject(bool topPririty, sf::Drawable* newObject);
+    void addObject(unsigned layer, sf::Drawable* newObject);
     void addTopLayer();
     //void addToTheSameLayerAs(std::vector<Layer*>* layers, Object* newObject, Object* existingObject); 
 
-    //Move objects
-    void moveTo(Object* object, sf::Vector2f position);
-
     //Give selectable
-    Object* giveSelectable();
+    Selectable* giveSelectable();
 
     //Delete objects
     //void delteObject(Object* object);
@@ -72,7 +67,7 @@ private:
 
     //Score
     unsigned score;
-    Label* label_one;
+    sf::Text* scoreLabel;
 
     //The board
     char tab[13][13]; // to delete
@@ -84,9 +79,9 @@ private:
     Resources resources;
 
     //Selected
-    Object* hover;
-    Object* selected;
-    Object* selectedExtraJewel;
+    Selectable* hover;
+    Selectable* selected;
+    Jewel* selectedExtraJewel;
     
     //Animations
     int animationPhase;

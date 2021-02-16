@@ -19,8 +19,18 @@ class Settings
     sf::Vector2f boardMargin;
     float boardInnerPadding;
     float boardLineThickness;
+    sf::Vector2f boardSizePixels;
+    sf::Vector2f boardPosition;
 
-    //Engine Settings
+    //Score texture
+    sf::Vector2f scoreImageSize;
+    sf::Vector2f scoreImagePosition;
+
+    //Score text
+    sf::Vector2f scoreTextPosition;
+    unsigned scoreTextFontSize;
+
+    //Engine Settings  
     sf::VideoMode videoMode;
     bool verticalSync;
     int FPSLimit;
@@ -35,15 +45,25 @@ public:
 
     //Game settings getters
 
-    //Jewel
+    //Jewel gettrs
     sf::Vector2f getJewelSize();
     float getSwitchTime();
 
-    //Board
+    //Board getters
     unsigned getBoardSize();
     sf::Vector2f getBoardMargin();
     float getBoardInnerPadding();
     float getBoardLineThickness();
+    sf::Vector2f getBoardSizePixels();
+    sf::Vector2f getBoardPosition();
+
+    //Score image getters
+    sf::Vector2f getScoreImageSize();
+    sf::Vector2f getScoreImagePosition();
+
+    //Score text getters
+    sf::Vector2f getScoreTextPosition();
+    unsigned getScoreTextFontSize();
 
     //Engine settings getters
     sf::VideoMode getVideoMode();

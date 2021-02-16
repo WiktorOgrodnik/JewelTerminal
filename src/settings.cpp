@@ -10,7 +10,17 @@ Settings::Settings()
     this->boardSize = 13u;
     this->boardInnerPadding = 7.f;
     this->boardLineThickness = 3.f;
-    this->boardMargin = sf::Vector2f(199.f, 130.f);
+    this->boardMargin = sf::Vector2f(179.f, 130.f);
+    this->boardPosition = sf::Vector2f(141.f, 103.f);
+    this->boardSizePixels = sf::Vector2f(417.f, 392.f);
+
+    //Score texture
+    this->scoreImageSize = sf::Vector2f(135.f, 54.f);
+    this->scoreImagePosition = sf::Vector2f(20.f, 170.f);
+
+    //Score text
+    this->scoreTextFontSize = 26;
+    this->scoreTextPosition = sf::Vector2f(40.f, 230.f);
 
     //Engine
     this->FPSLimit = 60;
@@ -43,6 +53,16 @@ sf::Vector2f Settings::getBoardMargin()
     return this->boardMargin;
 }
 
+sf::Vector2f Settings::getBoardSizePixels()
+{
+    return this->boardSizePixels;
+}
+
+sf::Vector2f Settings::getBoardPosition()
+{
+    return this->boardPosition;
+}
+
 float Settings::getBoardInnerPadding()
 {
     return this->boardInnerPadding;
@@ -51,6 +71,26 @@ float Settings::getBoardInnerPadding()
 float Settings::getBoardLineThickness()
 {
     return this->boardLineThickness;
+}
+
+sf::Vector2f Settings::getScoreImagePosition()
+{
+    return this->scoreImagePosition;
+}
+
+sf::Vector2f Settings::getScoreImageSize()
+{
+    return this->scoreImageSize;
+}
+
+sf::Vector2f Settings::getScoreTextPosition()
+{
+    return this->scoreTextPosition;
+}
+
+unsigned Settings::getScoreTextFontSize()
+{
+    return this->scoreTextFontSize;
 }
 
 sf::VideoMode Settings::getVideoMode()

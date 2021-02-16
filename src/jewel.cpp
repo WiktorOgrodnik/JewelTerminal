@@ -1,7 +1,6 @@
-#include "pch.hpp"
 #include "jewel.hpp"
 
-Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture)
+Jewel::Jewel(const sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture) : Selectable(), sf::RectangleShape(jewelSize)
 {
     /**
      * Constructor
@@ -18,11 +17,10 @@ Jewel::Jewel(sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Text
     }
     else
     {
-        this->body.setSize(jewelSize);
-        this->body.setTexture(jewelTexture);
-        this->body.setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f)); //All textures are in the same file
+        this->setTexture(jewelTexture);
+        this->setTextureRect(sf::IntRect(0.0f, 20.0f*((int)color-'1'), 20.0f, 20.0f)); //All textures are in the same file
         this->color = color;
-        this->body.setPosition(position);
+        this->setPosition(position);
         this->originalPositon = position;
         this->del = false;
         this->currentPhase = 0;
@@ -40,22 +38,6 @@ Jewel::~Jewel()
      */
 }
 
-void Jewel::draw(sf::RenderWindow* window)
-{
-    /**
-     *
-     * @param RenderWindow
-     *
-     * @brief -draw object on screen
-     *
-     * @return void
-     */
-
-    if (this->color != '0')
-        window->draw(this->body);
-    else Log::New("Error! Engine tried to display jewel without color!");
-}
-
 bool Jewel::contain(sf::Vector2f mousePos)
 {
     /**
@@ -64,38 +46,7 @@ bool Jewel::contain(sf::Vector2f mousePos)
      * @return void
      */
 
-    return this->body.getGlobalBounds().contains(mousePos);
-}
-
-void Jewel::move(sf::Vector2f moveVector)
-{
-    /**
-     * @brief -Move the object by the vector
-     * 
-     * @return void
-     */
-
-    this->body.move(moveVector);
-}
-
-void Jewel::setPosition(sf::Vector2f position)
-{
-    /**
-     * @brief -Move the object to another position
-     * 
-     * @return void
-     */
-
-    this->body.setPosition(position);
-}
-
-bool Jewel::isSelectable()
-{
-    /**
-     * @return the object property
-     */
-
-    return true;
+    return this->getGlobalBounds().contains(mousePos);
 }
 
 bool Jewel::isToMove()
@@ -105,15 +56,6 @@ bool Jewel::isToMove()
      */
 
     return true;
-}
-
-sf::Vector2f Jewel::getPosition()
-{
-    /**
-     * @return the object position
-     */
-
-    return this->body.getPosition();
 }
 
 bool Jewel::isReturn()
@@ -148,15 +90,6 @@ void Jewel::setOriginalPosition(sf::Vector2f position)
     this->setPosition(position);
 }
 
-std::string Jewel::getIdentity()
-{
-    /**
-     * @return name of the object
-     */
-
-    return "jewel";
-}
-
 void Jewel::setToDelete()
 {
     /**
@@ -184,7 +117,7 @@ void Jewel::hover()
      * 
      */
 
-    this->body.setScale(sf::Vector2f(1.05f, 1.05f));
+    this->setScale(sf::Vector2f(1.05f, 1.05f));
 
 }
 
@@ -195,7 +128,7 @@ void Jewel::unHover()
      * 
      */
 
-    this->body.setScale(sf::Vector2f(1.f, 1.f));
+    this->setScale(sf::Vector2f(1.f, 1.f));
 
 }
 
@@ -210,7 +143,7 @@ void Jewel::updateAnimation(int currentPhase, sf::Texture* jewelTexture)
     if(currentPhase >= 3)
         currentPhase -= 3;
     this->currentPhase = currentPhase;
-    this->body.setTextureRect(sf::IntRect(20.0f*currentPhase, 20.0f*((int)(this->color)-'1'), 20.0f, 20.0f));
+    this->setTextureRect(sf::IntRect(20.0f*currentPhase, 20.0f*((int)(this->color)-'1'), 20.0f, 20.0f));
 }
 
 void Jewel::setOriginalPosition2(sf::Vector2f position)

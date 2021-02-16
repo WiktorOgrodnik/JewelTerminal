@@ -23,13 +23,7 @@ sudo pacman -S sfml
 git clone https://github.com/ViktusYT/JewelTerminal.git
 ```
 
-3. In pch.hpp change
-
-```code
-#define WINDOWS
-```
-
-into
+3. In pch.hpp on line 21 it should be written
 
 ```code
 #define LINUX
@@ -64,13 +58,19 @@ pcamna -S git
 git clone https://github.com/ViktusYT/JewelTerminal.git
 ```
 
-4. Compile using make
+4. In pch.hpp on line 21 it should be written
+
+```code
+#define WINDOWS
+```
+
+5. Compile using make
 
 ```bash
 make
 ```
 
-5. Run  
+6. Run  
 
 ```bash
 ./jewel.exe

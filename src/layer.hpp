@@ -5,31 +5,31 @@ If two objects overlap, the one is on the upper layer is shown. The layer is als
 
 #pragma once
 
-#include "object.hpp"
+#include "jewel.hpp"
 
 class Layer
 {
 private:
 
     //All objects in layer
-    std::vector <Object*> objects;
+    std::vector <sf::Drawable*> objects;
 
 public:
 
     //Constructors
     Layer();
-    Layer(Object* newObject);
+    Layer(sf::Drawable* newObject);
     
     //Destructors
     ~Layer();
 
     //Opetation on layer
-    void draw (sf::RenderWindow* window, float boardMarginy);
+    void draw (sf::RenderWindow* window, float boardMargin);
     bool contain (sf::Vector2f mousePos);
-    void addToLayer (Object* newObject);
-    void deleteFromLayer (Object* newObject);
+    void addToLayer (sf::Drawable* newObject);
+    void deleteFromLayer (sf::Drawable* newObject);
     void deleteUnnecessary();
 
     //Getters
-    Object* giveObject(sf::Vector2f mousePos);
+    Selectable* giveObject(sf::Vector2f mousePos);
 };
