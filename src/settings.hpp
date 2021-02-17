@@ -23,7 +23,6 @@ class Settings
     sf::Vector2f boardPosition;
 
     //Score texture
-    sf::Vector2f scoreImageSize;
     sf::Vector2f scoreImagePosition;
 
     //Score text
@@ -58,7 +57,6 @@ public:
     sf::Vector2f getBoardPosition();
 
     //Score image getters
-    sf::Vector2f getScoreImageSize();
     sf::Vector2f getScoreImagePosition();
 
     //Score text getters

@@ -120,8 +120,7 @@ void Game::initObjects()
     this->scoreLabel->setPosition(this->settings.getScoreTextPosition());
     this->addObject(true, this->scoreLabel);
 
-    sf::RectangleShape* scoreTexture = new sf::RectangleShape(this->settings.getScoreImageSize());
-    scoreTexture->setTexture(this->resources.getTexture("score"));
+    sf::Sprite* scoreTexture = new sf::Sprite(*this->resources.getTexture("score"));
     scoreTexture->setPosition(this->settings.getScoreImagePosition());
 
     this->addObject(false, scoreTexture);

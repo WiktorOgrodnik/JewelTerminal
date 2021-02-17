@@ -11,8 +11,9 @@ Jewel::Jewel(const sf::Vector2f position, char color, sf::Vector2f jewelSize, sf
     */
 
     this->setTexture(jewelTexture);
-    this->color = color;
     this->setPosition(position);
+
+    this->color = color;
     this->originalPositon = position;
     this->del = false;
     this->currentPhase = 0;
