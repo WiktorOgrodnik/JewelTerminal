@@ -1,6 +1,6 @@
 #include "jewel.hpp"
 
-Jewel::Jewel(const sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture) : Selectable(), sf::RectangleShape(jewelSize)
+Jewel::Jewel(const sf::Vector2f position, char color, sf::Vector2f jewelSize, sf::Texture* jewelTexture) : Rectangle(position, jewelSize, jewelTexture), Selectable()
 {
     /**
      * Constructor

@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -O2 -std=c++17 -Wall
 
-OBJ = main.o game.o selectable.o jewel.o layer.o settings.o logic.o logfile.o resources.o
+OBJ = button.o clickable.o drawable.o game.o jewel.o label.o layer.o logfile.o logic.o main.o rectangle.o resources.o selectable.o settings.o sprite.o
 SFML = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
 INC_DIR=.

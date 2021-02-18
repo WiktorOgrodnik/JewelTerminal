@@ -9,6 +9,8 @@ it also ordes to render objects and updates the game state. This class also cont
 #include "settings.hpp"
 #include "logic.hpp"
 #include "resources.hpp"
+#include "button.hpp"
+#include "sprite.hpp"
 
 class Game
 {
@@ -33,8 +35,8 @@ private:
 
     //Engine functions
     //Add objects
-    void addObject(bool topPririty, sf::Drawable* newObject);
-    void addObject(unsigned layer, sf::Drawable* newObject);
+    void addObject(bool topPririty, Drawable* newObject);
+    void addObject(unsigned layer, Drawable* newObject);
     void addTopLayer();
     //void addToTheSameLayerAs(std::vector<Layer*>* layers, Object* newObject, Object* existingObject); 
 
@@ -45,9 +47,12 @@ private:
     //void delteObject(Object* object);
     void deleteUnnecessary();
 
+    //Signal functions
+    void newGame();
+
     //Delta time
     sf::Clock deltaTimeClock;
-    float deltaTime;
+    sf::Time deltaTime;
 
     //Objects
     std::vector <Layer*> layers;
@@ -67,7 +72,7 @@ private:
 
     //Score
     unsigned score;
-    sf::Text* scoreLabel;
+    Label* scoreLabel;
 
     //Settings
     Settings settings;
@@ -84,6 +89,8 @@ private:
     int animationPhase;
     float animationTime;
     bool animationBlocker;
+
+    bool eventsBlocker;
     
 public:
 

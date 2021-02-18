@@ -27,6 +27,9 @@ Settings::Settings()
     this->videoMode.height = 600;
     this->videoMode.width = 800;
 
+    //Animations
+    this->fallingAnimationSpeed = 235.f;
+
     //Mouse control
     this->moveAxisCheckTime = 1;
     this->moveAxisCheckMargin = sf::Vector2f(6.f, 6.f);
@@ -100,6 +103,11 @@ int Settings::getMaxFPS()
 bool Settings::getVerticalSyncSetting()
 {
     return this->verticalSync;
+}
+
+float Settings::getFallingAnimationSpeed()
+{
+    return this->fallingAnimationSpeed;
 }
 
 int Settings::getMoveAxisCheckTime()

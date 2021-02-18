@@ -34,6 +34,9 @@ class Settings
     bool verticalSync;
     int FPSLimit;
 
+    //Animations
+    float fallingAnimationSpeed;
+
     //Mouse control
     int moveAxisCheckTime;
     sf::Vector2f moveAxisCheckMargin;
@@ -68,8 +71,10 @@ public:
     bool getVerticalSyncSetting();
     int getMaxFPS();
 
+    //Animation settings getters
+    float getFallingAnimationSpeed();
+
     //Mouse control getters
     int getMoveAxisCheckTime();
     sf::Vector2f getMoveAxisCheckMargin();
-    
 };

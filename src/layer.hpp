@@ -12,13 +12,13 @@ class Layer
 private:
 
     //All objects in layer
-    std::vector <sf::Drawable*> objects;
+    std::vector <Drawable*> objects;
 
 public:
 
     //Constructors
     Layer();
-    Layer(sf::Drawable* newObject);
+    Layer(Drawable* newObject);
     
     //Destructors
     ~Layer();
@@ -26,8 +26,8 @@ public:
     //Opetation on layer
     void draw (sf::RenderWindow* window, float boardMargin);
     bool contain (sf::Vector2f mousePos);
-    void addToLayer (sf::Drawable* newObject);
-    void deleteFromLayer (sf::Drawable* newObject);
+    void addToLayer (Drawable* newObject);
+    void deleteFromLayer (Drawable* newObject);
     void deleteUnnecessary();
 
     //Getters

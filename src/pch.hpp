@@ -16,6 +16,8 @@
 #include <time.h>
 #include <fstream>
 #include <map>
+#include <functional>
+#include <cassert>
 
 //If you are using linux, change WINDOWS to LINUX
 #define LINUX

@@ -8,7 +8,7 @@ Layer::Layer()
      */
 }
 
-Layer::Layer(sf::Drawable* newObject)
+Layer::Layer(Drawable* newObject)
 {
     /**
      * Extra Constructor with init first object 
@@ -42,7 +42,7 @@ void Layer::draw(sf::RenderWindow* window, float boardMargin)
             if (Jewel* converted = dynamic_cast<Jewel*>(k))
                 if (converted->getPosition().y <= boardMargin - 10)
                    continue;
-            window->draw(*k);
+            k->draw(window);
         }
         else Log::New ("Critical error, nullptr object in layer!");
     }
@@ -71,7 +71,7 @@ bool Layer::contain(sf::Vector2f mousePos)
     return false;
 }
 
-void Layer::addToLayer(sf::Drawable* newObject)
+void Layer::addToLayer(Drawable* newObject)
 {
     /**
      * @brief -Add object to layer
@@ -84,7 +84,7 @@ void Layer::addToLayer(sf::Drawable* newObject)
     else Log::New ("Critical error! Nullptr object in layer!"); 
 }
 
-void Layer::deleteFromLayer(sf::Drawable* newObject)
+void Layer::deleteFromLayer(Drawable* newObject)
 {
     /**
      * @brief -Delete object form layer
@@ -96,7 +96,7 @@ void Layer::deleteFromLayer(sf::Drawable* newObject)
     {
         if (this->objects[i] != nullptr && this->objects[i] == newObject)
         {
-            sf::Drawable* temp = this->objects[i];
+            Drawable* temp = this->objects[i];
             this->objects[i] = nullptr;
             this->objects.erase(this->objects.begin() + i);
             delete temp;
@@ -117,7 +117,7 @@ void Layer::deleteUnnecessary()
         if (Selectable* converted = dynamic_cast<Selectable*>(this->objects[i]))
             if (this->objects[i] != nullptr && converted->isToDelete())
             {
-                sf::Drawable* temp = this->objects[i];
+                Drawable* temp = this->objects[i];
                 this->objects[i] = nullptr;
                 this->objects.erase(this->objects.begin() + i);
                 delete temp;
@@ -137,10 +137,16 @@ Selectable* Layer::giveObject(sf::Vector2f mousePos)
     {
         for(size_t it = this->objects.size(); it > 0; --it)
         {
+            //if(std::is_same<decltype(this->objects[it - 1]), Jewel*>::value) std::cout << "jew\n";
+            //std::cout << "it: " << it - 1 << '\n';
             if(Selectable* converted = dynamic_cast<Selectable*>(this->objects[it - 1]))
             {
+                //std::cout << "i: " << it - 1 << '\n';
                 if(converted != nullptr && converted->contain(mousePos))
+                {
+                    //std::cout << "A zawiera!\n";
                     return converted;
+                }
             }
         } 
     }

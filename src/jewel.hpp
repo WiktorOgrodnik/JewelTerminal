@@ -5,8 +5,9 @@ This object is used to draw jewel on screen.
 #pragma once
 
 #include "selectable.hpp"
+#include "rectangle.hpp"
 
-class Jewel : public Selectable, public sf::RectangleShape
+class Jewel : public Rectangle, public Selectable
 {
 private:
 
@@ -23,7 +24,7 @@ public:
     //Destructor
     ~Jewel();
 
-    //Selected specyfic functions
+    //Selectable specyfic functions
     bool contain(sf::Vector2f mousePos) override;
     bool isToMove() override;
     bool isReturn() override;

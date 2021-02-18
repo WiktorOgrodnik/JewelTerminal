@@ -60,6 +60,8 @@ void Game::initVariables()
     //Idle animations
     this->animationPhase = 0;
     this->animationTime = 0.0f;
+
+    this->eventsBlocker = false;
 }
 
 void Game::initWindow()
@@ -82,15 +84,12 @@ void Game::initObjects()
      * @brief -Initialize layers
      * -Initialize board and jewels
      * -Initialize interface
-     * TO-DO: -Init jewels in logic class 
      * 
      * @return void
      */
 
     Log::New("Initialize Board");
-    sf::RectangleShape* board = new sf::RectangleShape(this->settings.getBoardSizePixels());
-    board->setPosition(this->settings.getBoardPosition());
-    board->setTexture(this->resources.getTexture("board"));
+    Rectangle* board = new Rectangle(this->settings.getBoardPosition(), this->settings.getBoardSizePixels(), this->resources.getTexture("board"));
 
     this->addObject(true, board);
 
@@ -116,14 +115,15 @@ void Game::initObjects()
     Logic::fill_array(this->jewels, this->settings.getBoardSize());
 
     Log::New("Initialize interface");
-    this->scoreLabel = new sf::Text(std::to_string(this->score), *this->resources.getFont("mainfont"), this->settings.getScoreTextFontSize());
-    this->scoreLabel->setPosition(this->settings.getScoreTextPosition());
+    this->scoreLabel = new Label(std::to_string(this->score), this->resources.getFont("mainfont"), this->settings.getScoreTextFontSize(), this->settings.getScoreTextPosition(), sf::Color::White);
+
     this->addObject(true, this->scoreLabel);
 
-    sf::Sprite* scoreTexture = new sf::Sprite(*this->resources.getTexture("score"));
-    scoreTexture->setPosition(this->settings.getScoreImagePosition());
+    Sprite* scoreTexture = new Sprite(this->settings.getScoreImagePosition(), this->resources.getTexture("score"));
+    Button* newGameButton = new Button(sf::Vector2f(330.f, 520.f), sf::Vector2f(135.f, 40.f), sf::Color(0, 0, 0, 255), "New game", this->resources.getFont("mainfont"), 22u);
 
     this->addObject(false, scoreTexture);
+    this->addObject(false, newGameButton);
 }
 
 const bool Game::running() const
@@ -144,7 +144,8 @@ void Game::updateDeltaTime()
      * 
      * @return void
      */
-    this->deltaTime = this->deltaTimeClock.restart().asSeconds();
+    this->deltaTime = this->deltaTimeClock.restart();
+    //std::cout << this->deltaTime.asSeconds() << '\n';
 }
 
 void Game::update()
@@ -170,7 +171,7 @@ void Game::pollEvents()
      * @return void
      */
     
-    if (!this->animationBlocker)
+    if (!this->eventsBlocker)
     {
         while(this->window->pollEvent(ev))
         {
@@ -190,7 +191,7 @@ void Game::pollEvents()
                 case sf::Event::MouseButtonReleased:
 
                     Jewel* drawableSelected;
-                    if ((drawableSelected = dynamic_cast<Jewel*>(this->selected)) && this->selected != nullptr && this->selected->isReturn()) //If selected object must return to original position
+                    if (!this->animationBlocker && (drawableSelected = dynamic_cast<Jewel*>(this->selected)) && this->selected != nullptr && this->selected->isReturn()) //If selected object must return to original position
                     {
                         Jewel* nselected;
                         if ((nselected = dynamic_cast<Jewel*>(drawableSelected)) && this->selectedExtraJewel != nullptr)
@@ -229,7 +230,7 @@ void Game::pollEvents()
                 case sf::Event::MouseButtonPressed:
 
                     this->selected = this->hover; //Return object on top!
-                    if ((drawableSelected = dynamic_cast<Jewel*>(this->selected)) && this->selected != nullptr) 
+                    if (!this->animationBlocker && (drawableSelected = dynamic_cast<Jewel*>(this->selected)) && this->selected != nullptr) 
                     {
                         //To object not "run away" from cursor
                         this->mousePositionDelta = this->mousePositionView - drawableSelected->getPosition();
@@ -249,6 +250,14 @@ void Game::pollEvents()
                             if (jewelPos == -1) Log::New("Critical error! Can not find Jewel to get logical position!");
                         }
                     }
+                    
+
+                    Button* button;
+                    if (this->selected != nullptr && (button = dynamic_cast<Button*>(this->selected)))
+                    {
+                        // to be continued
+                        this->newGame();
+                    }
                     break;
                 default:
                     break;
@@ -258,7 +267,7 @@ void Game::pollEvents()
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             Jewel* drawableSelected;
-            if ((drawableSelected = dynamic_cast<Jewel*>(this->selected)) && this->selected != nullptr && this->selected->isToMove())
+            if (!this->animationBlocker && (drawableSelected = dynamic_cast<Jewel*>(this->selected)) && this->selected != nullptr && this->selected->isToMove())
             {
                 if (this->moveDirectionCheck < this->settings.getMoveAxisCheckTime())
                 {
@@ -420,15 +429,16 @@ void Game::updateMousePositions()
     this->mousePositionView = this->window->mapPixelToCoords(this->mousePositionWindow);
 
     Selectable* t = this->giveSelectable();
-    if(t != nullptr && t != this->hover)
-    {   
-        if (this->hover != nullptr)
-            this->hover->unHover();
-        this->hover = t;
-    }
-    else if(t == nullptr)
-    {   
+
+    if (t == nullptr && this->hover != nullptr)
+    {
+        this->hover->unHover();
         this->hover = nullptr;
+    }
+    else if (t != nullptr && this->hover == nullptr)
+    {
+        this->hover = t;
+        this->hover->hover();
     }
 }
 
@@ -444,6 +454,7 @@ void Game::updateLogic()
     //If there are objects to rearrange and the falling animation is not playing
     if(!this->animationBlocker && Logic::check(this->jewels, this->settings.getBoardSize())) 
     {
+        this->hover = NULL;
         std::vector <Jewel*> newJewels [this->settings.getBoardSize()];
         try 
         {
@@ -510,7 +521,7 @@ void Game::updateAnimations()
                 if (k->getOriginalPosition().y > k->getPosition().y)
                 {
                     //Move object down
-                    k->setPosition(sf::Vector2f(k->getOriginalPosition().x, k->getPosition().y + 4.f));
+                    k->setPosition(sf::Vector2f(k->getOriginalPosition().x, k->getPosition().y + (this->settings.getFallingAnimationSpeed() * this->deltaTime.asSeconds())));
                     wasAnimated = true;
                 }
                 else if (k->getOriginalPosition().y < k->getPosition().y) 
@@ -525,7 +536,7 @@ void Game::updateAnimations()
 
     //Idle animation:
 
-    this->animationTime += this->deltaTime;
+    this->animationTime += this->deltaTime.asSeconds();
 	if(this->animationTime >= this->settings.getSwitchTime())
 	{
 		this->animationTime -= this->settings.getSwitchTime();
@@ -540,13 +551,9 @@ void Game::updateAnimations()
             else Log::New("Critical error, there is no jewel to select!");
 		}
 	}
-
-    //Mouse hover animation
-
-    if (this->hover != nullptr) this->hover->hover();
 }
 
-void Game::addObject(bool topPririty, sf::Drawable* newObject)
+void Game::addObject(bool topPririty, Drawable* newObject)
 {
     /**
      * @brief -Add object to top layer, possibly make new layer
@@ -566,7 +573,7 @@ void Game::addObject(bool topPririty, sf::Drawable* newObject)
     else Log::New("Critical error! Engine can not store pointers on nullptr");
 }
 
-void Game::addObject(unsigned layer, sf::Drawable* newObject)
+void Game::addObject(unsigned layer, Drawable* newObject)
 {
     /**
      * @brief -Add object to specyfic layer
@@ -607,11 +614,10 @@ Selectable* Game::giveSelectable()
         for (size_t i = this->layers.size(); i > 0; --i)
         {
             Selectable* t = nullptr;
-            if (this->layers[i - 1] != nullptr && this->layers[i - 1]->contain(this->mousePositionView)) 
+            if (this->layers[i - 1] != nullptr) 
             {
                 t = this->layers[i - 1]->giveObject(this->mousePositionView);
-                if (t != nullptr) 
-                    return t;
+                if (t != nullptr) return t;
             }
         }
     }
@@ -628,6 +634,13 @@ void Game::deleteUnnecessary()
      */
     
     for (auto &k : this->layers) k->deleteUnnecessary();
+}
+
+void Game::newGame(void)
+{
+    this->score = 0u;
+    this->scoreLabel->setString(std::to_string(this->score));
+    Logic::fill_array(this->jewels, this->settings.getBoardSize());
 }
 
 
